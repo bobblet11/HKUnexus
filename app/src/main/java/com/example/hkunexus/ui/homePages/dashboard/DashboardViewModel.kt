@@ -1,4 +1,4 @@
-package com.example.hkunexus.ui.dashboard
+package com.example.hkunexus.ui.homePages.dashboard
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
