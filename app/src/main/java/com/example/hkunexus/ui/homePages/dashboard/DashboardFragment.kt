@@ -1,4 +1,4 @@
-package com.example.hkunexus.ui.dashboard
+package com.example.hkunexus.ui.homePages.dashboard
 
 import android.os.Bundle
 import android.view.LayoutInflater
