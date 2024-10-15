@@ -52,7 +52,7 @@
             android:paddingRight="25dp">
 
             <EditText
-                android:id="@+id/username"
+                android:id="@+id/loginEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
@@ -62,7 +62,7 @@
                 android:selectAllOnFocus="true" />
 
             <EditText
-                android:id="@+id/password"
+                android:id="@+id/loginPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -75,17 +75,17 @@
                 android:selectAllOnFocus="true" />
 
             <Button
-                android:id="@+id/login"
+                android:id="@+id/loginButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="25dp"
                 android:layout_weight="0"
-                android:enabled="false"
+                android:enabled="true"
                 android:text="login" />
 
             <Button
-                android:id="@+id/registerButton"
+                android:id="@+id/loginRegisterButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
