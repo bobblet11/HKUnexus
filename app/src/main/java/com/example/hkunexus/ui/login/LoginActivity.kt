@@ -61,7 +61,7 @@ class LoginActivity : AppCompatActivity() {
         val session = supabase.auth.currentSessionOrNull()
         Log.d("LoginTest", user.toString())
         Log.d("LoginTest", session.toString())
-        val d1 = supabase.from("demo1").select(columns = Columns.list("id, vibes")).decodeSingle<DemoRowDto>()
+        val d1 = supabase.from("demo1").select().decodeSingle<DemoRowDto>()
         Log.d("DBTest",d1.toString())
     }
 
