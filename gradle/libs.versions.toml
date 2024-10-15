@@ -1,13 +1,13 @@
 [versions]
 agp = "8.6.0"
-bom = "VERSION"
+bom = "3.0.0"
 kotlin = "1.9.0"
 coreKtx = "1.13.1"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 appcompat = "1.7.0"
-ktorClientEngine_z = "VERSION"
+ktorClientAndroid = "3.0.0"
 material = "1.12.0"
 constraintlayout = "2.1.4"
 lifecycleLivedataKtx = "2.8.5"
@@ -18,13 +18,13 @@ annotation = "1.6.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
-auth-kt = { module = "io.github.jan-tennert.supabase:auth-kt" }
+auth-kt = { module = "io.github.jan-tennert.supabase:auth-kt", version.ref = "bom" }
 bom = { module = "io.github.jan-tennert.supabase:bom", version.ref = "bom" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
-ktor-client-engine_z = { module = "io.ktor:ktor-client-[engine]", version.ref = "ktorClientEngine_z" }
+ktor-client-android = { module = "io.ktor:ktor-client-android", version = "3.0.0" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 androidx-lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "lifecycleLivedataKtx" }
@@ -32,8 +32,8 @@ androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifec
 androidx-navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigationFragmentKtx" }
 androidx-navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigationUiKtx" }
 androidx-annotation = { group = "androidx.annotation", name = "annotation", version.ref = "annotation" }
-postgrest-kt = { module = "io.github.jan-tennert.supabase:postgrest-kt" }
-realtime-kt = { module = "io.github.jan-tennert.supabase:realtime-kt" }
+postgrest-kt = { module = "io.github.jan-tennert.supabase:postgrest-kt", version.ref = "bom" }
+realtime-kt = { module = "io.github.jan-tennert.supabase:realtime-kt", version.ref = "bom" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
