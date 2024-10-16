@@ -37,6 +37,12 @@
             android:exported="true"
             android:label="@string/title_home">
         </activity>
+
+        <activity
+            android:name=".ui.login.RegisterOtpActivity"
+            android:exported="true"
+            android:label="@string/title_activity_register_otp">
+        </activity>
     </application>
 
 </manifest>

@@ -34,12 +34,12 @@
                 android:layout_weight="1"
                 android:padding="0dp"
                 android:scaleY="1"
+                android:src="@drawable/hku_nexus_logo_with_title"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:srcCompat="@drawable/hku_nexus_logo"
-                android:src="@drawable/hku_nexus_logo"/>
+                tools:srcCompat="@drawable/hku_nexus_logo_with_title" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
@@ -85,7 +85,7 @@
                 android:text="login" />
 
             <Button
-                android:id="@+id/loginRegisterButton"
+                android:id="@+id/registerButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
@@ -94,15 +94,6 @@
                 android:text="Register" />
 
         </LinearLayout>
-
-        <ProgressBar
-            android:id="@+id/loading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="64dp"
-            android:layout_marginBottom="64dp"
-            android:visibility="gone" />
 
     </LinearLayout>
 

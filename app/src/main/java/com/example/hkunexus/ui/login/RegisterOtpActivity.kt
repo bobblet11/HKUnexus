@@ -1,32 +1,27 @@
 package com.example.hkunexus.ui.login
 
-import android.app.Activity
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
+import android.content.Intent
 import android.os.Bundle
-import androidx.annotation.StringRes
+import android.widget.Button
+import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
-import android.view.View
-import android.view.inputmethod.EditorInfo
-import android.widget.Toast
-import com.example.hkunexus.databinding.ActivityRegisterBinding
-
+import com.example.hkunexus.MainActivity
 import com.example.hkunexus.R
+
 
 class RegisterOtpActivity : AppCompatActivity() {
 
-    private lateinit var loginViewModel: LoginViewModel
-    private lateinit var binding: ActivityRegisterBinding
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_register_otp)
 
-        binding = ActivityRegisterBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        val submitOTP = findViewById<Button>(R.id.submitOTP)
+        val resendOTP = findViewById<Button>(R.id.resendOTP)
+        val OTPcode = findViewById<EditText>(R.id.OtpCodeInput)
 
-        val username = binding.username
-        val password = binding.password
-        val login = binding.loginButton
-        val loading = binding.loading
+        submitOTP.setOnClickListener {
+            val goToMain = Intent(this, MainActivity::class.java)
+            startActivity(goToMain)
+        }
     }
 }
