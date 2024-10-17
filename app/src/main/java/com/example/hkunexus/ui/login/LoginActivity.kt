@@ -73,16 +73,17 @@ class LoginActivity : AppCompatActivity() {
 
         val email = findViewById<EditText>(R.id.loginEmail)
         val password = findViewById<EditText>(R.id.loginPassword)
+
         val loginButton = findViewById<Button>(R.id.loginButton)
-        val registerButton = findViewById<Button>(R.id.loginRegisterButton)
+        val registerButton = findViewById<Button>(R.id.registerButton)
 
         loginButton.setOnClickListener {
             val emailInput = email.text.toString()
             val passwordInput = password.text.toString()
 
             if (validateLogin(emailInput, passwordInput)) {
-                val switchToLogin = Intent(this, MainActivity::class.java)
-                startActivity(switchToLogin)
+                val goToMain = Intent(this, MainActivity::class.java)
+                startActivity(goToMain)
             }
 
             //do something like email missing, password missing
@@ -91,6 +92,11 @@ class LoginActivity : AppCompatActivity() {
         lifecycleScope.launch {
             loginplz()
             //do something like email missing, password missing
+        }
+
+        registerButton.setOnClickListener {
+            val goToRegister = Intent(this, RegisterActivity::class.java)
+            startActivity(goToRegister)
         }
     }
 
