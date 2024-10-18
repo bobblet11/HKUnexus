@@ -59,6 +59,8 @@ dependencies {
     implementation(libs.auth.kt)
     implementation(libs.realtime.kt)
     implementation(libs.ktor.client.android)
+    implementation(libs.androidx.legacy.support.v4)
+    implementation(libs.androidx.fragment.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
