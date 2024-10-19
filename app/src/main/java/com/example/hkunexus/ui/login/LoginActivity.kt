@@ -17,6 +17,7 @@ import io.github.jan.supabase.postgrest.Postgrest
 import io.github.jan.supabase.postgrest.from
 import io.github.jan.supabase.postgrest.query.Columns
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -77,17 +78,28 @@ class LoginActivity : AppCompatActivity() {
         val loginButton = findViewById<Button>(R.id.loginButton)
         val registerButton = findViewById<Button>(R.id.registerButton)
 
-        loginButton.setOnClickListener {
+        loginButton.setOnClickListener { runBlocking {
             val emailInput = email.text.toString()
             val passwordInput = password.text.toString()
 
-            if (validateLogin(emailInput, passwordInput)) {
+//            if (validateLogin(emailInput, passwordInput)) {
+//                val goToMain = Intent(this, MainActivity::class.java)
+//                startActivity(goToMain)
+//            }
+            try {
+                supabase.auth.signInWith(Email) {
+                    this.email = emailInput;
+                    this.password = passwordInput;
+                }
+
                 val goToMain = Intent(this, MainActivity::class.java)
-                startActivity(goToMain)
+
+                Log.d("MainActivity", "Sign-in successful: $result")
+            } catch (e: Exception) {
+                Log.e("MainActivity", "Sign-in failed", e)
             }
 
-            //do something like email missing, password missing
-        }
+        }}
 
         lifecycleScope.launch {
             loginplz()
