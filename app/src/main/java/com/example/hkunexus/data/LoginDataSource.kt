@@ -1,6 +1,7 @@
 package com.example.hkunexus.data
 
 import com.example.hkunexus.data.model.LoggedInUser
+import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.auth.Auth
 import io.github.jan.supabase.auth.auth
 import io.github.jan.supabase.auth.providers.builtin.Email
@@ -23,6 +24,8 @@ class LoginDataSource {
         install(Postgrest)
         install(Auth)
     }
+
+
 
     suspend fun login(email: String, password: String): Result<UserInfo> {
         try {
