@@ -27,6 +27,8 @@ import java.util.UUID
 
 class LoginActivity : AppCompatActivity() {
 
+    val loginActivity = this;
+
     val supabase = createSupabaseClient(
         supabaseUrl = "https://ctiaasznssbnyizmglhv.supabase.co",
         supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN0aWFhc3puc3Nibnlpem1nbGh2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjg1NDQ3NzEsImV4cCI6MjA0NDEyMDc3MX0.t0-AHECeFc0PWItTVJ-X0BGGclh_LEbFhFOtBi9rNd4"
@@ -87,14 +89,20 @@ class LoginActivity : AppCompatActivity() {
 //                startActivity(goToMain)
 //            }
             try {
-                supabase.auth.signInWith(Email) {
+                val result = supabase.auth.signInWith(Email) {
                     this.email = emailInput;
                     this.password = passwordInput;
                 }
-
-                val goToMain = Intent(this, MainActivity::class.java)
+                val user = supabase.auth.retrieveUserForCurrentSession(updateSession = true)
+                val session = supabase.auth.currentSessionOrNull()
 
                 Log.d("MainActivity", "Sign-in successful: $result")
+
+                val myIntent = Intent(loginActivity, MainActivity::class.java);
+                myIntent.putExtra("AccessToken", session?.accessToken);
+                startActivity(myIntent);
+
+
             } catch (e: Exception) {
                 Log.e("MainActivity", "Sign-in failed", e)
             }
