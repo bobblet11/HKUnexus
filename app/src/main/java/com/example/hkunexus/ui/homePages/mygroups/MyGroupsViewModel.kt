@@ -1,4 +1,4 @@
-package com.example.hkunexus
+package com.example.hkunexus.ui.homePages.mygroups
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
