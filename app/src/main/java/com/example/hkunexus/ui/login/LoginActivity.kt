@@ -78,10 +78,6 @@ class LoginActivity : AppCompatActivity() {
 
         }}
 
-        lifecycleScope.launch {
-            loginplz()
-            //do something like email missing, password missing
-        }
 
         registerButton.setOnClickListener {
             val goToRegister = Intent(this, RegisterActivity::class.java)
