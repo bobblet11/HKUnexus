@@ -17,7 +17,6 @@ import com.example.hkunexus.data.getSupabase
 import com.example.hkunexus.data.model.UserProfile
 import com.example.hkunexus.databinding.FragmentDashboardBinding
 import com.example.hkunexus.ui.login.LoginActivity
-import com.example.hkunexus.ui.login.LoginActivity.DemoRowDto
 import io.github.jan.supabase.auth.auth
 import io.github.jan.supabase.postgrest.from
 import io.github.jan.supabase.postgrest.postgrest
