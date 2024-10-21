@@ -36,37 +36,6 @@ class LoginActivity : AppCompatActivity() {
         install(Postgrest)
         install(Auth)
     }
-    @Serializable
-    data class DemoRowDto(
-        @SerialName("id")
-        val id: String,
-        @SerialName("created_at")
-        val created_at: String,
-        @SerialName("vibes")
-        val vibes: Int,
-    )
-    data class DemoRow(
-        val id: String,
-        val created_at: String,
-        val vibes: Int,
-    )
-    suspend fun loginplz(){
-        try {
-            val result = supabase.auth.signInWith(Email) {
-                email = "happyeenoddy@gmail.com"
-                password = "123456"
-            }
-            Log.d("MainActivity", "Sign-in successful: $result")
-        } catch (e: Exception) {
-            Log.e("MainActivity", "Sign-in failed", e)
-        }
-        val user = supabase.auth.retrieveUserForCurrentSession(updateSession = true)
-        val session = supabase.auth.currentSessionOrNull()
-        Log.d("LoginTest", user.toString())
-        Log.d("LoginTest", session.toString())
-        val d1 = supabase.from("demo1").select().decodeSingle<DemoRowDto>()
-        Log.d("DBTest",d1.toString())
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
