@@ -11,7 +11,7 @@ import com.example.hkunexus.databinding.FragmentCreateBinding
 
 class CreateFragment : Fragment() {
 
-    private var _binding: FragmentCreateBinding? = null;
+    private var _binding: FragmentCreateBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
