@@ -1,28 +1,22 @@
 package com.example.hkunexus.ui.login
+
+import android.R.attr.password
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
 import com.example.hkunexus.MainActivity
-
 import com.example.hkunexus.R
 import io.github.jan.supabase.auth.Auth
 import io.github.jan.supabase.auth.auth
 import io.github.jan.supabase.auth.providers.builtin.Email
 import io.github.jan.supabase.createSupabaseClient
 import io.github.jan.supabase.postgrest.Postgrest
-import io.github.jan.supabase.postgrest.from
-import io.github.jan.supabase.postgrest.query.Columns
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import kotlinx.datetime.LocalDateTime
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
-import java.math.BigInteger
-import java.util.UUID
+import java.util.regex.Matcher
+import java.util.regex.Pattern
 
 
 class LoginActivity : AppCompatActivity() {
@@ -38,60 +32,80 @@ class LoginActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
-
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
 
         val email = findViewById<EditText>(R.id.loginEmail)
         val password = findViewById<EditText>(R.id.loginPassword)
 
+
         val loginButton = findViewById<Button>(R.id.loginButton)
         val registerButton = findViewById<Button>(R.id.registerButton)
-
-        loginButton.setOnClickListener { runBlocking {
-            val emailInput = email.text.toString()
-            val passwordInput = password.text.toString()
-
-//            if (validateLogin(emailInput, passwordInput)) {
-//                val goToMain = Intent(this, MainActivity::class.java)
-//                startActivity(goToMain)
-//            }
-            try {
-                val result = supabase.auth.signInWith(Email) {
-                    this.email = emailInput;
-                    this.password = passwordInput;
-                }
-                val user = supabase.auth.retrieveUserForCurrentSession(updateSession = true)
-                val session = supabase.auth.currentSessionOrNull()
-
-                Log.d("MainActivity", "Sign-in successful: $result")
-
-                val myIntent = Intent(loginActivity, MainActivity::class.java);
-                myIntent.putExtra("AccessToken", session?.accessToken);
-                startActivity(myIntent);
-
-
-            } catch (e: Exception) {
-                Log.e("MainActivity", "Sign-in failed", e)
-            }
-
-        }}
-
 
         registerButton.setOnClickListener {
             val goToRegister = Intent(this, RegisterActivity::class.java)
             startActivity(goToRegister)
         }
-    }
 
-    fun validateLogin(emailInput: String?, passwordInput: String?): Boolean{
-        if (emailInput == null || passwordInput == null || emailInput.length <=0 || passwordInput.length <=0){
-            return false
-            //probs a good idea to do some better validation, like email checking etc
+        loginButton.setOnClickListener {
+            val emailInput = email.text.toString()
+            val passwordInput = password.text.toString()
+
+            if (!validateLogin(emailInput, passwordInput)){
+                // Break out of the listener
+                return@setOnClickListener
+            }
+
+            runBlocking {
+                try {
+                    val result = supabase.auth.signInWith(Email) {
+                        this.email = emailInput;
+                        this.password = passwordInput;
+                    }
+                    val user = supabase.auth.retrieveUserForCurrentSession(updateSession = true)
+                    val session = supabase.auth.currentSessionOrNull()
+
+                    Log.d("MainActivity", "Sign-in successful: $result")
+
+                    val goToMain = Intent(loginActivity, MainActivity::class.java);
+                    goToMain.putExtra("AccessToken", session?.accessToken);
+                    startActivity(goToMain);
+
+                } catch (e: Exception) {
+                    Log.e("MainActivity", "Sign-in failed", e)
+                }
+            }
         }
-        return true
+
     }
 
+    fun validateLogin(emailInput: String?, passwordInput: String?): Boolean {
+        val notEmpty =
+            !(emailInput == null || passwordInput == null || emailInput.isEmpty() || passwordInput.isEmpty())
 
+        val passwordREGEX = Pattern.compile(
+            "^" +
+                    "(?=.*[0-9])" +         //at least 1 digit
+                    "(?=.*[a-z])" +         //at least 1 lower case letter
+                    "(?=.*[A-Z])" +         //at least 1 upper case letter
+                    "(?=.*[a-zA-Z])" +      //any letter
+                    "(?=.*[@#$%^&+=])" +    //at least 1 special character
+                    "(?=\\S+$)" +           //no white spaces
+                    ".{8,}" +               //at least 8 characters
+                    "$"
+        );
+        val validPassword = passwordREGEX.matcher(passwordInput).matches()
+
+        val emailREGEX = Pattern.compile(
+            "^" +
+                    "(?!.*@)" +             //no @
+                    "[a-zA-Z0-9._%+-]" +    //all validChars
+                    "+$"
+        );
+
+        val validEmail = emailREGEX.matcher(emailInput).matches()
+
+        return (notEmpty && validEmail && validPassword)
+    }
 }
