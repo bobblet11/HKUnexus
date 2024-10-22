@@ -19,14 +19,13 @@ import io.github.jan.supabase.auth.providers.builtin.Email
 import io.github.jan.supabase.createSupabaseClient
 import io.github.jan.supabase.postgrest.Postgrest
 import androidx.lifecycle.lifecycleScope
+import com.example.hkunexus.data.SupabaseSingleton
 import com.example.hkunexus.ui.homePages.dashboard.DashboardFragment
 import io.github.jan.supabase.SupabaseClient
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
-    private var accessToken : String? = null;
-    private lateinit var superbase : SupabaseClient;
     private lateinit var binding: ActivityMainBinding
 
     fun addFragment(fragment: Fragment?, addToBackStack: Boolean, tag: String?) {
@@ -46,16 +45,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
-
-        val bundle: Bundle? = intent.extras
-        bundle?.let{
-            bundle.apply{
-                accessToken = getString("AccessToken");
-            }
-        }
-
         val dfrag = DashboardFragment()
-        dfrag.accessToken = accessToken
+        dfrag.accessToken = SupabaseSingleton.getAccessToken()
         dfrag.mainActivity = this;
         addFragment( dfrag, false, "Dashboard")
 

@@ -9,6 +9,7 @@ import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import com.example.hkunexus.MainActivity
 import com.example.hkunexus.R
+import com.example.hkunexus.data.SupabaseSingleton
 import io.github.jan.supabase.auth.Auth
 import io.github.jan.supabase.auth.auth
 import io.github.jan.supabase.auth.providers.builtin.Email
@@ -20,19 +21,10 @@ import java.util.regex.Pattern
 
 
 class LoginActivity : AppCompatActivity() {
-
-    val loginActivity = this;
-
-    val supabase = createSupabaseClient(
-        supabaseUrl = "https://ctiaasznssbnyizmglhv.supabase.co",
-        supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN0aWFhc3puc3Nibnlpem1nbGh2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjg1NDQ3NzEsImV4cCI6MjA0NDEyMDc3MX0.t0-AHECeFc0PWItTVJ-X0BGGclh_LEbFhFOtBi9rNd4"
-    ) {
-        install(Postgrest)
-        install(Auth)
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        //ALL OF THIS SHOULD BE IN VIEW MODEL!!!!!!!!!
         setContentView(R.layout.activity_login)
 
 
@@ -49,38 +41,37 @@ class LoginActivity : AppCompatActivity() {
         }
 
         loginButton.setOnClickListener {
-            val emailInput = email.text.toString()
+            val emailInput = email.text.toString() + "@connect.hku.hk"
             val passwordInput = password.text.toString()
 
             if (!validateLogin(emailInput, passwordInput)){
                 // Break out of the listener
+                Log.d("LoginActivity", "login validation failed$emailInput, $passwordInput")
                 return@setOnClickListener
             }
 
-            runBlocking {
-                try {
-                    val result = supabase.auth.signInWith(Email) {
-                        this.email = emailInput;
-                        this.password = passwordInput;
-                    }
-                    val user = supabase.auth.retrieveUserForCurrentSession(updateSession = true)
-                    val session = supabase.auth.currentSessionOrNull()
-
-                    Log.d("MainActivity", "Sign-in successful: $result")
-
-                    val goToMain = Intent(loginActivity, MainActivity::class.java);
-                    goToMain.putExtra("AccessToken", session?.accessToken);
-                    startActivity(goToMain);
-
-                } catch (e: Exception) {
-                    Log.e("MainActivity", "Sign-in failed", e)
-                }
+            if (!SupabaseSingleton.login(emailInput, passwordInput)){
+                Log.d("LoginActivity", "login authentication failed")
+                return@setOnClickListener
             }
+
+            val accessToken: String = SupabaseSingleton.getAccessToken()
+
+            if (accessToken.isEmpty()){
+                Log.d("LoginActivity", "access token is invalid")
+                return@setOnClickListener
+            }
+
+            Log.d("LoginActivity", "successfully logged in")
+            val goToMain = Intent(this, MainActivity::class.java);
+            startActivity(goToMain);
+
         }
 
     }
-
+    //ALL OF THIS SHOULD BE IN VIEW MODEL!!!!!!!!!
     fun validateLogin(emailInput: String?, passwordInput: String?): Boolean {
+        return true
         val notEmpty =
             !(emailInput == null || passwordInput == null || emailInput.isEmpty() || passwordInput.isEmpty())
 

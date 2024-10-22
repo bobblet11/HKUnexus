@@ -16,14 +16,12 @@ class RegisterActivity : AppCompatActivity() {
 
         val OtpButton = findViewById<Button>(R.id.goToOTP)
 
-        val firstName = findViewById<EditText>(R.id.firstname)
+        val firstname = findViewById<EditText>(R.id.firstname)
         val lastname = findViewById<EditText>(R.id.lastname)
         val username = findViewById<EditText>(R.id.registerUsername)
         val email = findViewById<EditText>(R.id.registrationEmail)
         val password = findViewById<EditText>(R.id.registrationPassword)
         val retryPassword = findViewById<EditText>(R.id.registerVerifyPassword)
-
-
 
         OtpButton.setOnClickListener {
             val goToOTP = Intent(this, RegisterOtpActivity::class.java)
