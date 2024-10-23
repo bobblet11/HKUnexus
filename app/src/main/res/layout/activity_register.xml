@@ -36,8 +36,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
-                android:inputType="text"
-                android:text="First name" />
+                android:hint="first name"
+                android:inputType="text" />
 
             <EditText
                 android:id="@+id/lastname"
@@ -45,8 +45,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
-                android:inputType="text"
-                android:text="Last name" />
+                android:hint="last name"
+                android:inputType="text" />
 
         </LinearLayout>
 
@@ -57,19 +57,35 @@
             android:layout_marginTop="25dp"
             android:layout_weight="0"
             android:ems="10"
-            android:inputType="text"
-            android:text="Username" />
+            android:hint="username"
+            android:inputType="text" />
 
-        <EditText
-            android:id="@+id/registrationEmail"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
             android:layout_weight="0"
-            android:autofillHints="@string/prompt_email"
-            android:hint="@string/prompt_email"
-            android:inputType="textEmailAddress"
-            android:selectAllOnFocus="true" />
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/registrationEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="8"
+                android:hint="email"
+                android:selectAllOnFocus="false" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="\@connect.hku.hk"
+                android:textSize="20sp" />
+
+
+        </LinearLayout>
 
         <EditText
             android:id="@+id/registrationPassword"

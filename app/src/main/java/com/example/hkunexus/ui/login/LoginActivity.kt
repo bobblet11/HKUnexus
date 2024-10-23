@@ -1,9 +1,7 @@
 package com.example.hkunexus.ui.login
 
-import android.R.attr.password
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import androidx.activity.viewModels
@@ -11,18 +9,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.example.hkunexus.MainActivity
 import com.example.hkunexus.R
-import com.example.hkunexus.data.SupabaseSingleton
-import io.github.jan.supabase.auth.Auth
-import io.github.jan.supabase.auth.auth
-import io.github.jan.supabase.auth.providers.builtin.Email
-import io.github.jan.supabase.createSupabaseClient
-import io.github.jan.supabase.postgrest.Postgrest
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import java.util.regex.Matcher
-import java.util.regex.Pattern
 
 
 class LoginActivity : AppCompatActivity() {
@@ -40,9 +29,9 @@ class LoginActivity : AppCompatActivity() {
 
 
         CoroutineScope(Dispatchers.Main).launch {
-            viewModel.uiState.collect { validationState ->
-                updateBorderColour(email, validationState.isEmailValid)
-                updateBorderColour(password, validationState.isPasswordValid)
+            viewModel.uiState.collect { uiState ->
+                updateBorderColour(email, uiState.isEmailValid)
+                updateBorderColour(password, uiState.isPasswordValid)
             }
         }
 
@@ -55,21 +44,10 @@ class LoginActivity : AppCompatActivity() {
             var emailInput = email.text.toString()
             val passwordInput = password.text.toString()
 
-            if (!viewModel.validateLogin(emailInput, passwordInput)){
-                Log.d("LoginActivity", "login validation failed $emailInput, $passwordInput")
-                return@setOnClickListener
+            if (viewModel.attemptLogin(emailInput, passwordInput)){
+                val goToMain = Intent(this, MainActivity::class.java);
+                startActivity(goToMain);
             }
-
-            emailInput = emailInput + "@connect.hku.hk"
-
-            if (!viewModel.authenticateLogin(emailInput, passwordInput)){
-                Log.d("LoginActivity", "login authentication failed")
-                return@setOnClickListener
-            }
-
-            Log.d("LoginActivity", "successfully logged in")
-            val goToMain = Intent(this, MainActivity::class.java);
-            startActivity(goToMain);
 
         }
 

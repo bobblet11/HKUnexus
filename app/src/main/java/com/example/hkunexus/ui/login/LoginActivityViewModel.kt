@@ -25,6 +25,21 @@ class LoginActivityViewModel() : ViewModel() {
     private val _uiState = MutableStateFlow(LoginUiState())
     val uiState: StateFlow<LoginUiState> = _uiState.asStateFlow()
 
+
+    public fun attemptLogin(emailInput: String, passwordInput: String): Boolean{
+        if (!validateLogin(emailInput, passwordInput)){
+            Log.d("LoginActivityViewModel", "login validation failed $emailInput, $passwordInput")
+            return false
+        }
+
+        if (!authenticateLogin("$emailInput@connect.hku.hk", passwordInput)){
+            Log.d("LoginActivityViewModel", "login authentication failed")
+            return false
+        }
+        Log.d("LoginActivityViewModel", "login success")
+        return true
+    }
+
     private fun setValidationResult(isEmailValid: Boolean, isPasswordValid : Boolean){
         _uiState.update {
             it.copy(isEmailValid = isEmailValid,
@@ -32,11 +47,11 @@ class LoginActivityViewModel() : ViewModel() {
         }
     }
 
-    public fun authenticateLogin(emailInput: String, passwordInput: String): Boolean{
+    private fun authenticateLogin(emailInput: String, passwordInput: String): Boolean{
         return !SupabaseSingleton.login(emailInput, passwordInput)
     }
 
-    public fun validateLogin(emailInput: String, passwordInput: String): Boolean {
+    private fun validateLogin(emailInput: String, passwordInput: String): Boolean {
 
         val passwordREGEX = Pattern.compile(
             "^" +
