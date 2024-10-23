@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.hkunexus.MainActivity
+import com.example.hkunexus.data.SupabaseSingleton
 import com.example.hkunexus.data.getSupabase
 import com.example.hkunexus.data.model.UserProfile
 import com.example.hkunexus.databinding.FragmentDashboardBinding
@@ -24,9 +25,8 @@ import kotlinx.coroutines.launch
 
 class DashboardFragment : Fragment() {
 
-    var accessToken : String? = null;
     var mainActivity : Activity? = null;
-
+    var accessToken : String? = SupabaseSingleton.getAccessToken()
     private var _binding: FragmentDashboardBinding? = null
 
     // This property is only valid between onCreateView and
@@ -39,7 +39,7 @@ class DashboardFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val dashboardViewModel =
-            ViewModelProvider(this).get(DashboardViewModel::class.java)
+            ViewModelProvider(this)[DashboardViewModel::class.java]
 
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
         val root: View = binding.root
