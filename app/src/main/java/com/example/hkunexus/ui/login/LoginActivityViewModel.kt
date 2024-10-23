@@ -27,8 +27,8 @@ class LoginActivityViewModel() : ViewModel() {
 
     private fun setValidationResult(isEmailValid: Boolean, isPasswordValid : Boolean){
         _uiState.update {
-            it.copy(isEmailValid = isEmailValid)
-            it.copy(isPasswordValid = isPasswordValid)
+            it.copy(isEmailValid = isEmailValid,
+                isPasswordValid = isPasswordValid)
         }
     }
 
@@ -36,14 +36,7 @@ class LoginActivityViewModel() : ViewModel() {
         return !SupabaseSingleton.login(emailInput, passwordInput)
     }
 
-    public fun validateLogin(emailInput: String?, passwordInput: String?): Boolean {
-        val notEmpty =
-            !(emailInput == null || passwordInput == null || emailInput.isEmpty() || passwordInput.isEmpty())
-
-        if (!notEmpty){
-            setValidationResult(false, false)
-            return false
-        }
+    public fun validateLogin(emailInput: String, passwordInput: String): Boolean {
 
         val passwordREGEX = Pattern.compile(
             "^" +
@@ -60,13 +53,14 @@ class LoginActivityViewModel() : ViewModel() {
         val isPasswordValid = passwordREGEX.matcher(passwordInput).matches()
 
         val emailREGEX = Pattern.compile(
-            "^" +
-                    "(?!.*@)" +             //no @
-                    "[a-zA-Z0-9._%+-]" +    //all validChars
-                    "$"
+            "^" +                // Start of the string
+                    "(?!.*\\s)" +       // No whitespace
+                    "(?!.*@)" +         // No @ character
+                    "[\\S]+" +          // One or more non-whitespace characters
+                    "$"                 // End of the string
         );
 
-        val isEmailValid = false
+        val isEmailValid = emailREGEX.matcher(emailInput).matches()
 
         setValidationResult(isEmailValid, isPasswordValid)
         return (isEmailValid && isPasswordValid)

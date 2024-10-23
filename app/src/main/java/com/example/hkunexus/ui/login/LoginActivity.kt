@@ -52,13 +52,15 @@ class LoginActivity : AppCompatActivity() {
         }
 
         loginButton.setOnClickListener {
-            val emailInput = email.text.toString() + "@connect.hku.hk"
+            var emailInput = email.text.toString()
             val passwordInput = password.text.toString()
 
             if (!viewModel.validateLogin(emailInput, passwordInput)){
                 Log.d("LoginActivity", "login validation failed $emailInput, $passwordInput")
                 return@setOnClickListener
             }
+
+            emailInput = emailInput + "@connect.hku.hk"
 
             if (!viewModel.authenticateLogin(emailInput, passwordInput)){
                 Log.d("LoginActivity", "login authentication failed")
