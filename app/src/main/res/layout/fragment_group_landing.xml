@@ -34,7 +34,6 @@
                     android:layout_weight="1"
                     android:padding="0dp"
                     android:scaleY="1"
-                    android:src="@tools:sample/backgrounds/scenic[0]"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="1.0"
