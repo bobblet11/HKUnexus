@@ -48,7 +48,7 @@ class LoginActivityViewModel() : ViewModel() {
     }
 
     private fun authenticateLogin(emailInput: String, passwordInput: String): Boolean{
-        return !SupabaseSingleton.login(emailInput, passwordInput)
+        return SupabaseSingleton.login(emailInput, passwordInput)
     }
 
     private fun validateLogin(emailInput: String, passwordInput: String): Boolean {
