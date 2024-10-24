@@ -5,8 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.RecyclerView
 import com.example.hkunexus.databinding.FragmentExploreBinding
 
 class ExploreFragment : Fragment() {
@@ -28,10 +28,11 @@ class ExploreFragment : Fragment() {
         _binding = FragmentExploreBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textExplore
-        exploreViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
+        // Set up adaptor for recycler view to display cards
+        val clubListAdapter = ClubListAdapter(exploreViewModel.clubs)
+        val recyclerView: RecyclerView = binding.exploreClubsRecycler
+        recyclerView.adapter = clubListAdapter
+
         return root
     }
 
