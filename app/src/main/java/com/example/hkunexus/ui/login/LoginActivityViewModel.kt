@@ -59,7 +59,7 @@ class LoginActivityViewModel() : ViewModel() {
                     "(?=.*[a-z])" +         //at least 1 lower case letter
                     "(?=.*[A-Z])" +         //at least 1 upper case letter
                     "(?=.*[a-zA-Z])" +      //any letter
-                    "(?=.*[@#$%^&+=])" +    //at least 1 special character
+                    "(?=.*[^A-Za-z0-9])" +  //at least 1 special character
                     "(?=\\S+$)" +           //no white spaces
                     ".{8,}" +               //at least 8 characters
                     "$"
