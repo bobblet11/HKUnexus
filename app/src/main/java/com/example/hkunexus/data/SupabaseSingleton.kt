@@ -117,6 +117,12 @@ object SupabaseSingleton{
                     }
                 }
 
+                //will be anonymous user?
+                //check docs for this.
+                currentUser = client!!.auth.retrieveUserForCurrentSession(updateSession = true)
+                session = client!!.auth.currentSessionOrNull()
+                accessToken = session!!.accessToken
+
                 Log.d("SupabaseSingleton", "Sign-up successful: $user")
 
                 return@runBlocking true
@@ -143,6 +149,10 @@ object SupabaseSingleton{
             Log.d("SupabaseSingleton", "no access token available, login again")
         }
         return ""
+    }
+
+    public fun authenticateOtp(otpInput: String):Boolean{
+        return true
     }
 
 }
