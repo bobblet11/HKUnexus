@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hkunexus.databinding.FragmentExploreBinding
@@ -30,8 +31,12 @@ class ExploreFragment : Fragment() {
 
         // Set up adaptor for recycler view to display cards
         val clubListAdapter = ClubListAdapter(exploreViewModel.clubs)
+
         clubListAdapter.setJoinCallback(exploreViewModel::joinClub)
         clubListAdapter.setLeaveCallback(exploreViewModel::leaveClub)
+        clubListAdapter.setLandingCallback { position: Int ->
+            Toast.makeText(context, "Should go to landing page $position", Toast.LENGTH_SHORT).show()
+        }
 
         val recyclerView: RecyclerView = binding.exploreClubsRecycler
         recyclerView.adapter = clubListAdapter

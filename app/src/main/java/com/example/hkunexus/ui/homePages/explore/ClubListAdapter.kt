@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hkunexus.R
 import com.example.hkunexus.data.model.Club
@@ -13,9 +14,9 @@ import android.view.ViewGroup as ViewGroup1
 class ClubListAdapter(private val dataSet: Array<Club>) :
     RecyclerView.Adapter<ClubListAdapter.ViewHolder>() {
 
-        private var joinCallback: (Int) -> Unit = { position: Int -> }
-
+    private var joinCallback: (Int) -> Unit = { position: Int -> }
     private var leaveCallback: (Int) -> Unit = { position: Int -> }
+    private var landingCallback: (Int) -> Unit = { position: Int -> }
 
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -24,6 +25,7 @@ class ClubListAdapter(private val dataSet: Array<Club>) :
         val descTextView: TextView = view.findViewById(R.id.club_desc)
         val joinButtonView: Button = view.findViewById(R.id.club_join_button)
         val leaveButtonView: Button = view.findViewById(R.id.club_leave_button)
+        val cardView: CardView = view.findViewById(R.id.club_card)
     }
 
     // Create new views (invoked by the layout manager)
@@ -43,16 +45,6 @@ class ClubListAdapter(private val dataSet: Array<Club>) :
         viewHolder.nameTextView.text = dataSet[position].name
         viewHolder.descTextView.text = dataSet[position].desc
 
-        fun updateButtonVisibility(viewHolder: ViewHolder, position: Int) {
-            if (dataSet[position].joined) {
-                viewHolder.joinButtonView.visibility = View.GONE
-                viewHolder.leaveButtonView.visibility = View.VISIBLE
-            } else {
-                viewHolder.joinButtonView.visibility = View.VISIBLE
-                viewHolder.leaveButtonView.visibility = View.GONE
-            }
-        }
-
         viewHolder.joinButtonView.setOnClickListener {
             joinCallback(position)
             updateButtonVisibility(viewHolder, position)
@@ -64,10 +56,24 @@ class ClubListAdapter(private val dataSet: Array<Club>) :
         }
 
         updateButtonVisibility(viewHolder, position)
+
+        viewHolder.cardView.setOnClickListener {
+            landingCallback(position)
+        }
     }
 
     // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount() = dataSet.size
+
+    fun updateButtonVisibility(viewHolder: ViewHolder, position: Int) {
+        if (dataSet[position].joined) {
+            viewHolder.joinButtonView.visibility = View.GONE
+            viewHolder.leaveButtonView.visibility = View.VISIBLE
+        } else {
+            viewHolder.joinButtonView.visibility = View.VISIBLE
+            viewHolder.leaveButtonView.visibility = View.GONE
+        }
+    }
 
     fun setJoinCallback(callback: (Int) -> Unit) {
         joinCallback = callback
@@ -75,5 +81,9 @@ class ClubListAdapter(private val dataSet: Array<Club>) :
 
     fun setLeaveCallback(callback: (Int) -> Unit) {
         leaveCallback = callback
+    }
+
+    fun setLandingCallback(callback: (Int) -> Unit) {
+        landingCallback = callback
     }
 }
