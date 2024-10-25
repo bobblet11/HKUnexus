@@ -1,7 +1,5 @@
 package com.example.hkunexus.data.model
 
-import kotlinx.serialization.SerialName
-
 data class Club (
 
     val clubId: String?,
@@ -9,5 +7,8 @@ data class Club (
     val clubName: String?,
     val clubDesc: String?,
 
+    val name: String,
+    val desc: String,
+    var joined: Boolean
 
-    )
+)

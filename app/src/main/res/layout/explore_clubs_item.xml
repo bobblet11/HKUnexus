@@ -3,35 +3,91 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:paddingBottom="16dp">
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/club_card"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:cardCornerRadius="16dp"
+        android:paddingBottom="16dp"
+        android:backgroundTint="@color/cardview_shadow_end_color">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:padding="8dp"
+            android:clipToPadding="false">
 
-            <TextView
-                android:id="@+id/club_name"
+            <ImageView
+                android:id="@+id/club_img"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="Club Name"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"/>
-
-            <TextView
-                android:id="@+id/club_desc"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="Club Description"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_height="200dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/club_name" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintTop_toBottomOf="@id/club_img">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/club_name"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="11dp"
+                        android:text="(Club Name)"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/club_join_button"
+                        app:layout_constraintStart_toStartOf="parent"/>
+
+                    <Button
+                        android:id="@+id/club_join_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Join"
+                        app:layout_constraintBaseline_toBaselineOf="@+id/club_name"
+                        app:layout_constraintEnd_toEndOf="@id/club_leave_button"
+                        app:layout_constraintStart_toEndOf="@id/club_name">
+
+                    </Button>
+
+                    <Button
+                        android:id="@+id/club_leave_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Leave"
+                        app:layout_constraintBaseline_toBaselineOf="@id/club_name"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/club_join_button">
+
+                    </Button>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <TextView
+                    android:id="@+id/club_desc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="Club Description"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/club_name" />
+
+            </LinearLayout>
+
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
