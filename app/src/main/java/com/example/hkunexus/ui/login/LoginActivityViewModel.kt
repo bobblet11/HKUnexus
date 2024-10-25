@@ -1,11 +1,7 @@
 package com.example.hkunexus.ui.login
 
-import android.content.Intent
 import android.util.Log
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.ViewModel
-import com.example.hkunexus.MainActivity
 import com.example.hkunexus.data.SupabaseSingleton
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -26,7 +22,7 @@ class LoginActivityViewModel() : ViewModel() {
     val uiState: StateFlow<LoginUiState> = _uiState.asStateFlow()
 
 
-    public fun attemptLogin(emailInput: String, passwordInput: String): Boolean{
+    fun attemptLogin(emailInput: String, passwordInput: String): Boolean{
         if (!validateLogin(emailInput, passwordInput)){
             Log.d("LoginActivityViewModel", "login validation failed $emailInput, $passwordInput")
             return false
@@ -59,11 +55,11 @@ class LoginActivityViewModel() : ViewModel() {
                     "(?=.*[a-z])" +         //at least 1 lower case letter
                     "(?=.*[A-Z])" +         //at least 1 upper case letter
                     "(?=.*[a-zA-Z])" +      //any letter
-                    "(?=.*[@#$%^&+=!?*'/-])" +    //at least 1 special character
+                    "(?=.*[^A-Za-z0-9])" +  //at least 1 special character
                     "(?=\\S+$)" +           //no white spaces
                     ".{8,}" +               //at least 8 characters
                     "$"
-        );
+        )
 
         val isPasswordValid = passwordREGEX.matcher(passwordInput).matches()
 
@@ -73,7 +69,7 @@ class LoginActivityViewModel() : ViewModel() {
                     "(?!.*@)" +         // No @ character
                     "[\\S]+" +          // One or more non-whitespace characters
                     "$"                 // End of the string
-        );
+        )
 
         val isEmailValid = emailREGEX.matcher(emailInput).matches()
 
