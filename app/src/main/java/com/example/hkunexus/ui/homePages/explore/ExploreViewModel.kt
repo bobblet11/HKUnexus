@@ -11,9 +11,9 @@ class ExploreViewModel : ViewModel() {
     }
 
     val clubs: Array<Club> = arrayOf(
-        Club("Club 1", "Club 1 Desc"),
-        Club("Club 2", "Club 2 Desc"),
-        Club("Club 3", "Club 3 Desc")
+        Club("Club 1", "Club 1 Desc", false),
+        Club("Club 2", "Club 2 Desc", false),
+        Club("Club 3", "Club 3 Desc", false)
     )
 
     val text: LiveData<String> = _text

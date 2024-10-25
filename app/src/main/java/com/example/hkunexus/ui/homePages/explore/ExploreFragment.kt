@@ -28,10 +28,31 @@ class ExploreFragment : Fragment() {
         _binding = FragmentExploreBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+
+        // TODO: Hook up to supabase
+        val clubs = exploreViewModel.clubs
+
         // Set up adaptor for recycler view to display cards
-        val clubListAdapter = ClubListAdapter(exploreViewModel.clubs)
+        val clubListAdapter = ClubListAdapter(clubs)
+
+        // I think there needs to be some checks to make sure that
+        // the user has really joined / left the club
+        // Before toggling the join / leave button, but whatever
+        clubListAdapter.setJoinCallback { position: Int ->
+            // TODO: Hook up to supabase
+
+            exploreViewModel.clubs[position].joined = true
+        }
+
+        clubListAdapter.setLeaveCallback { position: Int ->
+            // TODO: Hook up to supabase
+
+            exploreViewModel.clubs[position].joined = false
+        }
+
         val recyclerView: RecyclerView = binding.exploreClubsRecycler
         recyclerView.adapter = clubListAdapter
+
 
         return root
     }
