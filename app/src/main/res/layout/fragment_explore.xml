@@ -14,6 +14,7 @@
         android:textAlignment="center"
         android:text="Explore clubs"
         android:textSize="36sp"
+        android:textStyle="bold"
         android:layout_marginBottom="16dp"/>
 
     <androidx.recyclerview.widget.RecyclerView
