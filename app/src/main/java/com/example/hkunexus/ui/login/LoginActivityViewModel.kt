@@ -1,11 +1,7 @@
 package com.example.hkunexus.ui.login
 
-import android.content.Intent
 import android.util.Log
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.ViewModel
-import com.example.hkunexus.MainActivity
 import com.example.hkunexus.data.SupabaseSingleton
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -25,25 +21,33 @@ class LoginActivityViewModel() : ViewModel() {
     private val _uiState = MutableStateFlow(LoginUiState())
     val uiState: StateFlow<LoginUiState> = _uiState.asStateFlow()
 
-    private fun setValidationResult(isEmailValid: Boolean, isPasswordValid : Boolean){
-        _uiState.update {
-            it.copy(isEmailValid = isEmailValid)
-            it.copy(isPasswordValid = isPasswordValid)
-        }
-    }
 
-    public fun authenticateLogin(emailInput: String, passwordInput: String): Boolean{
-        return !SupabaseSingleton.login(emailInput, passwordInput)
-    }
-
-    public fun validateLogin(emailInput: String?, passwordInput: String?): Boolean {
-        val notEmpty =
-            !(emailInput == null || passwordInput == null || emailInput.isEmpty() || passwordInput.isEmpty())
-
-        if (!notEmpty){
-            setValidationResult(false, false)
+    fun attemptLogin(emailInput: String, passwordInput: String): Boolean{
+        if (!validateLogin(emailInput, passwordInput)){
+            Log.d("LoginActivityViewModel", "login validation failed $emailInput, $passwordInput")
             return false
         }
+
+        if (!authenticateLogin("$emailInput@connect.hku.hk", passwordInput)){
+            Log.d("LoginActivityViewModel", "login authentication failed")
+            return false
+        }
+        Log.d("LoginActivityViewModel", "login success")
+        return true
+    }
+
+    private fun setValidationResult(isEmailValid: Boolean, isPasswordValid : Boolean){
+        _uiState.update {
+            it.copy(isEmailValid = isEmailValid,
+                isPasswordValid = isPasswordValid)
+        }
+    }
+
+    private fun authenticateLogin(emailInput: String, passwordInput: String): Boolean{
+        return SupabaseSingleton.login(emailInput, passwordInput)
+    }
+
+    private fun validateLogin(emailInput: String, passwordInput: String): Boolean {
 
         val passwordREGEX = Pattern.compile(
             "^" +
@@ -51,22 +55,23 @@ class LoginActivityViewModel() : ViewModel() {
                     "(?=.*[a-z])" +         //at least 1 lower case letter
                     "(?=.*[A-Z])" +         //at least 1 upper case letter
                     "(?=.*[a-zA-Z])" +      //any letter
-                    "(?=.*[@#$%^&+=])" +    //at least 1 special character
+                    "(?=.*[^A-Za-z0-9])" +  //at least 1 special character
                     "(?=\\S+$)" +           //no white spaces
                     ".{8,}" +               //at least 8 characters
                     "$"
-        );
+        )
 
         val isPasswordValid = passwordREGEX.matcher(passwordInput).matches()
 
         val emailREGEX = Pattern.compile(
-            "^" +
-                    "(?!.*@)" +             //no @
-                    "[a-zA-Z0-9._%+-]" +    //all validChars
-                    "$"
-        );
+            "^" +                // Start of the string
+                    "(?!.*\\s)" +       // No whitespace
+                    "(?!.*@)" +         // No @ character
+                    "[\\S]+" +          // One or more non-whitespace characters
+                    "$"                 // End of the string
+        )
 
-        val isEmailValid = false
+        val isEmailValid = emailREGEX.matcher(emailInput).matches()
 
         setValidationResult(isEmailValid, isPasswordValid)
         return (isEmailValid && isPasswordValid)

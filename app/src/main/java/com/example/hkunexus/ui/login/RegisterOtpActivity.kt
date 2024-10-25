@@ -4,12 +4,15 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.hkunexus.MainActivity
 import com.example.hkunexus.R
 
 
 class RegisterOtpActivity : AppCompatActivity() {
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,8 +23,8 @@ class RegisterOtpActivity : AppCompatActivity() {
         val OTPcode = findViewById<EditText>(R.id.OtpCodeInput)
 
         submitOTP.setOnClickListener {
-            val goToMain = Intent(this, MainActivity::class.java)
-            startActivity(goToMain)
+            val goToLogin = Intent(this, LoginActivity::class.java)
+            startActivity(goToLogin)
         }
     }
 }
