@@ -2,6 +2,7 @@ package com.example.hkunexus.ui.homePages.explore
 
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hkunexus.R
@@ -12,14 +13,31 @@ import android.view.ViewGroup as ViewGroup1
 class ClubListAdapter(private val dataSet: Array<Club>) :
     RecyclerView.Adapter<ClubListAdapter.ViewHolder>() {
 
-    /**
-     * Provide a reference to the type of views that you are using
-     * (custom ViewHolder)
-     */
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         // Define click listener for the ViewHolder's View
         val nameTextView: TextView = view.findViewById(R.id.club_name)
         val descTextView: TextView = view.findViewById(R.id.club_desc)
+        val joinButtonView: Button = view.findViewById(R.id.club_join_button)
+        val leaveButtonView: Button = view.findViewById(R.id.club_leave_button)
+
+        // TODO: Hook up to supabase
+        var joined: Boolean = false
+
+        init {
+            leaveButtonView.visibility = View.GONE
+
+            joinButtonView.setOnClickListener {
+                joined = true
+                joinButtonView.visibility = View.GONE
+                leaveButtonView.visibility = View.VISIBLE
+            }
+
+            leaveButtonView.setOnClickListener {
+                joined = false
+                joinButtonView.visibility = View.VISIBLE
+                leaveButtonView.visibility = View.GONE
+            }
+        }
     }
 
     // Create new views (invoked by the layout manager)
