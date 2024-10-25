@@ -11,8 +11,10 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginEnd="8dp"
+        android:contentDescription="User's profile picture"
         android:src="@drawable/hku_nexus_logo"
-        android:scaleType="centerCrop" /> <!-- TODO: Try to turn image into a cropped circle later: android:background="@drawable/ic_circle_outline"-->
+        android:scaleType="centerCrop"
+        tools:ignore="HardcodedText" /> <!-- TODO: Try to turn image into a cropped circle later: android:background="@drawable/ic_circle_outline"-->
 
     <TextView
         android:id="@+id/username"
