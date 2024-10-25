@@ -151,8 +151,12 @@ object SupabaseSingleton{
         return ""
     }
 
+
+
     public fun authenticateOtp(otpInput: String):Boolean{
         return true
     }
+
+    public fun getClubByClubId
 
 }
