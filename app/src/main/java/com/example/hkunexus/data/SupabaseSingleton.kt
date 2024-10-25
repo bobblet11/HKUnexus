@@ -157,6 +157,6 @@ object SupabaseSingleton{
         return true
     }
 
-    public fun getClubByClubId
+    public fun getClubByClubId(){}
 
 }
