@@ -17,6 +17,7 @@ private const val ARG_PARAM2 = "param2"
  * Use the [GroupLanding.newInstance] factory method to
  * create an instance of this fragment.
  */
+
 class GroupLanding : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
@@ -48,6 +49,7 @@ class GroupLanding : Fragment() {
          * @return A new instance of fragment GroupLanding.
          */
         // TODO: Rename and change types and number of parameters
+
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
             GroupLanding().apply {

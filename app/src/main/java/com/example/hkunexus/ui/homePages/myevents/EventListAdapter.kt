@@ -1,4 +1,4 @@
-package com.example.hkunexus.ui.homePages.explore
+package com.example.hkunexus.ui.homePages.myevents
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,18 +8,16 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hkunexus.R
 import com.example.hkunexus.data.model.Club
+import com.example.hkunexus.data.model.Event
 import android.view.ViewGroup as ViewGroup
 
-class ClubListAdapter(private val dataSet: Array<Club>) :
-    RecyclerView.Adapter<ClubListAdapter.ViewHolder>() {
+class CardListAdapter(private val dataSet: Array<Event>) :
+    RecyclerView.Adapter<CardListAdapter.ViewHolder>() {
 
-    private var goToLandingPage: (Int) -> Unit = { position: Int -> }
+    private var goToPostPage: (Int) -> Unit = { postID: Int -> }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val cardView: CardView = view.findViewById(R.id.club_card)
-        var clubName = view.findViewById<TextView>(R.id.club_name)
-        var clubDescription = view.findViewById<TextView>(R.id.club_description)
-        var clubBannerImage = view.findViewById<ImageView>(R.id.club_banner_image)
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
@@ -30,18 +28,15 @@ class ClubListAdapter(private val dataSet: Array<Club>) :
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
 
-        viewHolder.clubName.text = dataSet[position].name
-        viewHolder.clubDescription.text = dataSet[position].description
-        //viewHolder.clubBannerImage.setImageDrawable(idk)
 
         viewHolder.cardView.setOnClickListener {
-            goToLandingPage(position)
+            goToPostPage(position)
         }
     }
 
     override fun getItemCount() = dataSet.size
 
-    fun setLandingCallback(callback: (Int) -> Unit) {
-        goToLandingPage = callback
+    fun setPostPageCallBack(callback: (Int) -> Unit) {
+        goToPostPage = callback
     }
 }

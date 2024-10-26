@@ -45,10 +45,10 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
-        val dfrag = DashboardFragment()
-        dfrag.accessToken = SupabaseSingleton.getAccessToken()
-        dfrag.mainActivity = this;
-        addFragment( dfrag, false, "Dashboard")
+//        val dfrag = DashboardFragment()
+//        dfrag.accessToken = SupabaseSingleton.getAccessToken()
+//        dfrag.mainActivity = this;
+//        addFragment( dfrag, false, "Dashboard")
 
 
         binding = ActivityMainBinding.inflate(layoutInflater)

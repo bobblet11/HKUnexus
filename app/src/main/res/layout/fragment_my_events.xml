@@ -6,55 +6,35 @@
     android:layout_height="match_parent"
     tools:context=".ui.homePages.myevents.MyEventsFragment">
 
-    <RelativeLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!-- Top Navigation Bar -->
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/top_toolbar"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:layout_alignParentTop="true"
-            android:background="#4EBD88"
-            android:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:menu="@menu/bottom_nav_menu" />
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-        <!-- RecyclerView below the Top Toolbar -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/my_events_clubs_recycler"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/top_toolbar"
-            android:layout_above="@id/bottom_navigation"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/layout_feed_item" />
+            <!-- Include Feed Item -->
+            <include
+                layout="@layout/layout_feed_item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
-        <!-- Bottom Navigation Bar -->
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/bottom_navigation"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_alignParentBottom="true"
-            android:background="#4EBD88"
-            app:itemIconSize="36dp"
-            app:menu="@menu/bottom_nav_menu" />
+            <include
+                layout="@layout/layout_feed_item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
-    </RelativeLayout>
+            <include layout="@layout/layout_feed_item" />
 
-    <TextView
-        android:id="@+id/text_my_events"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+            <include
+                layout="@layout/layout_feed_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <!-- Repeat as necessary for more feed items -->
+        </LinearLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
