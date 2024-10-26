@@ -1,38 +1,87 @@
 package com.example.hkunexus.ui.homePages.explore
 
+import android.content.Context
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.recyclerview.widget.RecyclerView
 import com.example.hkunexus.data.model.Club
+import com.example.hkunexus.databinding.FragmentExploreBinding
+import com.example.hkunexus.ui.login.LoginUiState
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+
+
+data class ExploreUiState(
+    val listOfClubsToDisplay: Array<Club> = arrayOf(),
+    val clubListAdapter: ClubListAdapter? = null,
+    val recyclerView: RecyclerView? = null,
+
+)
+
+
 
 class ExploreViewModel : ViewModel() {
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is explore Fragment"
+
+    private val MAX_NUM_CHAR_IN_CLUB_TITLE: Int = 30
+    private val MAX_NUM_CHAR_IN_CLUB_DESCRIPTION: Int =80
+
+    private val _uiState = MutableStateFlow(ExploreUiState())
+    val uiState: StateFlow<ExploreUiState> = _uiState.asStateFlow()
+
+    init {
+        fetchClubs()
     }
 
-    // TODO: Hook up to supabase
-    val clubs: Array<Club> = arrayOf(
-        Club("Club 1", "Club 1 Desc", false),
-        Club("Club 2", "Club 2 Desc", false),
-        Club("Club 3", "Club 3 Desc", false)
-    )
+    private fun fetchClubs(){
+        //FETCH USING SUPABASE
+        val tempList: Array<Club> = arrayOf(Club("BENS Tennis club!", "come join me and my friends in tennis! We are all beginners!"),
+            Club("Mahjong Mondays", "Do you like mahjong? Do you hate Mondays? Then why don't you make your monday better with MAHJONG!"),
+            Club("Genshin Impact learners", "wanna learn tips and tricks to max your character? come join our lessons!"))
+        //replace templist with Supabase list
 
-    val text: LiveData<String> = _text
+        //format club data to fit in card
 
-    // I think there needs to be some checks to make sure that
-    // the user has really joined / left the club
-    // Before toggling the join / leave button, but whatever
+        for (item: Club in tempList) {
+            if (item.name.length >= MAX_NUM_CHAR_IN_CLUB_TITLE){
+                var new_name = item.name.substring(0,MAX_NUM_CHAR_IN_CLUB_TITLE-4) + "..."
+                item.name = new_name
+            }
 
-    fun joinClub(position: Int) {
-        // TODO: Hook up to supabase
+            if (item.description.length >= MAX_NUM_CHAR_IN_CLUB_DESCRIPTION){
+                var new_description = item.description.substring(0,MAX_NUM_CHAR_IN_CLUB_DESCRIPTION-4) + "..."
+                item.description = new_description
+            }
+        }
 
-        clubs[position].joined = true
+        _uiState.update {
+            it.copy(
+                listOfClubsToDisplay = tempList
+            )
+        }
     }
 
-    fun leaveClub(position: Int) {
-        // TODO: Hook up to supabase
+    public fun setupRecycler(context: Context?, binding:FragmentExploreBinding){
+        val clubListAdapter = ClubListAdapter(uiState.value.listOfClubsToDisplay)
 
-        clubs[position].joined = false
+        clubListAdapter.setLandingCallback {
+            position: Int ->
+            Toast.makeText(context, "Should go to landing page $position", Toast.LENGTH_SHORT).show()
+        }
+
+        val recyclerView: RecyclerView = binding.exploreClubsRecycler
+
+        recyclerView.adapter = clubListAdapter
+
+        _uiState.update {
+            it.copy(
+                clubListAdapter = clubListAdapter,
+                recyclerView = recyclerView
+            )
+        }
     }
 }

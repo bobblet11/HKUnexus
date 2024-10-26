@@ -146,7 +146,7 @@ object SupabaseSingleton{
                 return this.accessToken!!
             }
         }catch (e: Exception) {
-            Log.d("SupabaseSingleton", "no access token available, login again")
+            Log.d("SupabaseSingleton", "no access token available, sign-in again")
         }
         return ""
     }
