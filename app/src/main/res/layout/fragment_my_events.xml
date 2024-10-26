@@ -19,26 +19,17 @@
             android:background="#4EBD88"
             android:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:menu="@menu/bottom_nav_menu" /> <!-- Create and change to match @menu/top_nav_menu later instead -->
+            app:menu="@menu/bottom_nav_menu" />
 
-        <ScrollView
+        <!-- RecyclerView below the Top Toolbar -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/my_events_clubs_recycler"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_below="@id/top_toolbar"
             android:layout_above="@id/bottom_navigation"
-            android:layout_below="@id/top_toolbar">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <!-- Include Feed Item -->
-                <include layout="@layout/layout_feed_item" />
-
-                <!-- Repeat as necessary for more feed items -->
-            </LinearLayout>
-        </ScrollView>
-
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/layout_feed_item" />
 
         <!-- Bottom Navigation Bar -->
         <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -48,7 +39,7 @@
             android:layout_alignParentBottom="true"
             android:background="#4EBD88"
             app:itemIconSize="36dp"
-            app:menu="@menu/bottom_nav_menu" /> <!-- TODO: Hard coded values, fix later -->
+            app:menu="@menu/bottom_nav_menu" />
 
     </RelativeLayout>
 
