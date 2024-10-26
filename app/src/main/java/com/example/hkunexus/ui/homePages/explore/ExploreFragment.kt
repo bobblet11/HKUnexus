@@ -27,11 +27,13 @@ class ExploreFragment : Fragment() {
     ): View {
 
         _binding = FragmentExploreBinding.inflate(inflater, container, false)
-        val root: View = binding.root
-
-        viewModel.setupRecycler(context, binding);
-
-        return root
+        val clubListAdapter = ClubListAdapter(viewModel.uiState.value.listOfClubsToDisplay)
+        clubListAdapter.setLandingCallback {
+                position: Int ->
+            Toast.makeText(context, "Should go to landing page $position", Toast.LENGTH_SHORT).show()
+        }
+        binding.exploreClubsRecycler.adapter = clubListAdapter
+        return binding.root
     }
 
     override fun onDestroyView() {

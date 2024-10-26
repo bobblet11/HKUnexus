@@ -65,23 +65,4 @@ class ExploreViewModel : ViewModel() {
         }
     }
 
-    public fun setupRecycler(context: Context?, binding:FragmentExploreBinding){
-        val clubListAdapter = ClubListAdapter(uiState.value.listOfClubsToDisplay)
-
-        clubListAdapter.setLandingCallback {
-            position: Int ->
-            Toast.makeText(context, "Should go to landing page $position", Toast.LENGTH_SHORT).show()
-        }
-
-        val recyclerView: RecyclerView = binding.exploreClubsRecycler
-
-        recyclerView.adapter = clubListAdapter
-
-        _uiState.update {
-            it.copy(
-                clubListAdapter = clubListAdapter,
-                recyclerView = recyclerView
-            )
-        }
-    }
 }
