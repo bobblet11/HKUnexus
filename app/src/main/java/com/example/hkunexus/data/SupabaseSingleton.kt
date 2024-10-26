@@ -5,18 +5,37 @@ import android.util.Log
 import android.widget.EditText
 import com.example.hkunexus.MainActivity
 import com.example.hkunexus.R
+import com.google.gson.Gson
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.auth.Auth
+import io.github.jan.supabase.auth.SignOutScope
 import io.github.jan.supabase.auth.auth
 import io.github.jan.supabase.auth.providers.builtin.Email
 import io.github.jan.supabase.auth.user.UserInfo
 import io.github.jan.supabase.auth.user.UserSession
 import io.github.jan.supabase.createSupabaseClient
+import io.github.jan.supabase.encode
+import io.github.jan.supabase.encodeToJsonElement
 import io.github.jan.supabase.postgrest.Postgrest
+import io.github.jan.supabase.postgrest.postgrest
+import io.github.jan.supabase.postgrest.query.request.RpcRequestBuilder
+import io.ktor.utils.io.core.toByteArray
 import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
+import kotlinx.serialization.json.putJsonArray
+import kotlinx.serialization.json.putJsonObject
+import org.json.JSONObject
+import java.util.UUID
+import kotlin.reflect.KType
+import kotlin.reflect.full.createType
 import kotlin.system.exitProcess
+
+
 
 object SupabaseSingleton{
 
@@ -83,24 +102,46 @@ object SupabaseSingleton{
 
     public fun isEmailAvailable(email: String):Boolean{
         //query public user table
-
-        try{
-
-        }catch(e: Exception){
-
+        return runBlocking {
+            try{
+//                Log.d("SupabaseSingletone", UUID.nameUUIDFromBytes(email.toByteArray()).toString())
+                val jsonParams = buildJsonObject {
+                    put("em", email)
+                }
+//                client?.auth?.signInAnonymously()
+                val result = client?.postgrest?.rpc("check_email_exists", jsonParams)
+                val str = result?.data.toString()
+                Log.d("SupabaseSingleton", str)
+//                client?.auth?.signOut(SignOutScope.GLOBAL)
+                return@runBlocking true
+            }catch(e: Exception){
+                Log.d("SupabaseSingleton", e.toString())
+                return@runBlocking false
+            }
         }
-        return true
     }
 
 
     public fun isUsernameAvailable(username: String):Boolean{
         //query public user table
-        try{
+        return runBlocking {
+            try{
+                val jsonParams = buildJsonObject {
+                    put("name", username)
+                }
+//                client?.auth?.signInAnonymously()
+                val result = client?.postgrest?.rpc("check_username_exists", jsonParams)
+                val str = result?.data.toString()
+                Log.d("SupabaseSingleton", str)
 
-        }catch(e: Exception){
-
+//                client?.auth?.signOut(SignOutScope.GLOBAL)
+                return@runBlocking true
+            }catch(e: Exception){
+                Log.d("SupabaseSingleton", e.toString())
+                return@runBlocking false
+            }
         }
-        return true
+
     }
 
 
@@ -152,6 +193,10 @@ object SupabaseSingleton{
     }
 
     public fun authenticateOtp(otpInput: String):Boolean{
+
+
+
+
         return true
     }
 

@@ -41,7 +41,7 @@ class RegisterActivityViewModel() : ViewModel() {
             return false
         }
 
-        if (!SupabaseSingleton.isEmailAvailable("$emailInput@connect.hku.hk")){
+        if (!SupabaseSingleton.isEmailAvailable(emailInput)){
             Log.d("RegisterActivityViewModel", "email account is already taken")
             return false
         }
