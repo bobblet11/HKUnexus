@@ -10,7 +10,6 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Recycler
 import com.example.hkunexus.R
-import com.example.hkunexus.databinding.FragmentGroupLandingBinding
 
 class GroupLandingActivity : AppCompatActivity() {
 
