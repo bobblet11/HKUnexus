@@ -1,13 +1,7 @@
 package com.example.hkunexus.ui.homePages.myevents
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.recyclerview.widget.RecyclerView
-import com.example.hkunexus.data.model.Club
 import com.example.hkunexus.data.model.Event
-import com.example.hkunexus.ui.homePages.explore.ClubListAdapter
-import com.example.hkunexus.ui.homePages.explore.ExploreUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -33,28 +27,32 @@ class MyEventsViewModel : ViewModel() {
 
         val tempList = arrayOf(
             Event(
-                postersUsername = "john_doe",
+                postTitle = "Community Cleanup Event",
+                posterUsername = "john_doe",
                 postersProfileImage = "https://example.com/images/john.jpg",
                 postImage = "https://example.com/images/event1.jpg",
                 postText = "Excited to announce our upcoming community cleanup event!",
                 timeSincePosted = "4 days ago"
             ),
             Event(
-                postersUsername = "jane_smith",
+                postTitle = "Hiking",
+                posterUsername = "jane_smith",
                 postersProfileImage = "https://example.com/images/jane.jpg",
                 postImage = "https://example.com/images/event2.jpg",
                 postText = "Join us for a fun day of hiking this Saturday!",
                 timeSincePosted = "9 days ago"
             ),
             Event(
-                postersUsername = "mark_taylor",
+                postTitle = "Charity Bake Sale",
+                posterUsername = "mark_taylor",
                 postersProfileImage = "https://example.com/images/mark.jpg",
                 postImage = "https://example.com/images/event3.jpg",
                 postText = "Don't miss our charity bake sale next week!",
                 timeSincePosted = "17 days ago"
             ),
             Event(
-                postersUsername = "lisa_white",
+                postTitle = "Movie Night",
+                posterUsername = "lisa_white",
                 postersProfileImage = "https://example.com/images/lisa.jpg",
                 postImage = "https://example.com/images/event4.jpg",
                 postText = "We're hosting a movie night under the stars! Bring your blankets!",

@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.RecyclerView
+import com.example.hkunexus.data.TempClubList
 import com.example.hkunexus.data.model.Club
 import com.example.hkunexus.databinding.FragmentExploreBinding
 import com.example.hkunexus.ui.login.LoginUiState
@@ -37,9 +38,8 @@ class ExploreViewModel : ViewModel() {
 
     private fun fetchClubs(){
         // TODO: FETCH USING SUPABASE
-        val tempList: Array<Club> = arrayOf(Club("BENS Tennis club!", "come join me and my friends in tennis! We are all beginners!"),
-            Club("Mahjong Mondays", "Do you like mahjong? Do you hate Mondays? Then why don't you make your monday better with MAHJONG!"),
-            Club("Genshin Impact learners", "wanna learn tips and tricks to max your character? come join our lessons!"))
+
+        val tempList = TempClubList.clubs
 
         //replace templist with Supabase list
 
