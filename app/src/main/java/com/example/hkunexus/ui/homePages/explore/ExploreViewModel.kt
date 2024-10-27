@@ -23,8 +23,6 @@ data class ExploreUiState(
 
 )
 
-
-
 class ExploreViewModel : ViewModel() {
 
     private val MAX_NUM_CHAR_IN_CLUB_TITLE: Int = 30
@@ -38,10 +36,11 @@ class ExploreViewModel : ViewModel() {
     }
 
     private fun fetchClubs(){
-        //FETCH USING SUPABASE
+        // TODO: FETCH USING SUPABASE
         val tempList: Array<Club> = arrayOf(Club("BENS Tennis club!", "come join me and my friends in tennis! We are all beginners!"),
             Club("Mahjong Mondays", "Do you like mahjong? Do you hate Mondays? Then why don't you make your monday better with MAHJONG!"),
             Club("Genshin Impact learners", "wanna learn tips and tricks to max your character? come join our lessons!"))
+
         //replace templist with Supabase list
 
         //format club data to fit in card
