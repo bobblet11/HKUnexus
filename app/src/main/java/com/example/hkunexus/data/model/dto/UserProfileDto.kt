@@ -1,6 +1,5 @@
-package com.example.hkunexus.data.model
+package com.example.hkunexus.data.model.dto
 
-import com.example.hkunexus.ui.homePages.create.CreateFragment
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -8,7 +7,7 @@ import kotlinx.serialization.Serializable
 data class UserProfileDto(
 
     @SerialName("id")
-    val userId : String,
+    val id : String,
 
     @SerialName("email_")
     val email : String,
@@ -62,4 +61,4 @@ data class UserProfileDto(
     val updatedAt : String,
 
 
-)
+    )
