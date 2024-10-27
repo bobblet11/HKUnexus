@@ -1,38 +1,60 @@
 package com.example.hkunexus.ui.homePages.explore
 
-import android.widget.Toast
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.recyclerview.widget.RecyclerView
+import com.example.hkunexus.data.TempData
 import com.example.hkunexus.data.model.Club
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+
+
+data class ExploreUiState(
+    val listOfClubsToDisplay: Array<Club> = arrayOf(),
+    val clubListAdapter: ClubListAdapter? = null,
+    val recyclerView: RecyclerView? = null,
+
+)
 
 class ExploreViewModel : ViewModel() {
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is explore Fragment"
+
+    private val MAX_NUM_CHAR_IN_CLUB_TITLE: Int = 30
+    private val MAX_NUM_CHAR_IN_CLUB_DESCRIPTION: Int =80
+
+    private val _uiState = MutableStateFlow(ExploreUiState())
+    val uiState: StateFlow<ExploreUiState> = _uiState.asStateFlow()
+
+    init {
+        fetchClubs()
     }
 
-    // TODO: Hook up to supabase
-    val clubs: Array<Club> = arrayOf(
-        Club("Club 1", "Club 1 Desc", false),
-        Club("Club 2", "Club 2 Desc", false),
-        Club("Club 3", "Club 3 Desc", false)
-    )
+    private fun fetchClubs(){
+        // TODO: FETCH USING SUPABASE
 
-    val text: LiveData<String> = _text
+        val tempList = TempData.clubs
 
-    // I think there needs to be some checks to make sure that
-    // the user has really joined / left the club
-    // Before toggling the join / leave button, but whatever
+        //replace templist with Supabase list
 
-    fun joinClub(position: Int) {
-        // TODO: Hook up to supabase
+        //format club data to fit in card
 
-        clubs[position].joined = true
+        for (item: Club in tempList) {
+            if (item.name.length >= MAX_NUM_CHAR_IN_CLUB_TITLE){
+                var new_name = item.name.substring(0,MAX_NUM_CHAR_IN_CLUB_TITLE-4) + "..."
+                item.name = new_name
+            }
+
+            if (item.description.length >= MAX_NUM_CHAR_IN_CLUB_DESCRIPTION){
+                var new_description = item.description.substring(0,MAX_NUM_CHAR_IN_CLUB_DESCRIPTION-4) + "..."
+                item.description = new_description
+            }
+        }
+
+        _uiState.update {
+            it.copy(
+                listOfClubsToDisplay = tempList
+            )
+        }
     }
 
-    fun leaveClub(position: Int) {
-        // TODO: Hook up to supabase
-
-        clubs[position].joined = false
-    }
 }

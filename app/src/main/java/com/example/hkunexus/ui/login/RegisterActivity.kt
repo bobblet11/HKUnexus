@@ -24,7 +24,7 @@ class RegisterActivity : AppCompatActivity() {
         val otpButton = findViewById<Button>(R.id.goToOTP)
         val firstname = findViewById<EditText>(R.id.firstname)
         val lastname = findViewById<EditText>(R.id.lastname)
-        val username = findViewById<EditText>(R.id.registerUsername)
+        val displayName = findViewById<EditText>(R.id.registerUsername)
         val email = findViewById<EditText>(R.id.registrationEmail)
         val password = findViewById<EditText>(R.id.registrationPassword)
         val verifiedPassword = findViewById<EditText>(R.id.registerVerifyPassword)
@@ -33,7 +33,7 @@ class RegisterActivity : AppCompatActivity() {
             viewModel.uiState.collect { uiState ->
                 updateBorderColour(firstname, uiState.isFirstNameValid)
                 updateBorderColour(lastname, uiState.isLastNameValid)
-                updateBorderColour(username, uiState.isUsernameValid)
+                updateBorderColour(displayName, uiState.isUsernameValid)
                 updateBorderColour(email, uiState.isEmailValid)
                 updateBorderColour(password, uiState.isPasswordValid)
                 updateBorderColour(verifiedPassword, uiState.isPasswordVerified && uiState.isPasswordValid)
@@ -44,12 +44,12 @@ class RegisterActivity : AppCompatActivity() {
         otpButton.setOnClickListener {
             val firstNameInput = firstname.text.toString()
             val lastNameInput = lastname.text.toString()
-            val usernameInput = username.text.toString()
+            val displayNameInput = displayName.text.toString()
             val emailInput = email.text.toString()
             val passwordInput = password.text.toString()
             val verifiedPasswordInput = verifiedPassword.text.toString()
 
-            if(viewModel.attemptRegister(firstNameInput, lastNameInput, emailInput, passwordInput, verifiedPasswordInput, usernameInput)){
+            if(viewModel.attemptRegister(firstNameInput, lastNameInput, emailInput, passwordInput, verifiedPasswordInput, displayNameInput)){
                 val goToOTP = Intent(this, RegisterOtpActivity::class.java)
                 startActivity(goToOTP)
             }

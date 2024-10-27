@@ -22,10 +22,12 @@ class RegisterOTPActivityViewModel() : ViewModel() {
     public fun attemptOTPAuthentication(otpInput: String): Boolean{
 
         if(!validateOTP(otpInput)){
+            Log.d("Supabase Singleton","failed to validate OTP")
             return false
         }
 
         if(!SupabaseSingleton.authenticateOtp(otpInput)){
+            Log.d("Supabase Singleton","failed to authenticate OTP")
             return false
         }
 
@@ -33,6 +35,7 @@ class RegisterOTPActivityViewModel() : ViewModel() {
     }
 
     private fun validateOTP(otpInput: String): Boolean{
+        return true
         val otpREGEX = Pattern.compile(
             "^" +
                     "\\d{6}" +  //is 6 digits

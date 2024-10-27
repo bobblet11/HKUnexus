@@ -12,7 +12,7 @@ import com.example.hkunexus.R
 
 class RegisterOtpActivity : AppCompatActivity() {
 
-
+    private val viewModel: RegisterOTPActivityViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,8 +23,11 @@ class RegisterOtpActivity : AppCompatActivity() {
         val OTPcode = findViewById<EditText>(R.id.OtpCodeInput)
 
         submitOTP.setOnClickListener {
-            val goToLogin = Intent(this, LoginActivity::class.java)
-            startActivity(goToLogin)
+
+            if(viewModel.attemptOTPAuthentication(OTPcode.toString())){
+                val goToLogin = Intent(this, LoginActivity::class.java)
+                startActivity(goToLogin)
+            }
         }
     }
 }

@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.update
 import java.util.regex.Pattern
 
 data class LoginUiState(
-    //when you login and use invalid email/password, highlight the input fields that are invalid.
+    //when you login_register and use invalid email/password, highlight the input fields that are invalid.
     //wont send to supabase if invalid.
     val isEmailValid: Boolean = true,
     val isPasswordValid: Boolean = true,
@@ -24,15 +24,15 @@ class LoginActivityViewModel() : ViewModel() {
 
     fun attemptLogin(emailInput: String, passwordInput: String): Boolean{
         if (!validateLogin(emailInput, passwordInput)){
-            Log.d("LoginActivityViewModel", "login validation failed $emailInput, $passwordInput")
+            Log.d("LoginActivityViewModel", "login_register validation failed $emailInput, $passwordInput")
             return false
         }
 
         if (!authenticateLogin("$emailInput@connect.hku.hk", passwordInput)){
-            Log.d("LoginActivityViewModel", "login authentication failed")
+            Log.d("LoginActivityViewModel", "login_register authentication failed")
             return false
         }
-        Log.d("LoginActivityViewModel", "login success")
+        Log.d("LoginActivityViewModel", "login_register success")
         return true
     }
 
