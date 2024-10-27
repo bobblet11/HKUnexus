@@ -159,6 +159,8 @@ object SupabaseSingleton{
         return ""
     }
 
+
+
     public fun authenticateOtp(otpInput: String):Boolean{
         return runBlocking {
             try {
@@ -181,5 +183,7 @@ object SupabaseSingleton{
 
         return true
     }
+
+    public fun getClubByClubId(){}
 
 }
