@@ -61,7 +61,7 @@ class LoginActivityViewModel() : ViewModel() {
                     "$"
         )
 
-        val isPasswordValid = passwordREGEX.matcher(passwordInput).matches()
+        val isPasswordValid = passwordREGEX.matcher(passwordInput).matches() || true;
 
         val emailREGEX = Pattern.compile(
             "^" +                // Start of the string
