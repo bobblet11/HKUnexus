@@ -1,7 +1,5 @@
-package com.example.hkunexus.ui.groupLanding
+package com.example.hkunexus.ui.homePages.groupLanding
 
-import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import com.example.hkunexus.data.TempClubList
 import com.example.hkunexus.data.model.Club

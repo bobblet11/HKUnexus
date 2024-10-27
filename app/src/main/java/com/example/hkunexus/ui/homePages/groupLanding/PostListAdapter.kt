@@ -1,4 +1,4 @@
-package com.example.hkunexus.ui.groupLanding
+package com.example.hkunexus.ui.homePages.groupLanding
 
 import android.view.LayoutInflater
 import android.view.View
