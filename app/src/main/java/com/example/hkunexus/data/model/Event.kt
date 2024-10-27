@@ -6,7 +6,6 @@ data class Event (
     override var postText : String,
     override var posterUsername : String,
     override var timeSincePosted: String,
-
     var postersProfileImage : String,
     var postImage : String,
 ) : Post

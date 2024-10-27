@@ -46,7 +46,7 @@ class RegisterActivityViewModel() : ViewModel() {
             return false
         }
 
-        if (!SupabaseSingleton.isUsernameAvailable(usernameInput)){
+        if (!SupabaseSingleton.isDisplayNameAvailable(usernameInput)){
             Log.d("RegisterActivityViewModel", "username is already taken")
             return false
         }

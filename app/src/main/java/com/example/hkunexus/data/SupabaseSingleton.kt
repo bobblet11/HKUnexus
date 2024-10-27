@@ -1,38 +1,18 @@
 package com.example.hkunexus.data
 
-import android.content.Intent
 import android.util.Log
-import android.widget.EditText
-import com.example.hkunexus.MainActivity
-import com.example.hkunexus.R
-import com.google.gson.Gson
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.auth.Auth
-import io.github.jan.supabase.auth.SignOutScope
 import io.github.jan.supabase.auth.auth
 import io.github.jan.supabase.auth.providers.builtin.Email
 import io.github.jan.supabase.auth.user.UserInfo
 import io.github.jan.supabase.auth.user.UserSession
 import io.github.jan.supabase.createSupabaseClient
-import io.github.jan.supabase.encode
-import io.github.jan.supabase.encodeToJsonElement
 import io.github.jan.supabase.postgrest.Postgrest
 import io.github.jan.supabase.postgrest.postgrest
-import io.github.jan.supabase.postgrest.query.request.RpcRequestBuilder
-import io.ktor.utils.io.core.toByteArray
 import kotlinx.coroutines.runBlocking
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.JsonElement
-import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
-import kotlinx.serialization.json.putJsonArray
-import kotlinx.serialization.json.putJsonObject
-import org.json.JSONObject
-import java.util.UUID
-import kotlin.reflect.KType
-import kotlin.reflect.full.createType
 import kotlin.system.exitProcess
 
 
@@ -101,18 +81,13 @@ object SupabaseSingleton{
     }
 
     public fun isEmailAvailable(email: String):Boolean{
-        //query public user table
         return runBlocking {
             try{
-//                Log.d("SupabaseSingletone", UUID.nameUUIDFromBytes(email.toByteArray()).toString())
                 val jsonParams = buildJsonObject {
-                    put("em", email)
+                    put("email", email)
                 }
-//                client?.auth?.signInAnonymously()
-                val result = client?.postgrest?.rpc("check_email_exists", jsonParams)
-                val str = result?.data.toString()
-                Log.d("SupabaseSingleton", str)
-//                client?.auth?.signOut(SignOutScope.GLOBAL)
+                val result = client?.postgrest?.rpc("check_email_exists", jsonParams)?.data
+                Log.d("SupabaseSingleton", result.toString())
                 return@runBlocking true
             }catch(e: Exception){
                 Log.d("SupabaseSingleton", e.toString())
@@ -122,19 +97,15 @@ object SupabaseSingleton{
     }
 
 
-    public fun isUsernameAvailable(username: String):Boolean{
+    public fun isDisplayNameAvailable(displayName: String):Boolean{
         //query public user table
         return runBlocking {
             try{
                 val jsonParams = buildJsonObject {
-                    put("name", username)
+                    put("display_name", displayName)
                 }
-//                client?.auth?.signInAnonymously()
-                val result = client?.postgrest?.rpc("check_username_exists", jsonParams)
-                val str = result?.data.toString()
-                Log.d("SupabaseSingleton", str)
-
-//                client?.auth?.signOut(SignOutScope.GLOBAL)
+                val result = client?.postgrest?.rpc("check_username_exists", jsonParams)?.data
+                Log.d("SupabaseSingleton", result.toString())
                 return@runBlocking true
             }catch(e: Exception){
                 Log.d("SupabaseSingleton", e.toString())
@@ -152,17 +123,17 @@ object SupabaseSingleton{
                     this.email = email
                     this.password = password
                     data = buildJsonObject {
-                        put("firstName", firstName)
-                        put("lastName", lastName)
-                        put("username", username)
+                        put("first_name", firstName)
+                        put("last_name", lastName)
+                        put("display_name", username)
+                        put("profile_picture", "")
+                        put("joined_at", "")
                     }
                 }
-
-                //will be anonymous user?
-                //check docs for this.
-                currentUser = client!!.auth.retrieveUserForCurrentSession(updateSession = true)
-                session = client!!.auth.currentSessionOrNull()
-                accessToken = session!!.accessToken
+                //don't need to create session
+//                currentUser = client!!.auth.retrieveUserForCurrentSession(updateSession = true)
+//                session = client!!.auth.currentSessionOrNull()
+//                accessToken = session!!.accessToken
 
                 Log.d("SupabaseSingleton", "Sign-up successful: $user")
 
