@@ -47,4 +47,5 @@ class PostListAdapter(private val dataSet: Array<Post>) :
     fun setPostPageCallBack(callback: (Int) -> Unit) {
         goToPostPage = callback
     }
+
 }

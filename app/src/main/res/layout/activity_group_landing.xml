@@ -70,12 +70,21 @@
 
             <Button
                 android:id="@+id/club_join_button"
-                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/club_leave_button"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="Join" />
+
+            <Button
+                android:id="@+id/club_leave_button"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Leave" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

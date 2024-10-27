@@ -20,15 +20,17 @@ data class GroupLandingUiState(
 class GroupLandingViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(GroupLandingUiState())
 
-    var club: Club = Club("name", "desc")
 
     val uiState: StateFlow<GroupLandingUiState> = _uiState.asStateFlow()
 
-    private final val MAX_NUM_CHAR_IN_EVENT_CARD_DESCRIPTION = 80;
+    private val MAX_NUM_CHAR_IN_EVENT_CARD_DESCRIPTION = 80;
 
     init {
         fetchPosts()
     }
+
+    // Placeholder value
+    var club: Club = Club("name", "desc", false)
 
     fun fetchClubData(clubId: Int) {
         // TODO: Fetch using Supabase
