@@ -15,6 +15,8 @@ import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
 import kotlin.system.exitProcess
 
+import io.github.jan.supabase.auth.OtpType
+
 
 
 object SupabaseSingleton{
@@ -74,7 +76,6 @@ object SupabaseSingleton{
                 currentUser = null
                 session = null
                 accessToken = null
-                client = null
                 return@runBlocking false
             }
         }
@@ -88,7 +89,7 @@ object SupabaseSingleton{
                 }
                 val result = client?.postgrest?.rpc("check_email_exists", jsonParams)?.data
                 Log.d("SupabaseSingleton", result.toString())
-                return@runBlocking true
+                return@runBlocking !result.toBoolean()
             }catch(e: Exception){
                 Log.d("SupabaseSingleton", e.toString())
                 return@runBlocking false
@@ -104,9 +105,9 @@ object SupabaseSingleton{
                 val jsonParams = buildJsonObject {
                     put("display_name", displayName)
                 }
-                val result = client?.postgrest?.rpc("check_username_exists", jsonParams)?.data
+                val result = client?.postgrest?.rpc("check_display_name_exists", jsonParams)?.data
                 Log.d("SupabaseSingleton", result.toString())
-                return@runBlocking true
+                return@runBlocking !result.toBoolean()
             }catch(e: Exception){
                 Log.d("SupabaseSingleton", e.toString())
                 return@runBlocking false
@@ -130,10 +131,6 @@ object SupabaseSingleton{
                         put("joined_at", "")
                     }
                 }
-                //don't need to create session
-//                currentUser = client!!.auth.retrieveUserForCurrentSession(updateSession = true)
-//                session = client!!.auth.currentSessionOrNull()
-//                accessToken = session!!.accessToken
 
                 Log.d("SupabaseSingleton", "Sign-up successful: $user")
 
@@ -144,7 +141,6 @@ object SupabaseSingleton{
                 currentUser = null
                 session = null
                 accessToken = null
-                client = null
                 return@runBlocking false
             }
 
@@ -164,8 +160,23 @@ object SupabaseSingleton{
     }
 
     public fun authenticateOtp(otpInput: String):Boolean{
+        return runBlocking {
+            try {
+                client!!.auth.verifyEmailOtp(type = OtpType.Email.SIGNUP, email = "u3596276@connect.hku.hk", token = otpInput)
 
+                Log.d("SupabaseSingleton", "verified OTP $otpInput")
 
+                return@runBlocking true
+
+            } catch (e: Exception) {
+                Log.d("SupabaseSingleton", "OTP verification failed: $e")
+                currentUser = null
+                session = null
+                accessToken = null
+                return@runBlocking false
+            }
+
+        }
 
 
         return true
