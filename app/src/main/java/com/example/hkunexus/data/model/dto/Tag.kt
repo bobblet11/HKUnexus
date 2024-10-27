@@ -1,4 +1,4 @@
-package com.example.hkunexus.data.model
+package com.example.hkunexus.data.model.dto
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -7,9 +7,9 @@ import kotlinx.serialization.Serializable
 data class Tag(
 
     @SerialName("id")
-    val tagId: String?,
+    val id: String?,
 
     @SerialName("name")
     val tagName: String?,
 
-)
+    )
