@@ -1,4 +1,4 @@
-package com.example.hkunexus.ui.homePages.groupLanding
+package com.example.hkunexus.ui.homePages.clubLanding
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,9 +9,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.hkunexus.databinding.FragmentGroupLandingBinding
 
-class GroupLandingFragment : Fragment() {
+class ClubLandingFragment : Fragment() {
 
-    private val viewModel: GroupLandingViewModel by viewModels()
+    private val viewModel: ClubLandingViewModel by viewModels()
     private var _binding: FragmentGroupLandingBinding? = null
     private val binding get() = _binding!!
 

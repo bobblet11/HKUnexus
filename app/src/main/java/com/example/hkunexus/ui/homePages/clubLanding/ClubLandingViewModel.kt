@@ -1,7 +1,7 @@
-package com.example.hkunexus.ui.homePages.groupLanding
+package com.example.hkunexus.ui.homePages.clubLanding
 
 import androidx.lifecycle.ViewModel
-import com.example.hkunexus.data.TempClubList
+import com.example.hkunexus.data.TempData
 import com.example.hkunexus.data.model.Club
 import com.example.hkunexus.data.model.Event
 import com.example.hkunexus.data.model.Post
@@ -15,7 +15,7 @@ data class GroupLandingUiState(
 )
 
 // Taken from MyEventsViewModel
-class GroupLandingViewModel : ViewModel() {
+class ClubLandingViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(GroupLandingUiState())
 
 
@@ -32,23 +32,14 @@ class GroupLandingViewModel : ViewModel() {
 
     fun fetchClubData(clubId: Int) {
         // TODO: Fetch using Supabase
-        club = TempClubList.clubs[clubId]
+        club = TempData.clubs[clubId]
     }
 
     private fun fetchPosts() {
         //FETCH USING SUPABASE
         //USE USER ID HERE FROM SINGLETON
 
-        val tempList: Array<Post> = arrayOf(
-            Event(
-                postTitle = "Community Cleanup Event",
-                posterUsername = "john_doe",
-                postersProfileImage = "https://example.com/images/john.jpg",
-                postImage = "https://example.com/images/event1.jpg",
-                postText = "Excited to announce our upcoming community cleanup event!",
-                timeSincePosted = "4 days ago"
-            )
-        )
+        val tempList: Array<Post> = TempData.clubPosts
 
         for (item: Post in tempList) {
 

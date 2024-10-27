@@ -23,7 +23,7 @@
 
     <fragment
         android:id="@+id/navigation_group_landing"
-        android:name="com.example.hkunexus.ui.homePages.groupLanding.GroupLandingFragment"
+        android:name="com.example.hkunexus.ui.homePages.clubLanding.ClubLandingFragment"
         android:label="@string/title_group_landing"
         tools:layout="@layout/fragment_group_landing" >
         <argument

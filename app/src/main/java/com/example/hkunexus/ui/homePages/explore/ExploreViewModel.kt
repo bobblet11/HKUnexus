@@ -1,16 +1,9 @@
 package com.example.hkunexus.ui.homePages.explore
 
-import android.content.Context
-import android.widget.Toast
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.RecyclerView
-import com.example.hkunexus.data.TempClubList
+import com.example.hkunexus.data.TempData
 import com.example.hkunexus.data.model.Club
-import com.example.hkunexus.databinding.FragmentExploreBinding
-import com.example.hkunexus.ui.login.LoginUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -39,7 +32,7 @@ class ExploreViewModel : ViewModel() {
     private fun fetchClubs(){
         // TODO: FETCH USING SUPABASE
 
-        val tempList = TempClubList.clubs
+        val tempList = TempData.clubs
 
         //replace templist with Supabase list
 

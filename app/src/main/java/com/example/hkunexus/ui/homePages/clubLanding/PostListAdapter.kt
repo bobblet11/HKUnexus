@@ -1,4 +1,4 @@
-package com.example.hkunexus.ui.homePages.groupLanding
+package com.example.hkunexus.ui.homePages.clubLanding
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,7 +7,6 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hkunexus.R
-import com.example.hkunexus.data.model.Event
 import com.example.hkunexus.data.model.Post
 import android.view.ViewGroup as ViewGroup
 

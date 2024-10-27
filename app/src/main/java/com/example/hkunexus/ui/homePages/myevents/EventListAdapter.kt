@@ -8,9 +8,10 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hkunexus.R
 import com.example.hkunexus.data.model.Event
+import com.example.hkunexus.data.model.Post
 import android.view.ViewGroup as ViewGroup
 
-class EventListAdapter(private val dataSet: Array<Event>) :
+class EventListAdapter(private val dataSet: Array<Post>) :
     RecyclerView.Adapter<EventListAdapter.ViewHolder>() {
 
     private var goToPostPage: (Int) -> Unit = { postID: Int -> }
