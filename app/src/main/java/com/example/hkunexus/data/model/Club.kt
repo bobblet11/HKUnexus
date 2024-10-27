@@ -1,7 +1,13 @@
 package com.example.hkunexus.data.model
 
+import kotlinx.serialization.SerialName
+
 data class Club (
-    var name: String,
-    var description: String,
-    var joined: Boolean
-)
+
+    val clubId: String?,
+    val createdAt: String?,
+    val clubName: String?,
+    val clubDesc: String?,
+
+
+    )
