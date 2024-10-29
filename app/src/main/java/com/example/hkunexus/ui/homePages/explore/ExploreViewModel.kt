@@ -12,9 +12,10 @@ import kotlinx.coroutines.flow.update
 
 data class ExploreUiState(
     val listOfClubsToDisplay: Array<Club> = arrayOf(),
+    val listOfTags: Array<String> = arrayOf(),
+
     val clubListAdapter: ClubListAdapter? = null,
     val recyclerView: RecyclerView? = null,
-
 )
 
 class ExploreViewModel : ViewModel() {
@@ -27,6 +28,7 @@ class ExploreViewModel : ViewModel() {
 
     init {
         fetchClubs()
+        fetchTags()
     }
 
     private fun fetchClubs(){
@@ -40,19 +42,32 @@ class ExploreViewModel : ViewModel() {
 
         for (item: Club in tempList) {
             if (item.name.length >= MAX_NUM_CHAR_IN_CLUB_TITLE){
-                var new_name = item.name.substring(0,MAX_NUM_CHAR_IN_CLUB_TITLE-4) + "..."
-                item.name = new_name
+                val newName = item.name.substring(0,MAX_NUM_CHAR_IN_CLUB_TITLE-4) + "..."
+                item.name = newName
             }
 
             if (item.description.length >= MAX_NUM_CHAR_IN_CLUB_DESCRIPTION){
-                var new_description = item.description.substring(0,MAX_NUM_CHAR_IN_CLUB_DESCRIPTION-4) + "..."
-                item.description = new_description
+                val newDescription = item.description.substring(0,MAX_NUM_CHAR_IN_CLUB_DESCRIPTION-4) + "..."
+                item.description = newDescription
             }
         }
 
         _uiState.update {
             it.copy(
                 listOfClubsToDisplay = tempList
+            )
+        }
+    }
+
+    private fun fetchTags() {
+        val tempList: Array<String> = TempData.tags.clone()
+
+        val tags: MutableList<String> = tempList.toMutableList()
+        tags.add(0, "Any")
+
+        _uiState.update {
+            it.copy(
+                listOfTags = tags.toTypedArray()
             )
         }
     }
