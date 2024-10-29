@@ -28,7 +28,7 @@ class ClubLandingViewModel : ViewModel() {
     }
 
     // Placeholder value
-    var club: Club = Club("name", "desc", false)
+    var club: Club = Club("name", "desc", false, arrayOf())
 
     fun fetchClubData(clubId: Int) {
         // TODO: Fetch using Supabase

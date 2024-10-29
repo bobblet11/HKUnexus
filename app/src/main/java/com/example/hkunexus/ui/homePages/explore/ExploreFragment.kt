@@ -16,7 +16,7 @@ import com.example.hkunexus.R
 import com.example.hkunexus.databinding.FragmentExploreBinding
 
 
-class ExploreFragment : Fragment(), AdapterView.OnItemSelectedListener  {
+class ExploreFragment : Fragment()  {
 
     private val viewModel: ExploreViewModel by viewModels()
     private var _binding: FragmentExploreBinding? = null
@@ -31,9 +31,6 @@ class ExploreFragment : Fragment(), AdapterView.OnItemSelectedListener  {
         _binding = FragmentExploreBinding.inflate(inflater, container, false)
 
 
-        configureSearchBar()
-        constructClubTagAdaptor()
-
         val clubListAdapter = ClubListAdapter(viewModel.uiState.value.listOfClubsToDisplay)
         clubListAdapter.setLandingCallback ({ position: Int ->
             val b = Bundle()
@@ -43,20 +40,9 @@ class ExploreFragment : Fragment(), AdapterView.OnItemSelectedListener  {
         })
         binding.exploreClubsRecycler.adapter = clubListAdapter
 
-        val searchView = binding.clubSearchBar
-        searchView.isIconifiedByDefault = false
 
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextChange(kw: String): Boolean {
-                clubListAdapter.updateFilteredList(kw)
-                return false
-            }
-
-            override fun onQueryTextSubmit(kw: String): Boolean {
-                clubListAdapter.updateFilteredList(kw)
-                return false
-            }
-        })
+        configureSearchBar(clubListAdapter)
+        constructClubTagAdaptor(clubListAdapter)
 
         return binding.root
     }
@@ -66,27 +52,44 @@ class ExploreFragment : Fragment(), AdapterView.OnItemSelectedListener  {
         _binding = null
     }
 
-    private fun configureSearchBar() {
+    private fun configureSearchBar(clubListAdapter: ClubListAdapter) {
+        val searchView = binding.clubSearchBar
+        searchView.isIconifiedByDefault = false
 
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextChange(kw: String): Boolean {
+                clubListAdapter.setFilterKeyword(kw)
+                return false
+            }
+
+            override fun onQueryTextSubmit(kw: String): Boolean {
+                clubListAdapter.setFilterKeyword(kw)
+                return false
+            }
+        })
     }
 
-    private fun constructClubTagAdaptor() {
+    private fun constructClubTagAdaptor(clubListAdapter: ClubListAdapter) {
         val tags = viewModel.uiState.value.listOfTags
 
         val spinner: Spinner = binding.clubTagsSelector
-        spinner.onItemSelectedListener = this
+        spinner.onItemSelectedListener = (object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                if (p2 == 0) {
+                    clubListAdapter.setSelectedTag(null)
+                } else {
+                    clubListAdapter.setSelectedTag(viewModel.uiState.value.listOfTags[p2])
+                }
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+                clubListAdapter.setSelectedTag(null)
+            }
+        })
 
         val adaptor = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, tags)
         adaptor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner.adapter = adaptor
-    }
-
-    override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
-//        TODO("Not yet implemented")
-    }
-
-    override fun onNothingSelected(p0: AdapterView<*>?) {
-//        TODO("Not yet implemented")
     }
 
 

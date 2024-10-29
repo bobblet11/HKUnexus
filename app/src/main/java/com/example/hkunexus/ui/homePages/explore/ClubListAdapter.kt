@@ -9,6 +9,7 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hkunexus.R
 import com.example.hkunexus.data.model.Club
+import kotlinx.coroutines.selects.select
 import android.view.ViewGroup as ViewGroup
 
 class ClubListAdapter(private val dataset: Array<Club>) :
@@ -16,6 +17,8 @@ class ClubListAdapter(private val dataset: Array<Club>) :
 
     private var goToLandingPage: (Int) -> Unit = { position: Int -> }
     private var filteredClubList: Array<Club> = dataset.clone()
+    private var keyword: String = ""
+    private var selectedTag: String? = null
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(viewGroup.context)
@@ -35,26 +38,36 @@ class ClubListAdapter(private val dataset: Array<Club>) :
 
     override fun getItemCount() = filteredClubList.size
 
-    // TODO: Add support for tags as well
-    @SuppressLint("NotifyDataSetChanged")
-    fun updateFilteredList(keyword: String?) {
+    fun setFilterKeyword(keyword: String?) {
         if (keyword == null) {
+            this.keyword = ""
+        } else {
+            this.keyword = keyword
+        }
+        updateFilteredList()
+    }
+
+    fun setSelectedTag(tag: String?) {
+        selectedTag = tag
+        updateFilteredList()
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateFilteredList() {
+        val trimmedKw = keyword.trim()
+        if (trimmedKw == "" && selectedTag == null) {
             filteredClubList = dataset.clone()
         } else {
-            val trimmedKw = keyword.trim()
-            if (trimmedKw == "") {
-                filteredClubList = dataset.clone()
-            } else {
-                val newClubList = mutableListOf<Club>()
-                for (item in dataset) {
+            val newClubList = mutableListOf<Club>()
+            for (item in dataset) {
+                if (selectedTag == null || item.tags.contains(selectedTag)) {
                     if (item.name.contains(trimmedKw) || item.description.contains(trimmedKw)) {
                         newClubList.add(item)
                     }
                 }
-                filteredClubList = newClubList.toTypedArray()
             }
+            filteredClubList = newClubList.toTypedArray()
         }
-
 
         notifyDataSetChanged()
     }
