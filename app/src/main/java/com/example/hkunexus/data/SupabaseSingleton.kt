@@ -18,7 +18,8 @@ import kotlinx.serialization.json.put
 import kotlin.system.exitProcess
 
 import io.github.jan.supabase.auth.OtpType
-
+import java.util.UUID
+import kotlin.uuid.Uuid
 
 
 object SupabaseSingleton{
@@ -189,8 +190,11 @@ object SupabaseSingleton{
     public fun getClubById(club_uuid : String) : ClubDto?{
         return runBlocking {
             try {
-                Log.d("SupabaseSingleton", "Club retrieved succesfully")
-                return@runBlocking client!!.postgrest.rpc("get_club_by_id", buildJsonObject { put("club_uuid", club_uuid) }).decodeSingle<ClubDto>();
+                val result = client!!.postgrest.rpc("get_club_by_id", buildJsonObject { put("club_uuid", club_uuid) })
+                Log.d("SupabaseSingleton", "get_club_by_id_rpc, $result")
+                val output = result.decodeSingle<ClubDto>();
+                Log.d("SupabaseSingleton", "get_club_by_id_rpc_output, $output")
+                return@runBlocking output
             } catch (e: Exception){
                 Log.d("SupabaseSingleton", "Failure, $e")
                 return@runBlocking null
@@ -201,8 +205,11 @@ object SupabaseSingleton{
     public fun getTagById(tag_id : String): Tag?{
         return runBlocking {
             try {
-                Log.d("SupabaseSingleton", "Tag retrieved succesfully")
-                return@runBlocking client!!.postgrest.rpc("get_tag_by_id", buildJsonObject { put("tag_id", tag_id) }).decodeSingle<Tag>();
+                val result = client!!.postgrest.rpc("get_tag_by_id", buildJsonObject { put("tag_id", tag_id) })
+                Log.d("SupabaseSingleton", "get_tag_by_id_rpc, $result")
+                val output = result.decodeSingle<Tag>();
+                Log.d("SupabaseSingleton", "get_tag_by_id_rpc output, $output")
+                return@runBlocking output
             } catch (e: Exception){
                 Log.d("SupabaseSingleton", "Failure, $e")
                 return@runBlocking null
@@ -210,5 +217,6 @@ object SupabaseSingleton{
         }
 
     }
+
 
 }
