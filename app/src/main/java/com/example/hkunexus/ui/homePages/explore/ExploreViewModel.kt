@@ -1,12 +1,60 @@
 package com.example.hkunexus.ui.homePages.explore
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.recyclerview.widget.RecyclerView
+import com.example.hkunexus.data.TempData
+import com.example.hkunexus.data.model.Club
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+
+
+data class ExploreUiState(
+    val listOfClubsToDisplay: Array<Club> = arrayOf(),
+    val clubListAdapter: ClubListAdapter? = null,
+    val recyclerView: RecyclerView? = null,
+
+)
 
 class ExploreViewModel : ViewModel() {
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is explore Fragment"
+
+    private val MAX_NUM_CHAR_IN_CLUB_TITLE: Int = 30
+    private val MAX_NUM_CHAR_IN_CLUB_DESCRIPTION: Int =80
+
+    private val _uiState = MutableStateFlow(ExploreUiState())
+    val uiState: StateFlow<ExploreUiState> = _uiState.asStateFlow()
+
+    init {
+        fetchClubs()
     }
-    val text: LiveData<String> = _text
+
+    private fun fetchClubs(){
+        // TODO: FETCH USING SUPABASE
+
+        val tempList = TempData.clubs
+
+        //replace templist with Supabase list
+
+        //format club data to fit in card
+
+        for (item: Club in tempList) {
+            if (item.name.length >= MAX_NUM_CHAR_IN_CLUB_TITLE){
+                var new_name = item.name.substring(0,MAX_NUM_CHAR_IN_CLUB_TITLE-4) + "..."
+                item.name = new_name
+            }
+
+            if (item.description.length >= MAX_NUM_CHAR_IN_CLUB_DESCRIPTION){
+                var new_description = item.description.substring(0,MAX_NUM_CHAR_IN_CLUB_DESCRIPTION-4) + "..."
+                item.description = new_description
+            }
+        }
+
+        _uiState.update {
+            it.copy(
+                listOfClubsToDisplay = tempList
+            )
+        }
+    }
+
 }

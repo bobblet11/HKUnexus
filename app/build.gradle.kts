@@ -43,7 +43,7 @@ android {
 }
 
 dependencies {
-
+    implementation(libs.androidx.cardview)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
@@ -61,7 +61,9 @@ dependencies {
     implementation(libs.ktor.client.android)
     implementation(libs.androidx.legacy.support.v4)
     implementation(libs.androidx.fragment.ktx)
+    implementation("com.google.code.gson:gson:2.8.9") // Check for the latest version
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
 }

@@ -1,7 +1,8 @@
-package com.example.hkunexus.ui.homePages.myevents
+package com.example.hkunexus.ui.homePages.clubLanding
 
 import androidx.lifecycle.ViewModel
 import com.example.hkunexus.data.TempData
+import com.example.hkunexus.data.model.Club
 import com.example.hkunexus.data.model.Event
 import com.example.hkunexus.data.model.Post
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -9,25 +10,36 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
-data class MyEventsUiState(
-    val listOfEventsToDisplay: Array<Post> = arrayOf(),
-    )
+data class GroupLandingUiState(
+    val posts: Array<Post> = arrayOf(),
+)
 
-class MyEventsViewModel : ViewModel() {
-    private val _uiState = MutableStateFlow(MyEventsUiState())
-    val uiState: StateFlow<MyEventsUiState> = _uiState.asStateFlow()
+// Taken from MyEventsViewModel
+class ClubLandingViewModel : ViewModel() {
+    private val _uiState = MutableStateFlow(GroupLandingUiState())
 
-    private final val MAX_NUM_CHAR_IN_EVENT_CARD_DESCRIPTION = 80;
+
+    val uiState: StateFlow<GroupLandingUiState> = _uiState.asStateFlow()
+
+    private val MAX_NUM_CHAR_IN_EVENT_CARD_DESCRIPTION = 80;
 
     init {
-        fetchMyEvents()
+        fetchPosts()
     }
 
-    private fun fetchMyEvents() {
+    // Placeholder value
+    var club: Club = Club("name", "desc", false)
+
+    fun fetchClubData(clubId: Int) {
+        // TODO: Fetch using Supabase
+        club = TempData.clubs[clubId]
+    }
+
+    private fun fetchPosts() {
         //FETCH USING SUPABASE
         //USE USER ID HERE FROM SINGLETON
 
-        val tempList = TempData.events
+        val tempList: Array<Post> = TempData.clubPosts
 
         for (item: Post in tempList) {
 
@@ -39,7 +51,7 @@ class MyEventsViewModel : ViewModel() {
 
             _uiState.update {
                 it.copy(
-                    listOfEventsToDisplay = tempList
+                    posts = tempList
                 )
             }
         }

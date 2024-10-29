@@ -62,15 +62,20 @@ class DashboardFragment : Fragment() {
                     Log.e("FragSign", "Frag sign fail")
                 }
 
+                try {
+                    val profile: UserProfile = supabase.from("profile").select() {
+                        filter{
+                            eq("user_uuid", uuid)
+                        }
+                    }.decodeSingle<UserProfile>()
 
-                val profile: UserProfile = supabase.from("profile").select() {
-                    filter{
-                        eq("user_uuid", uuid)
-                    }
-                }.decodeSingle<UserProfile>()
-
-                usernameField.text = profile.username
-                bioField.text = profile.bio
+                    usernameField.text = profile.username
+                    bioField.text = profile.bio
+                } catch(e: Exception) {
+                    Log.e("Profile fetch", e.toString())
+                    usernameField.text = "Failed to fetch"
+                    bioField.text = "Failed to fetch"
+                }
 
             }
         }
