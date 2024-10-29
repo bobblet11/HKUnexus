@@ -1,6 +1,7 @@
 package com.example.hkunexus.data
 
 import android.util.Log
+import com.example.hkunexus.data.model.Club
 import com.example.hkunexus.data.model.dto.ClubDto
 import com.example.hkunexus.data.model.dto.Tag
 import io.github.jan.supabase.SupabaseClient
@@ -18,6 +19,13 @@ import kotlinx.serialization.json.put
 import kotlin.system.exitProcess
 
 import io.github.jan.supabase.auth.OtpType
+import io.github.jan.supabase.putJsonObject
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonArray
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.encodeToJsonElement
+import kotlinx.serialization.json.putJsonArray
+import org.json.JSONArray
 import java.util.UUID
 import kotlin.uuid.Uuid
 
@@ -216,6 +224,25 @@ object SupabaseSingleton{
             }
         }
 
+    }
+
+    public fun searchClubsByTags(tag_ids : Array<String>): List<ClubDto>?{
+        return runBlocking {
+            val func_name = "search_clubs_by_tags";
+            try {
+                val result = client!!.postgrest.rpc(func_name, buildJsonObject {
+                    put("tag_ids", Json.encodeToJsonElement(tag_ids))
+                    })
+
+                Log.d("SupabaseSingleton", "$func_name rpc, $result")
+                val output = result.decodeList<ClubDto>();
+                Log.d("SupabaseSingleton", "$func_name rpc output, $output")
+                return@runBlocking output
+            } catch (e: Exception){
+                Log.d("SupabaseSingleton", "Failure, $e")
+                return@runBlocking null
+            }
+        }
     }
 
 

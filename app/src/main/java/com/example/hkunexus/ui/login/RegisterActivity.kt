@@ -18,6 +18,8 @@ class RegisterActivity : AppCompatActivity() {
     private val viewModel: RegisterActivityViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        viewModel.testRPC();
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
 
