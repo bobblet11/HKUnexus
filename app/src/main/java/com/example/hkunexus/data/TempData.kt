@@ -7,6 +7,12 @@ import com.example.hkunexus.data.model.Post
 
 object TempData {
 
+    val tags: Array<String> = arrayOf(
+        "Tag 1",
+        "Tag 2",
+        "Tag 3"
+    )
+
     val clubs: Array<Club> = arrayOf(
         Club(
             "BENS Tennis club!",
