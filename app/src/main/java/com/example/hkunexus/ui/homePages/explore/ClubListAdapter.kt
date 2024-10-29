@@ -1,6 +1,6 @@
 package com.example.hkunexus.ui.homePages.explore
 
-import android.util.Log
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
@@ -11,17 +11,11 @@ import com.example.hkunexus.R
 import com.example.hkunexus.data.model.Club
 import android.view.ViewGroup as ViewGroup
 
-class ClubListAdapter(private val dataSet: Array<Club>) :
+class ClubListAdapter(private val dataset: Array<Club>) :
     RecyclerView.Adapter<ClubListAdapter.ViewHolder>() {
 
     private var goToLandingPage: (Int) -> Unit = { position: Int -> }
-
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val cardView: CardView = view.findViewById(R.id.club_card)
-        var clubName = view.findViewById<TextView>(R.id.club_name)
-        var clubDescription = view.findViewById<TextView>(R.id.club_description)
-        var clubBannerImage = view.findViewById<ImageView>(R.id.club_banner_image)
-    }
+    private var filteredClubList: Array<Club> = dataset.clone()
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(viewGroup.context)
@@ -30,9 +24,8 @@ class ClubListAdapter(private val dataSet: Array<Club>) :
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-
-        viewHolder.clubName.text = dataSet[position].name
-        viewHolder.clubDescription.text = dataSet[position].description
+        viewHolder.clubName.text = filteredClubList[position].name
+        viewHolder.clubDescription.text = filteredClubList[position].description
         //viewHolder.clubBannerImage.setImageDrawable(idk)
 
         viewHolder.cardView.setOnClickListener {
@@ -40,9 +33,38 @@ class ClubListAdapter(private val dataSet: Array<Club>) :
         }
     }
 
-    override fun getItemCount() = dataSet.size
+    override fun getItemCount() = filteredClubList.size
 
-    fun setLandingCallback(callback: (Int) -> Unit) {
-        goToLandingPage = callback
+    // TODO: Add support for tags as well
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateFilteredList(keyword: String?) {
+        if (keyword == null) {
+            filteredClubList = dataset.clone()
+        } else {
+            val trimmedKw = keyword.trim()
+            if (trimmedKw == "") {
+                filteredClubList = dataset.clone()
+            } else {
+                val newClubList = mutableListOf<Club>()
+                for (item in dataset) {
+                    if (item.name.contains(trimmedKw) || item.description.contains(trimmedKw)) {
+                        newClubList.add(item)
+                    }
+                }
+                filteredClubList = newClubList.toTypedArray()
+            }
+        }
+
+
+        notifyDataSetChanged()
+    }
+
+    fun setLandingCallback(callback: (Int) -> Unit) { goToLandingPage = callback }
+
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val cardView: CardView = view.findViewById(R.id.club_card)
+        var clubName = view.findViewById<TextView>(R.id.club_name)
+        var clubDescription = view.findViewById<TextView>(R.id.club_description)
+        var clubBannerImage = view.findViewById<ImageView>(R.id.club_banner_image)
     }
 }

@@ -1,17 +1,20 @@
 package com.example.hkunexus.ui.homePages.explore
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import android.widget.SearchView
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.hkunexus.R
 import com.example.hkunexus.databinding.FragmentExploreBinding
+
 
 class ExploreFragment : Fragment(), AdapterView.OnItemSelectedListener  {
 
@@ -27,9 +30,8 @@ class ExploreFragment : Fragment(), AdapterView.OnItemSelectedListener  {
 
         _binding = FragmentExploreBinding.inflate(inflater, container, false)
 
-        val searchView = binding.clubSearchBar
-        searchView.isIconifiedByDefault = false
 
+        configureSearchBar()
         constructClubTagAdaptor()
 
         val clubListAdapter = ClubListAdapter(viewModel.uiState.value.listOfClubsToDisplay)
@@ -41,12 +43,31 @@ class ExploreFragment : Fragment(), AdapterView.OnItemSelectedListener  {
         })
         binding.exploreClubsRecycler.adapter = clubListAdapter
 
+        val searchView = binding.clubSearchBar
+        searchView.isIconifiedByDefault = false
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextChange(kw: String): Boolean {
+                clubListAdapter.updateFilteredList(kw)
+                return false
+            }
+
+            override fun onQueryTextSubmit(kw: String): Boolean {
+                clubListAdapter.updateFilteredList(kw)
+                return false
+            }
+        })
+
         return binding.root
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun configureSearchBar() {
+
     }
 
     private fun constructClubTagAdaptor() {
