@@ -1,6 +1,8 @@
 package com.example.hkunexus.data
 
 import android.util.Log
+import com.example.hkunexus.data.model.dto.ClubDto
+import com.example.hkunexus.data.model.dto.Tag
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.auth.Auth
 import io.github.jan.supabase.auth.auth
@@ -16,7 +18,8 @@ import kotlinx.serialization.json.put
 import kotlin.system.exitProcess
 
 import io.github.jan.supabase.auth.OtpType
-
+import java.util.UUID
+import kotlin.uuid.Uuid
 
 
 object SupabaseSingleton{
@@ -161,7 +164,7 @@ object SupabaseSingleton{
 
 
 
-    public fun authenticateOtp(otpInput: String):Boolean{
+    public fun authenticateOtp(otpInput: String): Boolean{
         return runBlocking {
             try {
                 client!!.auth.verifyEmailOtp(type = OtpType.Email.SIGNUP, email = "u3596276@connect.hku.hk", token = otpInput)
@@ -184,6 +187,36 @@ object SupabaseSingleton{
         return true
     }
 
-    public fun getClubByClubId(){}
+    public fun getClubById(club_uuid : String) : ClubDto?{
+        return runBlocking {
+            try {
+                val result = client!!.postgrest.rpc("get_club_by_id", buildJsonObject { put("club_uuid", club_uuid) })
+                Log.d("SupabaseSingleton", "get_club_by_id_rpc, $result")
+                val output = result.decodeSingle<ClubDto>();
+                Log.d("SupabaseSingleton", "get_club_by_id_rpc_output, $output")
+                return@runBlocking output
+            } catch (e: Exception){
+                Log.d("SupabaseSingleton", "Failure, $e")
+                return@runBlocking null
+            }
+        }
+    }
+
+    public fun getTagById(tag_id : String): Tag?{
+        return runBlocking {
+            try {
+                val result = client!!.postgrest.rpc("get_tag_by_id", buildJsonObject { put("tag_id", tag_id) })
+                Log.d("SupabaseSingleton", "get_tag_by_id_rpc, $result")
+                val output = result.decodeSingle<Tag>();
+                Log.d("SupabaseSingleton", "get_tag_by_id_rpc output, $output")
+                return@runBlocking output
+            } catch (e: Exception){
+                Log.d("SupabaseSingleton", "Failure, $e")
+                return@runBlocking null
+            }
+        }
+
+    }
+
 
 }
