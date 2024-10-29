@@ -27,6 +27,9 @@ class ExploreFragment : Fragment(), AdapterView.OnItemSelectedListener  {
 
         _binding = FragmentExploreBinding.inflate(inflater, container, false)
 
+        val searchView = binding.clubSearchBar
+        searchView.isIconifiedByDefault = false
+
         constructClubTagAdaptor()
 
         val clubListAdapter = ClubListAdapter(viewModel.uiState.value.listOfClubsToDisplay)
