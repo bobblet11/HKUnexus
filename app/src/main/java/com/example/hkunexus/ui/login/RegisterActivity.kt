@@ -37,7 +37,6 @@ class RegisterActivity : AppCompatActivity() {
                 updateBorderColour(email, uiState.isEmailValid)
                 updateBorderColour(password, uiState.isPasswordValid)
                 updateBorderColour(verifiedPassword, uiState.isPasswordVerified && uiState.isPasswordValid)
-
             }
         }
 

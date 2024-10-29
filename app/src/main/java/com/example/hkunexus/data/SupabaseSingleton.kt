@@ -1,6 +1,8 @@
 package com.example.hkunexus.data
 
 import android.util.Log
+import com.example.hkunexus.data.model.dto.ClubDto
+import com.example.hkunexus.data.model.dto.Tag
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.auth.Auth
 import io.github.jan.supabase.auth.auth
@@ -161,7 +163,7 @@ object SupabaseSingleton{
 
 
 
-    public fun authenticateOtp(otpInput: String):Boolean{
+    public fun authenticateOtp(otpInput: String): Boolean{
         return runBlocking {
             try {
                 client!!.auth.verifyEmailOtp(type = OtpType.Email.SIGNUP, email = "u3596276@connect.hku.hk", token = otpInput)
@@ -184,6 +186,29 @@ object SupabaseSingleton{
         return true
     }
 
-    public fun getClubByClubId(){}
+    public fun getClubById(club_uuid : String) : ClubDto?{
+        return runBlocking {
+            try {
+                Log.d("SupabaseSingleton", "Club retrieved succesfully")
+                return@runBlocking client!!.postgrest.rpc("get_club_by_id", buildJsonObject { put("club_uuid", club_uuid) }).decodeSingle<ClubDto>();
+            } catch (e: Exception){
+                Log.d("SupabaseSingleton", "Failure, $e")
+                return@runBlocking null
+            }
+        }
+    }
+
+    public fun getTagById(tag_id : String): Tag?{
+        return runBlocking {
+            try {
+                Log.d("SupabaseSingleton", "Tag retrieved succesfully")
+                return@runBlocking client!!.postgrest.rpc("get_tag_by_id", buildJsonObject { put("tag_id", tag_id) }).decodeSingle<Tag>();
+            } catch (e: Exception){
+                Log.d("SupabaseSingleton", "Failure, $e")
+                return@runBlocking null
+            }
+        }
+
+    }
 
 }
