@@ -11,21 +11,21 @@ import com.example.hkunexus.R
 import com.example.hkunexus.data.model.Club
 import android.view.ViewGroup as ViewGroup
 
-class ClubListAdapter(private val dataset: Array<Club>) :
-    RecyclerView.Adapter<ClubListAdapter.ViewHolder>() {
+class ExploreListAdapter(private val dataset: Array<Club>) :
+    RecyclerView.Adapter<ClubInExploreListViewModel>() {
 
     private var goToLandingPage: (Int) -> Unit = { position: Int -> }
     private var filteredClubList: Array<Club> = dataset.clone()
     private var keyword: String = ""
     private var selectedTag: String? = null
 
-    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ClubInExploreListViewModel {
         val view = LayoutInflater.from(viewGroup.context)
             .inflate(R.layout.explore_clubs_card, viewGroup, false)
-        return ViewHolder(view)
+        return ClubInExploreListViewModel(view)
     }
 
-    override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(viewHolder: ClubInExploreListViewModel, position: Int) {
         viewHolder.clubName.text = filteredClubList[position].name
         viewHolder.clubDescription.text = filteredClubList[position].description
         //viewHolder.clubBannerImage.setImageDrawable(idk)
@@ -72,11 +72,4 @@ class ClubListAdapter(private val dataset: Array<Club>) :
     }
 
     fun setLandingCallback(callback: (Int) -> Unit) { goToLandingPage = callback }
-
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val cardView: CardView = view.findViewById(R.id.club_card)
-        var clubName = view.findViewById<TextView>(R.id.club_name)
-        var clubDescription = view.findViewById<TextView>(R.id.club_description)
-        var clubBannerImage = view.findViewById<ImageView>(R.id.club_banner_image)
-    }
 }
