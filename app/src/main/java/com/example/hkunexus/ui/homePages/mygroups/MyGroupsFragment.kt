@@ -27,11 +27,6 @@ class MyGroupsFragment : Fragment() {
 
         _binding = FragmentMyGroupsBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
-        val textView: TextView = binding.textMyGroups
-        myGroupsViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
         return root
     }
 

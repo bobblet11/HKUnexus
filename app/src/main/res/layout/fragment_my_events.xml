@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/compact_event_card" />
+            tools:listitem="@layout/fragment_event_widget" />
 
         <!-- Bottom Navigation Bar -->
 

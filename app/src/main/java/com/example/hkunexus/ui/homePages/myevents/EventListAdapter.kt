@@ -17,25 +17,25 @@ class EventListAdapter(private val dataSet: Array<Post>) :
     private var goToPostPage: (Int) -> Unit = { postID: Int -> }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        var postersUsername = view.findViewById<TextView>(R.id.postersUsername)
-        var compactEventDescription= view.findViewById<TextView>(R.id.compactEventDescription)
-        var eventBannerImage = view.findViewById<ImageView>(R.id.eventBannerImage)
-        var timeSincePosted = view.findViewById<TextView>(R.id.timeSincePosted)
-        var postersProfileImage = view.findViewById<ImageView>(R.id.postersProfileImage)
-        val cardView: CardView = view.findViewById(R.id.compactEventCard)
+//        var postersUsername = view.findViewById<TextView>(R.id.postersUsername)
+//        var compactEventDescription= view.findViewById<TextView>(R.id.compactEventDescription)
+//        var eventBannerImage = view.findViewById<ImageView>(R.id.eventBannerImage)
+//        var timeSincePosted = view.findViewById<TextView>(R.id.timeSincePosted)
+//        var postersProfileImage = view.findViewById<ImageView>(R.id.postersProfileImage)
+        val cardView: CardView = view.findViewById(R.id.event_widget_card)
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(viewGroup.context)
-            .inflate(R.layout.compact_event_card, viewGroup, false)
+            .inflate(R.layout.fragment_event_widget, viewGroup, false)
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
 
-        viewHolder.postersUsername.text = dataSet[position].posterUsername
-        viewHolder.compactEventDescription.text = dataSet[position].postText
-        viewHolder.timeSincePosted.text = dataSet[position].timeSincePosted
+//        viewHolder.postersUsername.text = dataSet[position].posterUsername
+//        viewHolder.compactEventDescription.text = dataSet[position].postText
+//        viewHolder.timeSincePosted.text = dataSet[position].timeSincePosted
 
         viewHolder.cardView.setOnClickListener {
             goToPostPage(position)

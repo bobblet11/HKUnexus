@@ -17,23 +17,21 @@ class PostListAdapter(private val dataSet: Array<Post>) :
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var postersUsername = view.findViewById<TextView>(R.id.postersUsername)
-        var compactEventDescription= view.findViewById<TextView>(R.id.compactEventDescription)
-        var eventBannerImage = view.findViewById<ImageView>(R.id.eventBannerImage)
+        var compactDescription= view.findViewById<TextView>(R.id.compactEventpostDescription)
         var timeSincePosted = view.findViewById<TextView>(R.id.timeSincePosted)
-        var postersProfileImage = view.findViewById<ImageView>(R.id.postersProfileImage)
-        val cardView: CardView = view.findViewById(R.id.compactEventCard)
+        val cardView: CardView = view.findViewById(R.id.compactEventPostCard)
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(viewGroup.context)
-            .inflate(R.layout.compact_event_card, viewGroup, false)
+            .inflate(R.layout.fragment_post_event_card, viewGroup, false)
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
 
         viewHolder.postersUsername.text = dataSet[position].posterUsername
-        viewHolder.compactEventDescription.text = dataSet[position].postText
+        viewHolder.compactDescription.text = dataSet[position].postText
         viewHolder.timeSincePosted.text = dataSet[position].timeSincePosted
 
         viewHolder.cardView.setOnClickListener {

@@ -9,7 +9,6 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hkunexus.R
 import com.example.hkunexus.data.model.Club
-import kotlinx.coroutines.selects.select
 import android.view.ViewGroup as ViewGroup
 
 class ClubListAdapter(private val dataset: Array<Club>) :
@@ -22,7 +21,7 @@ class ClubListAdapter(private val dataset: Array<Club>) :
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(viewGroup.context)
-            .inflate(R.layout.explore_clubs_item, viewGroup, false)
+            .inflate(R.layout.explore_clubs_card, viewGroup, false)
         return ViewHolder(view)
     }
 
