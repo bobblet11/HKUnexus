@@ -5,4 +5,6 @@ data class Club (
     var description: String,
     var joined: Boolean,
     var tags: Array<String>,
+    var numberOfMembers: Int = 0,
+    var clubID: Int = 0
 )

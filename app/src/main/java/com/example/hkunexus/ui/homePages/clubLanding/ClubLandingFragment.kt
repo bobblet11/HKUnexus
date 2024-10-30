@@ -7,91 +7,65 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.example.hkunexus.databinding.FragmentGroupLandingBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class ClubLandingFragment : Fragment() {
 
     private val viewModel: ClubLandingViewModel by viewModels()
     private var _binding: FragmentGroupLandingBinding? = null
     private val binding get() = _binding!!
+    private val groupLandingPostsRecycler = binding.groupLandingPostsRecycler
+    private val postListAdapter = PostInClubListAdapter(arrayListOf())
+
+    val clubNameView = binding.clubName
+    val clubDescriptionView = binding.clubDescription
+    val joinButton = binding.clubJoinButton
+    val leaveButton = binding.clubLeaveButton
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         _binding = FragmentGroupLandingBinding.inflate(inflater, container, false)
+        //set the clubID and fetch required data using clubID
+        viewModel.setClubID(arguments?.getInt("clubId"), context)
 
-        fetchClubDetails()
-
-        loadClubText()
-        loadClubJoinStatus()
-        loadClubPosts()
-
-        return binding.root
-    }
-
-    private fun fetchClubDetails() {
-        var clubId = arguments?.getInt("clubId")
-        if (clubId == null) {
-            Toast.makeText(
-                context,
-                "Please pass a club ID while opening this page. Defaulting to 0...",
-                Toast.LENGTH_SHORT
-            ).show()
-            clubId = 0
+        postListAdapter.setPostPageCallBack {
+            position: Int ->
+            Toast.makeText(context, "Should go to post page $position", Toast.LENGTH_SHORT).show()
         }
+        groupLandingPostsRecycler.adapter = postListAdapter
 
-        viewModel.fetchClubData(clubId)
-    }
-
-    private fun loadClubText() {
-        val clubNameView = binding.clubName
-        val clubDescView = binding.clubDescription
-
-        clubNameView.text = viewModel.club.name
-        clubDescView.text = viewModel.club.description
-    }
-
-
-    private fun loadClubJoinStatus() {
-        val joinButton = binding.clubJoinButton
-        val leaveButton = binding.clubLeaveButton
-
-        fun updateButtonVisibility() {
-            if (viewModel.club.joined) {
-                joinButton.visibility = View.GONE
-                leaveButton.visibility = View.VISIBLE
-            } else {
-                joinButton.visibility = View.VISIBLE
-                leaveButton.visibility = View.GONE
+        lifecycleScope.launch {
+            viewModel.uiState.collect { state ->
+                // Update UI based on the new state
+                clubNameView.text = state.name
+                clubDescriptionView.text = state.description
+                joinButton.visibility = if (state.joined) View.GONE else View.VISIBLE
+                leaveButton.visibility = if (state.joined) View.VISIBLE else View.GONE
             }
         }
 
-        // TODO: Connect to Supabase
         joinButton.setOnClickListener {
-            viewModel.club.joined = true
-            updateButtonVisibility()
+            viewModel.joinClub()
         }
 
         leaveButton.setOnClickListener {
-            viewModel.club.joined = false
-            updateButtonVisibility()
+            viewModel.leaveClub()
         }
 
-        updateButtonVisibility()
-    }
-
-    private fun loadClubPosts() {
-        val groupLandingPostsRecycler = binding.groupLandingPostsRecycler
-        val postListAdapter = PostListAdapter(viewModel.uiState.value.posts)
-
-        postListAdapter.setPostPageCallBack { position: Int ->
-            Toast.makeText(context, "Should go to post page $position", Toast.LENGTH_SHORT).show()
+        CoroutineScope(Dispatchers.Main).launch {
+            viewModel.uiStatePosts.collect { state ->
+                postListAdapter.changeDataSet(state.posts.toCollection(ArrayList()))
+            }
         }
-
-        groupLandingPostsRecycler.adapter = postListAdapter
+        return binding.root
     }
 
     override fun onDestroyView() {
