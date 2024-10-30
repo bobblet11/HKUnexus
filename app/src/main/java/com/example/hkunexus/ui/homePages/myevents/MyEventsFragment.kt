@@ -5,13 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import com.example.hkunexus.databinding.FragmentMyEventsBinding
-import com.example.hkunexus.ui.homePages.explore.ClubListAdapter
-import com.example.hkunexus.ui.homePages.explore.ExploreViewModel
 
 class MyEventsFragment : Fragment() {
 

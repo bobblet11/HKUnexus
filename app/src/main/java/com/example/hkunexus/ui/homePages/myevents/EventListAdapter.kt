@@ -2,16 +2,13 @@ package com.example.hkunexus.ui.homePages.myevents
 
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hkunexus.R
-import com.example.hkunexus.data.model.Event
-import com.example.hkunexus.data.model.Post
+import com.example.hkunexus.data.model.EventPost
 import android.view.ViewGroup as ViewGroup
 
-class EventListAdapter(private val dataSet: Array<Post>) :
+class EventListAdapter(private val dataSet: List<EventPost>) :
     RecyclerView.Adapter<EventListAdapter.ViewHolder>() {
 
     private var goToPostPage: (Int) -> Unit = { postID: Int -> }
