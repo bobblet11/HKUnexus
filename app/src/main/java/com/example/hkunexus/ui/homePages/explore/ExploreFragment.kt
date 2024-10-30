@@ -1,7 +1,6 @@
 package com.example.hkunexus.ui.homePages.explore
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,18 +30,18 @@ class ExploreFragment : Fragment()  {
         _binding = FragmentExploreBinding.inflate(inflater, container, false)
 
 
-        val clubListAdapter = ClubListAdapter(viewModel.uiState.value.listOfClubsToDisplay)
-        clubListAdapter.setLandingCallback ({ position: Int ->
+        val exploreListAdapter = ExploreListAdapter(viewModel.uiState.value.listOfClubsToDisplay)
+
+        exploreListAdapter.setLandingCallback ({ position: Int ->
             val b = Bundle()
             b.putInt("clubId", position)
-
             findNavController().navigate(R.id.action_view_group_landing, b)
         })
-        binding.exploreClubsRecycler.adapter = clubListAdapter
+        binding.exploreClubsRecycler.adapter = exploreListAdapter
 
 
-        configureSearchBar(clubListAdapter)
-        constructClubTagAdaptor(clubListAdapter)
+        configureSearchBar(exploreListAdapter)
+        constructClubTagAdaptor(exploreListAdapter)
 
         return binding.root
     }
@@ -52,38 +51,38 @@ class ExploreFragment : Fragment()  {
         _binding = null
     }
 
-    private fun configureSearchBar(clubListAdapter: ClubListAdapter) {
+    private fun configureSearchBar(exploreListAdapter: ExploreListAdapter) {
         val searchView = binding.clubSearchBar
         searchView.isIconifiedByDefault = false
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextChange(kw: String): Boolean {
-                clubListAdapter.setFilterKeyword(kw)
+                exploreListAdapter.setFilterKeyword(kw)
                 return false
             }
 
             override fun onQueryTextSubmit(kw: String): Boolean {
-                clubListAdapter.setFilterKeyword(kw)
+                exploreListAdapter.setFilterKeyword(kw)
                 return false
             }
         })
     }
 
-    private fun constructClubTagAdaptor(clubListAdapter: ClubListAdapter) {
+    private fun constructClubTagAdaptor(exploreListAdapter: ExploreListAdapter) {
         val tags = viewModel.uiState.value.listOfTags
 
         val spinner: Spinner = binding.clubTagsSelector
         spinner.onItemSelectedListener = (object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                 if (p2 == 0) {
-                    clubListAdapter.setSelectedTag(null)
+                    exploreListAdapter.setSelectedTag(null)
                 } else {
-                    clubListAdapter.setSelectedTag(viewModel.uiState.value.listOfTags[p2])
+                    exploreListAdapter.setSelectedTag(viewModel.uiState.value.listOfTags[p2])
                 }
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {
-                clubListAdapter.setSelectedTag(null)
+                exploreListAdapter.setSelectedTag(null)
             }
         })
 

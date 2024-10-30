@@ -14,7 +14,7 @@ data class ExploreUiState(
     val listOfClubsToDisplay: Array<Club> = arrayOf(),
     val listOfTags: Array<String> = arrayOf(),
 
-    val clubListAdapter: ClubListAdapter? = null,
+    val clubListAdapter: ExploreListAdapter? = null,
     val recyclerView: RecyclerView? = null,
 )
 
