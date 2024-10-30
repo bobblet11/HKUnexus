@@ -380,6 +380,20 @@ object SupabaseSingleton{
         }
     }
 
-
+    public fun getRecentPosts(): List<EventPost>?{
+        return runBlocking {
+            val func_name = "get_recent_posts";
+            try{
+                val result = client!!.postgrest.rpc(func_name)
+                Log.d("SupabaseSingleton", "$func_name rpc, $result")
+                val output = result.decodeList<EventPost>();
+                Log.d("SupabaseSingleton", "$func_name rpc output, $output")
+                return@runBlocking output
+            } catch (e: Exception){
+                Log.d("SupabaseSingleton", "Failure, $e")
+                return@runBlocking null
+            }
+        }
+    }
 
 }
