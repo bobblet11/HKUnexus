@@ -4,10 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.RecyclerView
 import com.example.hkunexus.databinding.FragmentGroupLandingBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -18,13 +21,14 @@ class ClubLandingFragment : Fragment() {
     private val viewModel: ClubLandingViewModel by viewModels()
     private var _binding: FragmentGroupLandingBinding? = null
     private val binding get() = _binding!!
-    private val groupLandingPostsRecycler = binding.groupLandingPostsRecycler
-    private val postListAdapter = PostInClubListAdapter(arrayListOf())
 
-    val clubNameView = binding.clubName
-    val clubDescriptionView = binding.clubDescription
-    val joinButton = binding.clubJoinButton
-    val leaveButton = binding.clubLeaveButton
+    private lateinit var groupLandingPostsRecycler: RecyclerView
+    private var postListAdapter = PostInClubListAdapter(arrayListOf())
+
+    private lateinit var clubNameView: TextView
+    private lateinit var clubDescriptionView: TextView
+    private lateinit var joinButton: Button
+    private lateinit var leaveButton: Button
 
 
     override fun onCreateView(
@@ -33,6 +37,14 @@ class ClubLandingFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentGroupLandingBinding.inflate(inflater, container, false)
+
+        groupLandingPostsRecycler = binding.groupLandingPostsRecycler
+        postListAdapter
+
+        clubNameView = binding.clubName
+        clubDescriptionView = binding.clubDescription
+        joinButton = binding.clubJoinButton
+        leaveButton = binding.clubLeaveButton
 
         //set the clubID and fetch required data using clubID
         viewModel.setClubID(arguments?.getInt("clubId"), context)
