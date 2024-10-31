@@ -34,10 +34,11 @@ class ExploreFragment : Fragment()  {
     ): View {
 
         _binding = FragmentExploreBinding.inflate(inflater, container, false)
+
         exploreListAdapter.setLandingCallback ({ clubId: String ->
             val b = Bundle()
-            b.putString("clubId", clubId)
-            findNavController().navigate(R.id.action_view_group_landing, b)
+            b.putString("clubID", clubId)
+            findNavController().navigate(R.id.navigation_group_landing, b)
         })
 
         binding.exploreClubsRecycler.adapter = exploreListAdapter

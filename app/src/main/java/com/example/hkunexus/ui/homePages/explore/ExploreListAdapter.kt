@@ -34,7 +34,7 @@ class ExploreListAdapter(private val dataSet: ArrayList<ClubDto>) :
         Log.d("exploreListAdapter", dataSet[position].toString())
         Log.d("exploreListAdapter", dataSet[position].clubId.toString())
         viewHolder.cardView.setOnClickListener {
-            goToLandingPage(dataSet[position].clubId!!)
+            goToLandingPage(dataSet[position].clubId.toString())
         }
     }
 
