@@ -39,12 +39,6 @@
         tools:layout="@layout/fragment_my_events" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.example.hkunexus.ui.homePages.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
-
-    <fragment
         android:id="@+id/navigation_notifications"
         android:name="com.example.hkunexus.ui.homePages.notifications.NotificationsFragment"
         android:label="@string/title_notifications"
