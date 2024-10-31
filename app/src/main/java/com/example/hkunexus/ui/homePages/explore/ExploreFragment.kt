@@ -12,7 +12,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.hkunexus.R
+import com.example.hkunexus.data.model.Club
 import com.example.hkunexus.databinding.FragmentExploreBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class ExploreFragment : Fragment()  {
@@ -20,6 +24,8 @@ class ExploreFragment : Fragment()  {
     private val viewModel: ExploreViewModel by viewModels()
     private var _binding: FragmentExploreBinding? = null
     private val binding get() = _binding!!
+    val tags = arrayOf("")
+    private val exploreListAdapter = ExploreListAdapter(arrayListOf())
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,20 +34,23 @@ class ExploreFragment : Fragment()  {
     ): View {
 
         _binding = FragmentExploreBinding.inflate(inflater, container, false)
-
-
-        val exploreListAdapter = ExploreListAdapter(viewModel.uiState.value.listOfClubsToDisplay)
-
         exploreListAdapter.setLandingCallback ({ position: Int ->
             val b = Bundle()
             b.putInt("clubId", position)
             findNavController().navigate(R.id.action_view_group_landing, b)
         })
-        binding.exploreClubsRecycler.adapter = exploreListAdapter
 
+        binding.exploreClubsRecycler.adapter = exploreListAdapter
 
         configureSearchBar(exploreListAdapter)
         constructClubTagAdaptor(exploreListAdapter)
+
+        CoroutineScope(Dispatchers.Main).launch {
+            viewModel.uiState.collect { state ->
+                exploreListAdapter.updateDataSet(state.listOfClubsToDisplay.toCollection(ArrayList()))
+                exploreListAdapter.updateFilteredList()
+            }
+        }
 
         return binding.root
     }
@@ -54,7 +63,6 @@ class ExploreFragment : Fragment()  {
     private fun configureSearchBar(exploreListAdapter: ExploreListAdapter) {
         val searchView = binding.clubSearchBar
         searchView.isIconifiedByDefault = false
-
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextChange(kw: String): Boolean {
                 exploreListAdapter.setFilterKeyword(kw)
@@ -69,8 +77,6 @@ class ExploreFragment : Fragment()  {
     }
 
     private fun constructClubTagAdaptor(exploreListAdapter: ExploreListAdapter) {
-        val tags = viewModel.uiState.value.listOfTags
-
         val spinner: Spinner = binding.clubTagsSelector
         spinner.onItemSelectedListener = (object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {

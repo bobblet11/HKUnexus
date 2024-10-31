@@ -62,7 +62,7 @@ class ClubLandingFragment : Fragment() {
 
         CoroutineScope(Dispatchers.Main).launch {
             viewModel.uiStatePosts.collect { state ->
-                postListAdapter.changeDataSet(state.posts.toCollection(ArrayList()))
+                postListAdapter.updateDataSet(state.posts.toCollection(ArrayList()))
             }
         }
         return binding.root

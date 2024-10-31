@@ -1,5 +1,6 @@
 package com.example.hkunexus.ui.homePages.clubLanding
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -25,7 +26,6 @@ class PostInClubListAdapter(private val dataSet: ArrayList<Post>) :
 //            //create event post instead
 //        }
 
-
         viewHolder.postersUsername.text = dataSet[position].posterUsername
         viewHolder.compactDescription.text = dataSet[position].postText
         viewHolder.timeSincePosted.text = dataSet[position].timeSincePosted
@@ -41,7 +41,8 @@ class PostInClubListAdapter(private val dataSet: ArrayList<Post>) :
         goToPostPage = callback
     }
 
-    public fun changeDataSet(newData:  ArrayList<Post>){
+    @SuppressLint("NotifyDataSetChanged")
+    public fun updateDataSet(newData:  ArrayList<Post>){
         //call when the data changes.
         this.dataSet.clear()
         this.dataSet.addAll(newData)

@@ -396,4 +396,22 @@ object SupabaseSingleton{
         }
     }
 
+    public fun getRandomClubs(): List<ClubDto>? {
+        return runBlocking {
+            val func_name = "get_20_random_clubs"
+            try{
+                val result = client!!.postgrest.rpc(func_name)
+                val resultData = result.data
+                Log.d("SupabaseSingleton", "$func_name rpc, $result")
+                Log.d("SupabaseSingleton", resultData)
+                val output = result.decodeList<ClubDto>();
+                Log.d("SupabaseSingleton", "$func_name rpc output, $output")
+                return@runBlocking output
+            } catch (e: Exception){
+                Log.d("SupabaseSingleton", "Failure, $e")
+                return@runBlocking null
+            }
+        }
+    }
+
 }

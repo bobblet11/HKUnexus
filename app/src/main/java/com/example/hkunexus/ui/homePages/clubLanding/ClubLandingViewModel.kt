@@ -7,6 +7,7 @@ import com.example.hkunexus.data.TempData
 import com.example.hkunexus.data.model.Club
 import com.example.hkunexus.data.model.Event
 import com.example.hkunexus.data.model.Post
+import com.example.hkunexus.data.model.dto.ClubDto
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -88,11 +89,11 @@ class ClubLandingViewModel : ViewModel() {
         }
     }
 
-    private fun updateClubInfo( newInfo: Club){
+    private fun updateClubInfo( newInfo: ClubDto){
         _uiState.update {
             it.copy(
-                name = newInfo.name,
-                description = newInfo.description,
+                name = newInfo.clubName!!,
+                description = newInfo.clubDesc!!,
                 joined = newInfo.joined,
                 tags = newInfo.tags,
                 numberOfMembers = newInfo.numberOfMembers,
