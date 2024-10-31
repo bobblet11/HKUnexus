@@ -216,7 +216,7 @@ object SupabaseSingleton{
         }
     }
 
-    public fun getNoOfMembersOfClub(club_uuid: String): Int?{
+    public fun getNoOfMembersOfClub(club_uuid: String): Int{
         return runBlocking {
             @Serializable
             data class OutputDto(
@@ -237,7 +237,7 @@ object SupabaseSingleton{
                 return@runBlocking output
             } catch (e: Exception){
                 Log.d("SupabaseSingleton", "Failure, $e")
-                return@runBlocking null
+                return@runBlocking 0
             }
         }
 
@@ -432,8 +432,27 @@ object SupabaseSingleton{
             }
         }
 
+    }
 
+    public fun checkIsJoined(clubID: String, userID: String): Boolean {
+        return runBlocking {
+            val func_name = "check_is_user_joined_to_club";
+            val func_param = buildJsonObject {
+                put("clubID", clubID)
+                put("userID", userID)
+            }
 
+            try {
+                val result = client!!.postgrest.rpc(func_name, func_param)
+                Log.d("SupabaseSingleton", "$func_name rpc, $result")
+                val output: Boolean = result.data.toBoolean();
+                Log.d("SupabaseSingleton", "$func_name rpc output, $output")
+                return@runBlocking output
+            } catch (e: Exception) {
+                Log.d("SupabaseSingleton", "Failure, $e")
+                return@runBlocking false
+            }
+        }
     }
 
 }

@@ -21,7 +21,7 @@ data class ClubDto(
 
     val joined: Boolean = false,
     val tags: Array<String> = arrayOf(),
-    val numberOfMembers: Int = 0,
+    var numberOfMembers: Int = 0,
 
 )
 

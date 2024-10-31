@@ -5,10 +5,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import com.example.hkunexus.R
 import com.example.hkunexus.databinding.FragmentGroupLandingBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -33,6 +36,8 @@ class ClubLandingFragment : Fragment() {
         val clubDescriptionView = binding.clubDescription
         val joinButton = binding.clubJoinButton
         val leaveButton = binding.clubLeaveButton
+        val numberOfMembers = binding.clubMemberCount
+
         val postListAdapter = PostInClubListAdapter(arrayListOf())
         //set the clubID and fetch required data using clubID
         Log.d("clubLandingFrag", arguments?.getString("clubID").toString())
@@ -52,6 +57,7 @@ class ClubLandingFragment : Fragment() {
                 clubDescriptionView.text = state.description
                 joinButton.visibility = if (state.joined) View.GONE else View.VISIBLE
                 leaveButton.visibility = if (state.joined) View.VISIBLE else View.GONE
+                numberOfMembers.text = state.numberOfMembers.toString() + " members"
             }
         }
 

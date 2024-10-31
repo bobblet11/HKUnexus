@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import com.example.hkunexus.data.SupabaseSingleton
 import com.example.hkunexus.data.TempData
+import com.example.hkunexus.data.UserSingleton
 import com.example.hkunexus.data.model.Club
 import com.example.hkunexus.data.model.Event
 import com.example.hkunexus.data.model.Post
@@ -106,7 +107,13 @@ class ClubLandingViewModel : ViewModel() {
     private fun fetchClubData() {
         // TODO: Fetch using Supabase using clubID
         Log.d("clubLandingViewModel", clubID)
-        var tempClub: ClubDto? = SupabaseSingleton.getClubById(clubID)
+        var tempClub: ClubDto = SupabaseSingleton.getClubById(clubID)!!
+
+        val numOfMembers = SupabaseSingleton.getNoOfMembersOfClub(clubID)
+        tempClub.numberOfMembers =numOfMembers
+
+        val isJoined = SupabaseSingleton.checkIsJoined(clubID, UserSingleton.userID)
+
         Log.d("clubLandingViewModel", tempClub.toString())
         if (tempClub == null){
             tempClub = TempData.clubs[0]
