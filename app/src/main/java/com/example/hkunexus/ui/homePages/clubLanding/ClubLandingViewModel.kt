@@ -35,7 +35,7 @@ class ClubLandingViewModel : ViewModel() {
     private val _uiStatePosts = MutableStateFlow(PostInClubLandingUiState())
     val uiStatePosts: StateFlow<PostInClubLandingUiState> = _uiStatePosts.asStateFlow()
 
-    private var clubID = 0
+    private var clubID:String = ""
 
     private val MAX_NUM_CHAR_IN_EVENT_CARD_DESCRIPTION = 80;
 
@@ -43,7 +43,7 @@ class ClubLandingViewModel : ViewModel() {
         fetchPosts()
     }
 
-    public fun setClubID(newClubID: Int?, context: Context?){
+    public fun setClubID(newClubID: String?, context: Context?){
         if (newClubID == null){
             Toast.makeText(
                 context,
@@ -52,7 +52,7 @@ class ClubLandingViewModel : ViewModel() {
             ).show()
 
             //render some error data using data associated with clubID 0
-            clubID = 0
+            clubID = ""
         }else{
             clubID = newClubID
         }
@@ -103,7 +103,7 @@ class ClubLandingViewModel : ViewModel() {
 
     private fun fetchClubData() {
         // TODO: Fetch using Supabase using clubID
-        val club = TempData.clubs[this.clubID]
+        val club = TempData.clubs[0]
         updateClubInfo(club)
     }
 

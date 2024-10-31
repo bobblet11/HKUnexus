@@ -18,23 +18,23 @@ class ClubLandingFragment : Fragment() {
     private val viewModel: ClubLandingViewModel by viewModels()
     private var _binding: FragmentGroupLandingBinding? = null
     private val binding get() = _binding!!
-    private val groupLandingPostsRecycler = binding.groupLandingPostsRecycler
-    private val postListAdapter = PostInClubListAdapter(arrayListOf())
-
-    val clubNameView = binding.clubName
-    val clubDescriptionView = binding.clubDescription
-    val joinButton = binding.clubJoinButton
-    val leaveButton = binding.clubLeaveButton
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
         _binding = FragmentGroupLandingBinding.inflate(inflater, container, false)
+
+        val groupLandingPostsRecycler = binding.groupLandingPostsRecycler
+        val clubNameView = binding.clubName
+        val clubDescriptionView = binding.clubDescription
+        val joinButton = binding.clubJoinButton
+        val leaveButton = binding.clubLeaveButton
+        val postListAdapter = PostInClubListAdapter(arrayListOf())
         //set the clubID and fetch required data using clubID
-        viewModel.setClubID(arguments?.getInt("clubId"), context)
+        viewModel.setClubID(arguments?.getString("clubId"), context)
 
         postListAdapter.setPostPageCallBack {
             position: Int ->

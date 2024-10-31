@@ -1,6 +1,7 @@
 package com.example.hkunexus.ui.homePages.explore
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hkunexus.R
@@ -11,7 +12,10 @@ import android.view.ViewGroup as ViewGroup
 class ExploreListAdapter(private val dataSet: ArrayList<ClubDto>) :
     RecyclerView.Adapter<ClubInExploreListViewHolder>() {
 
-    private var goToLandingPage: (Int) -> Unit = { position: Int -> }
+    private var goToLandingPage: (String) -> Unit = {
+        clubId: String -> Log.d("exploreListAdapter", clubId)
+    }
+
     private var filteredClubList: ArrayList<ClubDto> = ArrayList(dataSet)
     private var keyword: String = ""
     private var selectedTag: String? = null
@@ -26,9 +30,11 @@ class ExploreListAdapter(private val dataSet: ArrayList<ClubDto>) :
         viewHolder.clubName.text = filteredClubList[position].clubName
         viewHolder.clubDescription.text = filteredClubList[position].clubDesc
         //viewHolder.clubBannerImage.setImageDrawable(idk)
-
+        Log.d("exploreListAdapter", position.toString())
+        Log.d("exploreListAdapter", dataSet[position].toString())
+        Log.d("exploreListAdapter", dataSet[position].clubId.toString())
         viewHolder.cardView.setOnClickListener {
-            goToLandingPage(position)
+            goToLandingPage(dataSet[position].clubId!!)
         }
     }
 
@@ -81,5 +87,5 @@ class ExploreListAdapter(private val dataSet: ArrayList<ClubDto>) :
         notifyDataSetChanged();
     }
 
-    fun setLandingCallback(callback: (Int) -> Unit) { goToLandingPage = callback }
+    fun setLandingCallback(callback: (String) -> Unit) { goToLandingPage = callback }
 }

@@ -34,9 +34,9 @@ class ExploreFragment : Fragment()  {
     ): View {
 
         _binding = FragmentExploreBinding.inflate(inflater, container, false)
-        exploreListAdapter.setLandingCallback ({ position: Int ->
+        exploreListAdapter.setLandingCallback ({ clubId: String ->
             val b = Bundle()
-            b.putInt("clubId", position)
+            b.putString("clubId", clubId)
             findNavController().navigate(R.id.action_view_group_landing, b)
         })
 
