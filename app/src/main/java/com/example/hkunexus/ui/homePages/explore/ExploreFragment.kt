@@ -12,7 +12,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.hkunexus.R
-import com.example.hkunexus.data.model.Club
 import com.example.hkunexus.databinding.FragmentExploreBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -37,7 +36,7 @@ class ExploreFragment : Fragment()  {
         exploreListAdapter.setLandingCallback ({ position: Int ->
             val b = Bundle()
             b.putInt("clubId", position)
-            findNavController().navigate(R.id.action_view_group_landing, b)
+            findNavController().navigate(R.id.action_view_club_landing, b)
         })
 
         binding.exploreClubsRecycler.adapter = exploreListAdapter

@@ -78,7 +78,7 @@ class ExploreListAdapter(private val dataSet: ArrayList<ClubDto>) :
         //call when the data changes.
         this.dataSet.clear()
         this.dataSet.addAll(newData)
-        notifyDataSetChanged();
+        notifyDataSetChanged()
     }
 
     fun setLandingCallback(callback: (Int) -> Unit) { goToLandingPage = callback }

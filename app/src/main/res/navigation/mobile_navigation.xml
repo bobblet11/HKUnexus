@@ -17,7 +17,7 @@
         android:label="@string/title_explore"
         tools:layout="@layout/fragment_explore" >
         <action
-            android:id="@+id/action_view_group_landing"
+            android:id="@+id/action_view_club_landing"
             app:destination="@id/navigation_group_landing" />
     </fragment>
 

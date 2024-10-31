@@ -33,6 +33,7 @@ class ClubLandingFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentGroupLandingBinding.inflate(inflater, container, false)
+
         //set the clubID and fetch required data using clubID
         viewModel.setClubID(arguments?.getInt("clubId"), context)
 
@@ -40,6 +41,7 @@ class ClubLandingFragment : Fragment() {
             position: Int ->
             Toast.makeText(context, "Should go to post page $position", Toast.LENGTH_SHORT).show()
         }
+
         groupLandingPostsRecycler.adapter = postListAdapter
 
         lifecycleScope.launch {

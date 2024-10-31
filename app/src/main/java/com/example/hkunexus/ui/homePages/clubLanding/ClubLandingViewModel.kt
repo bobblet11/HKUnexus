@@ -43,7 +43,7 @@ class ClubLandingViewModel : ViewModel() {
         fetchPosts()
     }
 
-    public fun setClubID(newClubID: Int?, context: Context?){
+    fun setClubID(newClubID: Int?, context: Context?){
         if (newClubID == null){
             Toast.makeText(
                 context,
@@ -53,7 +53,7 @@ class ClubLandingViewModel : ViewModel() {
 
             //render some error data using data associated with clubID 0
             clubID = 0
-        }else{
+        } else{
             clubID = newClubID
         }
 
