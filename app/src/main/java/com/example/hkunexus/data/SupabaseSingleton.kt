@@ -414,4 +414,26 @@ object SupabaseSingleton{
         }
     }
 
+    public fun searchTags(query : String): List<Tag>?{
+        return runBlocking {
+            val func_name = "search_tags";
+            val func_param = buildJsonObject {
+                put("query", query)
+            }
+            try {
+                val result = client!!.postgrest.rpc(func_name, func_param)
+                Log.d("SupabaseSingleton", "$func_name rpc, $result")
+                val output = result.decodeList<Tag>();
+                Log.d("SupabaseSingleton", "$func_name rpc output, $output")
+                return@runBlocking output
+            } catch (e: Exception){
+                Log.d("SupabaseSingleton", "Failure, $e")
+                return@runBlocking null
+            }
+        }
+
+
+
+    }
+
 }
