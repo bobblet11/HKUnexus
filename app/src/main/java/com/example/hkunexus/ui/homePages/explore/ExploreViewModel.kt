@@ -57,15 +57,9 @@ class ExploreViewModel : ViewModel() {
 
         var tempList: Array<ClubDto>? = SupabaseSingleton.getRandomClubs()?.toTypedArray()
 
-
-
-
         if (tempList == null){
             tempList = TempData.clubs
         }
-        //replace templist with Supabase list
-
-        //format club data to fit in card
 
         for (item: ClubDto in tempList) {
             if (item.clubName!!.length >= MAX_NUM_CHAR_IN_CLUB_TITLE){

@@ -1,6 +1,7 @@
 package com.example.hkunexus.ui.homePages.clubLanding
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,7 +35,9 @@ class ClubLandingFragment : Fragment() {
         val leaveButton = binding.clubLeaveButton
         val postListAdapter = PostInClubListAdapter(arrayListOf())
         //set the clubID and fetch required data using clubID
-        viewModel.setClubID(arguments?.getString("clubId"), context)
+        Log.d("clubLandingFrag", arguments?.getString("clubID").toString())
+
+        viewModel.setClubID(arguments?.getString("clubID"), context)
 
         postListAdapter.setPostPageCallBack {
             position: Int ->

@@ -1,8 +1,10 @@
 package com.example.hkunexus.ui.homePages.clubLanding
 
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
+import com.example.hkunexus.data.SupabaseSingleton
 import com.example.hkunexus.data.TempData
 import com.example.hkunexus.data.model.Club
 import com.example.hkunexus.data.model.Event
@@ -103,8 +105,13 @@ class ClubLandingViewModel : ViewModel() {
 
     private fun fetchClubData() {
         // TODO: Fetch using Supabase using clubID
-        val club = TempData.clubs[0]
-        updateClubInfo(club)
+        Log.d("clubLandingViewModel", clubID)
+        var tempClub: ClubDto? = SupabaseSingleton.getClubById(clubID)
+        Log.d("clubLandingViewModel", tempClub.toString())
+        if (tempClub == null){
+            tempClub = TempData.clubs[0]
+        }
+        updateClubInfo(tempClub)
     }
 
     private fun fetchPosts() {

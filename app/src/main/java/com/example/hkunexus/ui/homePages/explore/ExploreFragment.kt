@@ -10,6 +10,7 @@ import android.widget.Spinner
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.hkunexus.R
 import com.example.hkunexus.data.model.Club
@@ -24,7 +25,7 @@ class ExploreFragment : Fragment()  {
     private val viewModel: ExploreViewModel by viewModels()
     private var _binding: FragmentExploreBinding? = null
     private val binding get() = _binding!!
-    val tags = arrayOf("")
+    val tags = arrayListOf("")
     private val exploreListAdapter = ExploreListAdapter(arrayListOf())
 
     override fun onCreateView(
@@ -46,6 +47,13 @@ class ExploreFragment : Fragment()  {
         configureSearchBar(exploreListAdapter)
         constructClubTagAdaptor(exploreListAdapter)
 
+        lifecycleScope.launch {
+            viewModel.uiState.collect { state ->
+                // Update UI based on the new state
+                tags.clear()
+                tags.addAll(state.listOfTags)
+            }
+        }
         CoroutineScope(Dispatchers.Main).launch {
             viewModel.uiState.collect { state ->
                 exploreListAdapter.updateDataSet(state.listOfClubsToDisplay.toCollection(ArrayList()))
