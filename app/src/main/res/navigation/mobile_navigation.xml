@@ -17,7 +17,7 @@
         android:label="@string/title_explore"
         tools:layout="@layout/fragment_explore" >
         <action
-            android:id="@+id/action_view_group_landing"
+            android:id="@+id/action_view_club_landing"
             app:destination="@id/navigation_group_landing" />
     </fragment>
 
@@ -37,12 +37,6 @@
         android:name="com.example.hkunexus.ui.homePages.myevents.MyEventsFragment"
         android:label="@string/title_my_events"
         tools:layout="@layout/fragment_my_events" />
-
-    <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.example.hkunexus.ui.homePages.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
 
     <fragment
         android:id="@+id/navigation_notifications"

@@ -4,30 +4,32 @@ import com.example.hkunexus.data.model.Club
 import com.example.hkunexus.data.model.Event
 import com.example.hkunexus.data.model.GenericPost
 import com.example.hkunexus.data.model.Post
+import com.example.hkunexus.data.model.dto.ClubDto
 
 object TempData {
 
     val tags: Array<String> = arrayOf(
-        "Tag 1",
-        "Tag 2",
-        "Tag 3"
+        "Genshin",
+        "Relax",
+        "Mahjong"
     )
 
-    val clubs: Array<Club> = arrayOf(
-        Club(
-            "BENS Tennis club!",
-            "come join me and my friends in tennis! We are all beginners!",
-            false
+    val clubs: Array<ClubDto> = arrayOf(
+        ClubDto(
+            clubId = "0",
+            clubName = "BENS Tennis club!",
+            clubDesc = "come join me and my friends in tennis! We are all beginners!",
         ),
-        Club(
-            "Mahjong Mondays",
-            "Do you like mahjong? Do you hate Mondays? Then why don't you make your monday better with MAHJONG!",
-            false
+        ClubDto(
+            clubId = "1",
+            clubName = "Mahjong Monday!",
+            clubDesc = "hate mondays? Love mahjong? come join!",
         ),
-        Club(
-            "Genshin Impact learners",
-            "wanna learn tips and tricks to max your character? come join our lessons!",
-            false
+        ClubDto(
+            clubId = "2",
+            clubName = "Genshin club",
+            clubDesc = "are you a weeb? do you play genshin? then join us!",
+
         )
     )
 

@@ -1,5 +1,6 @@
 package com.example.hkunexus.data.model.dto
 
+import com.example.hkunexus.data.model.Club
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -7,19 +8,22 @@ import kotlinx.serialization.Serializable
 data class ClubDto(
 
     @SerialName("id")
-    val clubId: String?,
+    val clubId: String? = "0",
 
     @SerialName("created_at")
-    val createdAt: String?,
+    val createdAt: String? = "",
 
     @SerialName("name")
-    val clubName: String?,
+    var clubName: String? = "default",
 
     @SerialName("description")
-    val clubDesc: String?,
+    var clubDesc: String? = "default",
+
+    val joined: Boolean = false,
+    val tags: Array<String> = arrayOf(),
+    val numberOfMembers: Int = 0,
 
 )
-
 
 
 

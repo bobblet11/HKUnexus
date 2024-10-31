@@ -23,10 +23,10 @@ class LoginActivityViewModel() : ViewModel() {
 
 
     fun attemptLogin(emailInput: String, passwordInput: String): Boolean{
-        if (!validateLogin(emailInput, passwordInput)){
-            Log.d("LoginActivityViewModel", "login_register validation failed $emailInput, $passwordInput")
-            return false
-        }
+//        if (!validateLogin(emailInput, passwordInput)){
+//            Log.d("LoginActivityViewModel", "login_register validation failed $emailInput, $passwordInput")
+//            return false
+//        }
 
         if (!authenticateLogin("$emailInput@connect.hku.hk", passwordInput)){
             Log.d("LoginActivityViewModel", "login_register authentication failed")

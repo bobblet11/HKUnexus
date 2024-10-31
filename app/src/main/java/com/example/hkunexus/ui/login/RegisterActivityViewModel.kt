@@ -71,7 +71,7 @@ class RegisterActivityViewModel() : ViewModel() {
 
 
     private fun validateRegistration(firstNameInput: String, lastNameInput: String, emailInput: String, passwordInput: String, verifiedPasswordInput: String, usernameInput : String): Boolean {
-
+        return true
         val passwordREGEX = Pattern.compile(
             "^" +
                     "(?=.*[0-9])" +         //at least 1 digit
