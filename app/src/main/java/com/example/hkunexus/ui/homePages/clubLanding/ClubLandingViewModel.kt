@@ -11,6 +11,7 @@ import com.example.hkunexus.data.model.Club
 import com.example.hkunexus.data.model.Event
 import com.example.hkunexus.data.model.Post
 import com.example.hkunexus.data.model.dto.ClubDto
+import com.example.hkunexus.data.model.dto.PostDto
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -25,7 +26,7 @@ data class ClubLandingUiState(
 )
 
 data class PostInClubLandingUiState(
-    val posts: Array<Post> = arrayOf(),
+    val posts: Array<PostDto> = arrayOf(),
 )
 
 
@@ -84,7 +85,7 @@ class ClubLandingViewModel : ViewModel() {
         //TODO: add SUPASBASE RPC here
     }
 
-    private fun updateClubPosts(newPosts: Array<Post>){
+    private fun updateClubPosts(newPosts: Array<PostDto>){
         _uiStatePosts.update {
             it.copy(
                 posts = newPosts
@@ -123,17 +124,19 @@ class ClubLandingViewModel : ViewModel() {
 
     private fun fetchPosts() {
         // TODO: FETCH USING SUPABASE using clubID
+        var tempList: Array<PostDto> = SupabaseSingleton.getPostsFromGroup(clubID).toTypedArray()
+//        if (tempList.isEmpty()){
+//            tempList = TempData.clubPosts
+//        }
 
-        val tempList: Array<Post> = TempData.clubPosts
-
-        for (item: Post in tempList) {
-
-            if (item.postText.length >= MAX_NUM_CHAR_IN_EVENT_CARD_DESCRIPTION) {
-                val newPostText =
-                    item.postText.substring(0, MAX_NUM_CHAR_IN_EVENT_CARD_DESCRIPTION - 4) + "..."
-                item.postText = newPostText
-            }
-        }
+//        for (item: PostDto in tempList) {
+//
+//            if (item.body.length >= MAX_NUM_CHAR_IN_EVENT_CARD_DESCRIPTION) {
+//                val newPostText =
+//                    item.body.substring(0, MAX_NUM_CHAR_IN_EVENT_CARD_DESCRIPTION - 4) + "..."
+//                item.body = newPostText
+//            }
+//        }
         updateClubPosts(tempList)
     }
 }

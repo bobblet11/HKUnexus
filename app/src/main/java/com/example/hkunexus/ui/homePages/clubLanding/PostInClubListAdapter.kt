@@ -6,8 +6,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hkunexus.R
 import com.example.hkunexus.data.model.Post
+import com.example.hkunexus.data.model.dto.PostDto
 
-class PostInClubListAdapter(private val dataSet: ArrayList<Post>) :
+class PostInClubListAdapter(private val dataSet: ArrayList<PostDto>) :
     RecyclerView.Adapter<PostInClubViewHolder>() {
     private var goToPostPage: (Int) -> Unit = { postID: Int -> }
 
@@ -26,9 +27,9 @@ class PostInClubListAdapter(private val dataSet: ArrayList<Post>) :
 //            //create event post instead
 //        }
 
-        viewHolder.postersUsername.text = dataSet[position].posterUsername
-        viewHolder.compactDescription.text = dataSet[position].postText
-        viewHolder.timeSincePosted.text = dataSet[position].timeSincePosted
+        viewHolder.postersUsername.text = dataSet[position].userId
+        viewHolder.compactDescription.text = dataSet[position].body
+        viewHolder.timeSincePosted.text = dataSet[position].createdAt
 
         viewHolder.cardView.setOnClickListener {
             goToPostPage(position)
@@ -42,7 +43,7 @@ class PostInClubListAdapter(private val dataSet: ArrayList<Post>) :
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    public fun updateDataSet(newData:  ArrayList<Post>){
+    public fun updateDataSet(newData:  ArrayList<PostDto>){
         //call when the data changes.
         this.dataSet.clear()
         this.dataSet.addAll(newData)

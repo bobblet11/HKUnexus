@@ -6,6 +6,7 @@ import com.example.hkunexus.data.model.EventPost
 import com.example.hkunexus.data.model.GenericPost
 import com.example.hkunexus.data.model.Post
 import com.example.hkunexus.data.model.dto.ClubDto
+import com.example.hkunexus.data.model.dto.PostDto
 import com.example.hkunexus.data.model.dto.Tag
 import com.example.hkunexus.data.model.dto.UserToClubDto
 import io.github.jan.supabase.SupabaseClient
@@ -451,6 +452,27 @@ object SupabaseSingleton{
             } catch (e: Exception) {
                 Log.d("SupabaseSingleton", "Failure, $e")
                 return@runBlocking false
+            }
+        }
+    }
+
+    public fun getPostsFromGroup(clubID: String): List<PostDto>{
+
+        return runBlocking {
+            val func_name = "get_posts_from_club"
+            val func_param = buildJsonObject {
+                put("given_club_id", clubID)
+            }
+
+            try {
+                val result = client!!.postgrest.rpc(func_name, func_param)
+                Log.d("SupabaseSingleton", "$func_name rpc, $result")
+                val output: List<PostDto> = result.decodeList<PostDto>();
+                Log.d("SupabaseSingleton", "$func_name rpc output, $output")
+                return@runBlocking output
+            } catch (e: Exception) {
+                Log.d("SupabaseSingleton", "Failure, $e")
+                return@runBlocking listOf()
             }
         }
     }
