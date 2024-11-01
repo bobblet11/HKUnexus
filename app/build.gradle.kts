@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     id("org.jetbrains.kotlin.plugin.serialization") version "2.0.0"
+    alias(libs.plugins.google.android.libraries.mapsplatform.secrets.gradle.plugin)
 
 }
 
@@ -43,7 +44,7 @@ android {
 }
 
 dependencies {
-
+    implementation(libs.androidx.cardview)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
@@ -61,7 +62,10 @@ dependencies {
     implementation(libs.ktor.client.android)
     implementation(libs.androidx.legacy.support.v4)
     implementation(libs.androidx.fragment.ktx)
+    implementation("com.google.code.gson:gson:2.8.9")
+    implementation(libs.play.services.maps) // Check for the latest version
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
 }

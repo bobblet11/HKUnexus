@@ -5,15 +5,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.lifecycle.ViewModelProvider
+import android.widget.Toast
+import androidx.fragment.app.viewModels
 import com.example.hkunexus.databinding.FragmentMyEventsBinding
+
 class MyEventsFragment : Fragment() {
 
     private var _binding: FragmentMyEventsBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
+    private val viewModel: MyEventsViewModel by viewModels()
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -21,17 +20,15 @@ class MyEventsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val myGroupsViewModel =
-            ViewModelProvider(this).get(MyEventsViewModel::class.java)
-
         _binding = FragmentMyEventsBinding.inflate(inflater, container, false)
-        val root: View = binding.root
-
-        val textView: TextView = binding.textMyEvents
-        myGroupsViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
+        val eventListAdapter = EventListAdapter(viewModel.uiState.value.listOfEventsToDisplay)
+        eventListAdapter.setPostPageCallBack {
+                position: Int ->
+            Toast.makeText(context, "Should go to post page $position", Toast.LENGTH_SHORT).show()
         }
-        return root
+        binding.myEventsClubsRecycler.adapter = eventListAdapter
+
+        return binding.root
     }
 
     override fun onDestroyView() {

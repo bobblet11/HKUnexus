@@ -1,8 +1,7 @@
 package com.example.hkunexus
 
 import android.os.Bundle
-import android.util.Log
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -12,17 +11,8 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.hkunexus.databinding.ActivityMainBinding
-import io.github.jan.supabase.auth.Auth
-import io.github.jan.supabase.auth.OtpType
-import io.github.jan.supabase.auth.auth
-import io.github.jan.supabase.auth.providers.builtin.Email
-import io.github.jan.supabase.createSupabaseClient
-import io.github.jan.supabase.postgrest.Postgrest
-import androidx.lifecycle.lifecycleScope
-import com.example.hkunexus.data.SupabaseSingleton
-import com.example.hkunexus.ui.homePages.dashboard.DashboardFragment
-import io.github.jan.supabase.SupabaseClient
-import kotlinx.coroutines.launch
+import com.google.android.material.bottomnavigation.BottomNavigationView
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -45,10 +35,10 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
-        val dfrag = DashboardFragment()
-        dfrag.accessToken = SupabaseSingleton.getAccessToken()
-        dfrag.mainActivity = this;
-        addFragment( dfrag, false, "Dashboard")
+//        val dfrag = DashboardFragment()
+//        dfrag.accessToken = SupabaseSingleton.getAccessToken()
+//        dfrag.mainActivity = this;
+//        addFragment( dfrag, false, "Dashboard")
 
 
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -71,17 +61,19 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-
-
-
+        actionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
+        when (item.itemId) {
+            android.R.id.home -> {
+                onBackPressedDispatcher.onBackPressed()
+                return true
+            }
 
-
-
-
-
-
+            else -> return super.onOptionsItemSelected(item)
+        }
+    }
 
 }

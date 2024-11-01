@@ -61,10 +61,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="8"
-                    android:autofillHints="@string/prompt_email"
-                    android:hint="@string/prompt_email"
-                    android:inputType="textEmailAddress"
-                    android:selectAllOnFocus="true" />
+                    android:hint="email"
+                    android:selectAllOnFocus="false"/>
 
                 <TextView
                     android:id="@+id/textView"
@@ -85,11 +83,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_weight="0"
-                android:autofillHints="@string/prompt_password"
-                android:hint="@string/prompt_password"
+                android:hint="password"
                 android:imeActionLabel="@string/action_sign_in_short"
                 android:imeOptions="actionDone"
-                android:inputType="textPassword"
+                android:inputType="text|textPassword"
                 android:selectAllOnFocus="true" />
 
             <Button
