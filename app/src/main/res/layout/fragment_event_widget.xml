@@ -15,20 +15,24 @@
             android:id="@+id/event_widget_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="10dp"
-            android:backgroundTint="@color/cardview_shadow_end_color"
+            android:layout_marginVertical="15dp"
+            android:background="@color/ivory"
             android:padding="20dp"
-            app:cardCornerRadius="10dp"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginHorizontal="15dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:padding = "15dp">
+
+
 
                 <TextView
                     android:id="@+id/eventName"
@@ -36,12 +40,14 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="Event Name"
-                    android:textSize="34sp" />
+                    android:textSize="30sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="20sp"
+                    android:layout_marginTop="5sp"
                     android:orientation="horizontal">
 
                     <TextView
@@ -51,7 +57,8 @@
                         android:layout_weight="1"
                         android:gravity="left"
                         android:text="Date"
-                        android:textSize="20sp" />
+                        android:textSize="18sp"
+                        android:layout_marginHorizontal="3dp"/>
 
                     <TextView
                         android:id="@+id/eventName5"
@@ -60,26 +67,27 @@
                         android:layout_weight="1"
                         android:gravity="left"
                         android:text="Time"
-                        android:textSize="20sp" />
+                        android:textSize="18sp"
+                        android:layout_marginHorizontal="3dp"/>
                 </LinearLayout>
 
                 <TextView
                     android:id="@+id/eventName6"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20sp"
                     android:gravity="left"
                     android:text="Event Location"
-                    android:textSize="14sp" />
+                    android:textSize="18sp"
+                    android:layout_marginHorizontal="3dp"/>
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/maps_card"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginVertical="10dp"
+                    android:layout_marginVertical="5dp"
                     android:backgroundTint="@color/cardview_shadow_end_color"
                     android:minHeight="100dp"
-                    app:cardCornerRadius="5dp">
+                    app:cardCornerRadius="10dp">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"

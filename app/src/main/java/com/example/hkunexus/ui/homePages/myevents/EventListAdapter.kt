@@ -44,9 +44,9 @@ class EventListAdapter(private val dataSet: List<EventDto>) :
         val localTime = localDateTime.toLocalTime().toString()
 
         viewHolder.eventName.text = event.title
-        viewHolder.eventDate.text = "Date: $localDate" // Use the local date part
-        viewHolder.eventTime.text = "Time: $localTime" // Use the local time part
-        viewHolder.eventLocation.text = "Location: " + event.location
+        viewHolder.eventDate.text = "Date:  $localDate" // Use the local date part
+        viewHolder.eventTime.text = "Time:  $localTime" // Use the local time part
+        viewHolder.eventLocation.text = "Location:  " + event.location
 
         viewHolder.cardView.setOnClickListener {
             goToPostPage(position)
