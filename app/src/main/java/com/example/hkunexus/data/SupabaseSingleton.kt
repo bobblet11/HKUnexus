@@ -2,10 +2,12 @@ package com.example.hkunexus.data
 
 import android.util.Log
 import com.example.hkunexus.data.model.Club
+import com.example.hkunexus.data.model.Event
 import com.example.hkunexus.data.model.EventPost
 import com.example.hkunexus.data.model.GenericPost
 import com.example.hkunexus.data.model.Post
 import com.example.hkunexus.data.model.dto.ClubDto
+import com.example.hkunexus.data.model.dto.EventDto
 import com.example.hkunexus.data.model.dto.PostDto
 import com.example.hkunexus.data.model.dto.Tag
 import com.example.hkunexus.data.model.dto.UserToClubDto
@@ -477,4 +479,23 @@ object SupabaseSingleton{
         }
     }
 
+    public fun getEventFromUser(): List<EventDto> {
+
+        return runBlocking {
+            val userId = currentUser?.id ?: return@runBlocking emptyList()
+            val func_name = "get_event_from_user";
+            try {
+                val result = client!!.postgrest.rpc(func_name, buildJsonObject {
+                    put("user_uuid", Json.encodeToJsonElement(userId))
+                })
+                Log.d("SupabaseSingleton", "$func_name rpc, $result")
+                val output = result.decodeList<EventDto>();
+                Log.d("SupabaseSingleton", "$func_name rpc output, $output")
+                return@runBlocking output
+            } catch (e: Exception) {
+                Log.d("SupabaseSingleton", "Failure, $e")
+                return@runBlocking emptyList()
+            }
+        }
+    }
 }

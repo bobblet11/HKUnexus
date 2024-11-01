@@ -9,6 +9,7 @@ import com.example.hkunexus.data.model.EventPost
 import com.example.hkunexus.data.model.GenericPost
 import com.example.hkunexus.data.model.Post
 import com.example.hkunexus.data.model.UserProfile
+import com.example.hkunexus.data.model.dto.EventDto
 import io.github.jan.supabase.auth.user.UserInfo
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -16,7 +17,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
 data class MyEventsUiState(
-    val listOfEventsToDisplay: List<EventPost> = listOf(),
+    val listOfEventsToDisplay: List<EventDto> = listOf(),
     )
 
 class MyEventsViewModel : ViewModel() {
@@ -33,25 +34,14 @@ class MyEventsViewModel : ViewModel() {
         //FETCH USING SUPABASE
         //USE USER ID HERE FROM SINGLETON
 
-        val tempList = SupabaseSingleton.getEventPostByUser()
+        val tempList = SupabaseSingleton.getEventFromUser()
 
-        if (tempList == null){
-            Log.d("MyEventsViewModel", "getEventPostByUser")
-        }
-        else {
-            for (item: EventPost in tempList) {
+        for (item: EventDto in tempList) {
 
-                if (item.body.length >= MAX_NUM_CHAR_IN_EVENT_CARD_DESCRIPTION) {
-                    val newPostText =
-                        item.body.substring(0, MAX_NUM_CHAR_IN_EVENT_CARD_DESCRIPTION - 4) + "..."
-                    item.body = newPostText
-                }
-
-                _uiState.update {
-                    it.copy(
-                        listOfEventsToDisplay = tempList
-                    )
-                }
+            _uiState.update {
+                it.copy(
+                    listOfEventsToDisplay = tempList
+                )
             }
         }
     }
