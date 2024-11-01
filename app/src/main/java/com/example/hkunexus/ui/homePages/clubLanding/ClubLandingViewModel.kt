@@ -26,7 +26,7 @@ data class ClubLandingUiState(
 )
 
 data class PostInClubLandingUiState(
-    val posts: Array<PostDto> = arrayOf(),
+    val posts: Array<Post> = arrayOf(),
 )
 
 
@@ -85,7 +85,7 @@ class ClubLandingViewModel : ViewModel() {
         //TODO: add SUPASBASE RPC here
     }
 
-    private fun updateClubPosts(newPosts: Array<PostDto>){
+    private fun updateClubPosts(newPosts: Array<Post>){
         _uiStatePosts.update {
             it.copy(
                 posts = newPosts
@@ -124,10 +124,20 @@ class ClubLandingViewModel : ViewModel() {
 
     private fun fetchPosts() {
         // TODO: FETCH USING SUPABASE using clubID
-        var tempList: Array<PostDto> = SupabaseSingleton.getPostsFromGroup(clubID).toTypedArray()
-//        if (tempList.isEmpty()){
-//            tempList = TempData.clubPosts
-//        }
+//        var tempList: Array<PostDto> = SupabaseSingleton.getPostsFromGroup(clubID).toTypedArray()
+        var tempList: Array<Post> = TempData.clubPosts
+        if (tempList.isEmpty()){
+            tempList = TempData.clubPosts
+        }
+
+        for (item: Post in tempList) {
+
+            if (item.postText.length >= MAX_NUM_CHAR_IN_EVENT_CARD_DESCRIPTION) {
+                val newPostText =
+                    item.postText.substring(0, MAX_NUM_CHAR_IN_EVENT_CARD_DESCRIPTION - 4) + "..."
+                item.postText = newPostText
+            }
+        }
 
 //        for (item: PostDto in tempList) {
 //
