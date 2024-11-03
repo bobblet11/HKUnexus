@@ -361,6 +361,26 @@ object SupabaseSingleton{
         }
     }
 
+    public fun searchClubs(tag_ids : Array<String>, query : String): List<ClubDto>?{
+        return runBlocking {
+            val func_name = "search_clubs";
+            val func_param = buildJsonObject {
+                put("tag_ids", Json.encodeToJsonElement(tag_ids)),
+                put("query",  query)
+            }
+            try {
+                val result = client!!.postgrest.rpc(func_name, func_param)
+                Log.d("SupabaseSingleton", "$func_name rpc, $result")
+                val output = result.decodeList<ClubDto>();
+                Log.d("SupabaseSingleton", "$func_name rpc output, $output")
+                return@runBlocking output
+            } catch (e: Exception){
+                Log.d("SupabaseSingleton", "Failure, $e")
+                return@runBlocking null
+            }
+        }
+    }
+
     public fun getEventPostByUser(): List<EventPost>?{
         return runBlocking {
             val userId = currentUser?.id ?: return@runBlocking null
@@ -435,5 +455,7 @@ object SupabaseSingleton{
 
 
     }
+
+
 
 }
