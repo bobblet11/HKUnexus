@@ -7,9 +7,6 @@ import androidx.lifecycle.ViewModel
 import com.example.hkunexus.data.SupabaseSingleton
 import com.example.hkunexus.data.TempData
 import com.example.hkunexus.data.UserSingleton
-import com.example.hkunexus.data.model.Club
-import com.example.hkunexus.data.model.Event
-import com.example.hkunexus.data.model.Post
 import com.example.hkunexus.data.model.dto.ClubDto
 import com.example.hkunexus.data.model.dto.PostDto
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,7 +23,7 @@ data class ClubLandingUiState(
 )
 
 data class PostInClubLandingUiState(
-    val posts: Array<Post> = arrayOf(),
+    val posts: Array<PostDto> = arrayOf(),
 )
 
 
@@ -42,10 +39,6 @@ class ClubLandingViewModel : ViewModel() {
     private var clubID:String = ""
 
     private val MAX_NUM_CHAR_IN_EVENT_CARD_DESCRIPTION = 80;
-
-    init {
-        fetchPosts()
-    }
 
     public fun setClubID(newClubID: String?, context: Context?){
         if (newClubID == null){
@@ -85,7 +78,7 @@ class ClubLandingViewModel : ViewModel() {
         //TODO: add SUPASBASE RPC here
     }
 
-    private fun updateClubPosts(newPosts: Array<Post>){
+    private fun updateClubPosts(newPosts: Array<PostDto>){
         _uiStatePosts.update {
             it.copy(
                 posts = newPosts
@@ -113,40 +106,17 @@ class ClubLandingViewModel : ViewModel() {
         val numOfMembers = SupabaseSingleton.getNoOfMembersOfClub(clubID)
         tempClub.numberOfMembers =numOfMembers
 
-        val isJoined = SupabaseSingleton.checkIsJoined(clubID, UserSingleton.userID)
-
+        val joined = SupabaseSingleton.checkIsJoined(clubID, UserSingleton.userID)
         Log.d("clubLandingViewModel", tempClub.toString())
-        if (tempClub == null){
-            tempClub = TempData.clubs[0]
-        }
+        tempClub.joined =joined
         updateClubInfo(tempClub)
     }
 
     private fun fetchPosts() {
         // TODO: FETCH USING SUPABASE using clubID
-//        var tempList: Array<PostDto> = SupabaseSingleton.getPostsFromGroup(clubID).toTypedArray()
-        var tempList: Array<Post> = TempData.clubPosts
-        if (tempList.isEmpty()){
-            tempList = TempData.clubPosts
-        }
-
-        for (item: Post in tempList) {
-
-            if (item.postText.length >= MAX_NUM_CHAR_IN_EVENT_CARD_DESCRIPTION) {
-                val newPostText =
-                    item.postText.substring(0, MAX_NUM_CHAR_IN_EVENT_CARD_DESCRIPTION - 4) + "..."
-                item.postText = newPostText
-            }
-        }
-
-//        for (item: PostDto in tempList) {
-//
-//            if (item.body.length >= MAX_NUM_CHAR_IN_EVENT_CARD_DESCRIPTION) {
-//                val newPostText =
-//                    item.body.substring(0, MAX_NUM_CHAR_IN_EVENT_CARD_DESCRIPTION - 4) + "..."
-//                item.body = newPostText
-//            }
-//        }
+        Log.d("cTEST", clubID)
+        val tempList: Array<PostDto> = SupabaseSingleton.getPostsFromClub(clubID).toTypedArray()
+        Log.d("clubLandingViewModel", tempList.toString())
         updateClubPosts(tempList)
     }
 }

@@ -7,8 +7,6 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hkunexus.R
-import com.example.hkunexus.data.model.Event
-import com.example.hkunexus.data.model.EventPost
 import com.example.hkunexus.data.model.dto.EventDto
 import java.time.ZoneId
 import java.time.ZonedDateTime

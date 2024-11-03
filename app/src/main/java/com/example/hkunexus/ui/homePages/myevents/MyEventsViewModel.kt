@@ -4,10 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.hkunexus.data.SupabaseSingleton
 import com.example.hkunexus.data.TempData
-import com.example.hkunexus.data.model.Event
 import com.example.hkunexus.data.model.EventPost
-import com.example.hkunexus.data.model.GenericPost
-import com.example.hkunexus.data.model.Post
 import com.example.hkunexus.data.model.UserProfile
 import com.example.hkunexus.data.model.dto.EventDto
 import io.github.jan.supabase.auth.user.UserInfo
