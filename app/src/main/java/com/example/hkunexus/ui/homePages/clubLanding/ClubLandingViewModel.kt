@@ -1,13 +1,17 @@
 package com.example.hkunexus.ui.homePages.clubLanding
 
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
+import com.example.hkunexus.data.SupabaseSingleton
 import com.example.hkunexus.data.TempData
+import com.example.hkunexus.data.UserSingleton
 import com.example.hkunexus.data.model.Club
 import com.example.hkunexus.data.model.Event
 import com.example.hkunexus.data.model.Post
 import com.example.hkunexus.data.model.dto.ClubDto
+import com.example.hkunexus.data.model.dto.PostDto
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -35,7 +39,7 @@ class ClubLandingViewModel : ViewModel() {
     private val _uiStatePosts = MutableStateFlow(PostInClubLandingUiState())
     val uiStatePosts: StateFlow<PostInClubLandingUiState> = _uiStatePosts.asStateFlow()
 
-    private var clubID = 0
+    private var clubID:String = ""
 
     private val MAX_NUM_CHAR_IN_EVENT_CARD_DESCRIPTION = 80;
 
@@ -43,7 +47,7 @@ class ClubLandingViewModel : ViewModel() {
         fetchPosts()
     }
 
-    fun setClubID(newClubID: Int?, context: Context?){
+    public fun setClubID(newClubID: String?, context: Context?){
         if (newClubID == null){
             Toast.makeText(
                 context,
@@ -52,8 +56,8 @@ class ClubLandingViewModel : ViewModel() {
             ).show()
 
             //render some error data using data associated with clubID 0
-            clubID = 0
-        } else{
+            clubID = ""
+        }else{
             clubID = newClubID
         }
 
@@ -103,14 +107,28 @@ class ClubLandingViewModel : ViewModel() {
 
     private fun fetchClubData() {
         // TODO: Fetch using Supabase using clubID
-        val club = TempData.clubs[this.clubID]
-        updateClubInfo(club)
+        Log.d("clubLandingViewModel", clubID)
+        var tempClub: ClubDto = SupabaseSingleton.getClubById(clubID)!!
+
+        val numOfMembers = SupabaseSingleton.getNoOfMembersOfClub(clubID)
+        tempClub.numberOfMembers =numOfMembers
+
+        val isJoined = SupabaseSingleton.checkIsJoined(clubID, UserSingleton.userID)
+
+        Log.d("clubLandingViewModel", tempClub.toString())
+        if (tempClub == null){
+            tempClub = TempData.clubs[0]
+        }
+        updateClubInfo(tempClub)
     }
 
     private fun fetchPosts() {
         // TODO: FETCH USING SUPABASE using clubID
-
-        val tempList: Array<Post> = TempData.clubPosts
+//        var tempList: Array<PostDto> = SupabaseSingleton.getPostsFromGroup(clubID).toTypedArray()
+        var tempList: Array<Post> = TempData.clubPosts
+        if (tempList.isEmpty()){
+            tempList = TempData.clubPosts
+        }
 
         for (item: Post in tempList) {
 
@@ -120,6 +138,15 @@ class ClubLandingViewModel : ViewModel() {
                 item.postText = newPostText
             }
         }
+
+//        for (item: PostDto in tempList) {
+//
+//            if (item.body.length >= MAX_NUM_CHAR_IN_EVENT_CARD_DESCRIPTION) {
+//                val newPostText =
+//                    item.body.substring(0, MAX_NUM_CHAR_IN_EVENT_CARD_DESCRIPTION - 4) + "..."
+//                item.body = newPostText
+//            }
+//        }
         updateClubPosts(tempList)
     }
 }

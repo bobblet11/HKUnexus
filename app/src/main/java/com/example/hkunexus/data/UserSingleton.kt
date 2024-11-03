@@ -34,7 +34,7 @@ import kotlin.uuid.Uuid
 
 
 object UserSingleton{
-    private var userID = 0
+    public var userID = ""
     private var displayName = ""
     private val joinedClubIDs: ArrayList<Int> = arrayListOf()
     private val joinedEventIDs:  ArrayList<Int> = arrayListOf()
@@ -44,7 +44,7 @@ object UserSingleton{
     }
 
     public fun logout(){
-        userID = 0
+        userID = ""
         displayName = ""
         joinedClubIDs.clear()
         joinedEventIDs.clear()

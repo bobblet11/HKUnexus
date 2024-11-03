@@ -27,4 +27,6 @@ data class PostDto(
     @SerialName("created_at")
     val createdAt : String,
 
+    val isEvent : Boolean = true,
+
 )

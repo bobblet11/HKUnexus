@@ -2,36 +2,88 @@ package com.example.hkunexus.ui.homePages.clubLanding
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hkunexus.R
 import com.example.hkunexus.data.model.Post
+import com.example.hkunexus.data.model.dto.PostDto
 
-class PostInClubListAdapter(private val dataSet: ArrayList<Post>) :
-    RecyclerView.Adapter<PostInClubViewHolder>() {
+public final class PostInClubListAdapter(private val dataSet: ArrayList<Post>) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var goToPostPage: (Int) -> Unit = { postID: Int -> }
 
-    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): PostInClubViewHolder {
-        //creates the PostInCLubViewHolder i.e. a post card/event post card.
-        val view = LayoutInflater.from(viewGroup.context).inflate(R.layout.fragment_post_event_card, viewGroup, false)
+    override public fun getItemViewType(position: Int): Int {
+        // Just as an example, return 0 or 2 depending on position
+        // Note that unlike in ListView adapters, types don't have to be contiguous
 
-        return PostInClubViewHolder(view)
+//        return if (dataSet[position].isEvent) 0 else 1
+        return position % 2 * 2;
     }
 
-    override fun onBindViewHolder(viewHolder: PostInClubViewHolder, position: Int) {
+    override public fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        //creates the PostInCLubViewHolder i.e. a post card/event post card.
+        when(viewType){
+            //EVENT POST
+            0 -> {
+                val view = LayoutInflater.from(viewGroup.context).inflate(R.layout.fragment_post_event_card, viewGroup, false)
+                return EventPostInClubViewHolder(view)
+            }
+            //NORMAL POST
+            1 -> {
+                val view = LayoutInflater.from(viewGroup.context).inflate(R.layout.fragment_post_card, viewGroup, false)
+                return PostInClubViewHolder(view)
+            }
+            //DEFAULT IS NORMAL POST
+            else ->{
+                val view = LayoutInflater.from(viewGroup.context).inflate(R.layout.fragment_post_card, viewGroup, false)
+                return PostInClubViewHolder(view)
+            }
+        }
 
-        //here i need to assign the values of the card differently depending on whether the post is EVENT or NORMAL
+    }
 
-//        if (dataSet[position].isEvent){
-//            //create event post instead
-//        }
+    override public fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
-        viewHolder.postersUsername.text = dataSet[position].posterUsername
-        viewHolder.compactDescription.text = dataSet[position].postText
-        viewHolder.timeSincePosted.text = dataSet[position].timeSincePosted
 
-        viewHolder.cardView.setOnClickListener {
-            goToPostPage(position)
+
+        when(holder.getItemViewType()){
+            //EVENT POST
+            0 -> {
+                val viewHolder: EventPostInClubViewHolder = holder as EventPostInClubViewHolder
+                viewHolder.postersUsername.text = dataSet[position].posterUsername
+                viewHolder.description.text = dataSet[position].postText
+                viewHolder.timeSincePosted.text = dataSet[position].timeSincePosted
+                viewHolder.eventLocation.text="Sai wan ho"
+                viewHolder.eventTime.text="today, 11pm"
+                viewHolder.joinButton.visibility = View.VISIBLE
+                viewHolder.leaveButton.visibility = View.INVISIBLE
+                viewHolder.cardView.setOnClickListener {
+                    goToPostPage(position)
+                }
+            }
+            //NORMAL POST
+            1 -> {
+                val viewHolder: PostInClubViewHolder = holder as PostInClubViewHolder
+                viewHolder.postersUsername.text = dataSet[position].posterUsername
+                viewHolder.description.text = dataSet[position].postText
+                viewHolder.timeSincePosted.text = dataSet[position].timeSincePosted
+                viewHolder.cardView.setOnClickListener {
+                    goToPostPage(position)
+                }
+            }
+            //DEFAULT IS NORMAL POST
+            else ->{
+                val viewHolder: PostInClubViewHolder = holder as PostInClubViewHolder
+                viewHolder.postersUsername.text = dataSet[position].posterUsername
+                viewHolder.description.text = dataSet[position].postText
+                viewHolder.timeSincePosted.text = dataSet[position].timeSincePosted
+                viewHolder.cardView.setOnClickListener {
+                    goToPostPage(position)
+                }
+            }
         }
     }
 
