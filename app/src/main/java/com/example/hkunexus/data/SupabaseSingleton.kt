@@ -368,7 +368,7 @@ object SupabaseSingleton{
         return runBlocking {
             val func_name = "search_clubs";
             val func_param = buildJsonObject {
-                put("tag_ids", Json.encodeToJsonElement(tag_ids)
+                put("tag_ids", Json.encodeToJsonElement(tag_ids))
                 put("query",  query)
             }
             try {
