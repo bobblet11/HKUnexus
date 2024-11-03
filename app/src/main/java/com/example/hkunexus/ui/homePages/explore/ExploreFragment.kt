@@ -1,6 +1,7 @@
 package com.example.hkunexus.ui.homePages.explore
 
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -74,8 +75,12 @@ class ExploreFragment : Fragment()  {
         val searchView = binding.clubSearchBar
         searchView.isIconifiedByDefault = false
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            // There won't be any update to the data to reduce cost
+            // There won't be any update to the data (except when empty) to reduce cost
             override fun onQueryTextChange(kw: String): Boolean {
+                if (TextUtils.isEmpty(kw)) {
+                    viewModel.setKeyword(kw)
+                    viewModel.fetchClubs()
+                }
                 return false
             }
 

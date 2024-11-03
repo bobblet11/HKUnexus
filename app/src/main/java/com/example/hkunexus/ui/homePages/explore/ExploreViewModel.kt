@@ -66,11 +66,7 @@ class ExploreViewModel : ViewModel() {
         val id = selectedTagID
 
         tempList = if (id == null) {
-            if (query == "") {
-                SupabaseSingleton.getRandomClubs()?.toTypedArray()
-            } else {
-                SupabaseSingleton.searchClubsByLikeName(query)?.toTypedArray()
-            }
+            SupabaseSingleton.searchClubsByLikeName(query)?.toTypedArray()
         } else {
             SupabaseSingleton.searchClubs(arrayOf(id), "")?.toTypedArray()
         }
