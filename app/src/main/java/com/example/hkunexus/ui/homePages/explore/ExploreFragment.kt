@@ -13,7 +13,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.hkunexus.R
-import com.example.hkunexus.data.model.Club
 import com.example.hkunexus.data.model.dto.Tag
 import com.example.hkunexus.databinding.FragmentExploreBinding
 import kotlinx.coroutines.CoroutineScope
@@ -45,8 +44,8 @@ class ExploreFragment : Fragment()  {
 
         binding.exploreClubsRecycler.adapter = exploreListAdapter
 
-        configureSearchBar(exploreListAdapter)
-        constructClubTagAdaptor(exploreListAdapter)
+        configureSearchBar()
+        constructClubTagAdaptor()
 
         lifecycleScope.launch {
             viewModel.uiState.collect { state ->
@@ -71,7 +70,7 @@ class ExploreFragment : Fragment()  {
         _binding = null
     }
 
-    private fun configureSearchBar(exploreListAdapter: ExploreListAdapter) {
+    private fun configureSearchBar() {
         val searchView = binding.clubSearchBar
         searchView.isIconifiedByDefault = false
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -89,7 +88,7 @@ class ExploreFragment : Fragment()  {
         })
     }
 
-    private fun constructClubTagAdaptor(exploreListAdapter: ExploreListAdapter) {
+    private fun constructClubTagAdaptor() {
         val spinner: Spinner = binding.clubTagsSelector
         spinner.onItemSelectedListener = (object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {

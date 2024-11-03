@@ -1,11 +1,7 @@
 package com.example.hkunexus.data
 
 import android.util.Log
-import com.example.hkunexus.data.model.Club
-import com.example.hkunexus.data.model.Event
 import com.example.hkunexus.data.model.EventPost
-import com.example.hkunexus.data.model.GenericPost
-import com.example.hkunexus.data.model.Post
 import com.example.hkunexus.data.model.dto.ClubDto
 import com.example.hkunexus.data.model.dto.EventDto
 import com.example.hkunexus.data.model.dto.PostDto
@@ -26,17 +22,10 @@ import kotlinx.serialization.json.put
 import kotlin.system.exitProcess
 
 import io.github.jan.supabase.auth.OtpType
-import io.github.jan.supabase.putJsonObject
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonArray
-import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.encodeToJsonElement
-import kotlinx.serialization.json.putJsonArray
-import org.json.JSONArray
-import java.util.UUID
-import kotlin.uuid.Uuid
 
 
 object SupabaseSingleton{

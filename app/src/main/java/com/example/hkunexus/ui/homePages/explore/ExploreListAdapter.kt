@@ -5,7 +5,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hkunexus.R
-import com.example.hkunexus.data.model.Club
 import com.example.hkunexus.data.model.dto.ClubDto
 import android.view.ViewGroup as ViewGroup
 

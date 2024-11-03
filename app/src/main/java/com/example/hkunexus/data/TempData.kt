@@ -1,6 +1,5 @@
 package com.example.hkunexus.data
 
-import com.example.hkunexus.data.model.Club
 import com.example.hkunexus.data.model.Event
 import com.example.hkunexus.data.model.GenericPost
 import com.example.hkunexus.data.model.Post
