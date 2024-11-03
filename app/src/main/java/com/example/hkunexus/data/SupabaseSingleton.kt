@@ -200,7 +200,6 @@ object SupabaseSingleton{
 
         }
 
-
         return true
     }
 
@@ -245,7 +244,6 @@ object SupabaseSingleton{
         }
 
     }
-
 
     public fun getTagById(tag_id : String): Tag?{
         return runBlocking {

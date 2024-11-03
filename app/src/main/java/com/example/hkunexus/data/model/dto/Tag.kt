@@ -10,6 +10,6 @@ data class Tag(
     val id: String?,
 
     @SerialName("name")
-    val tagName: String?,
+    val tagName: String,
 
     )

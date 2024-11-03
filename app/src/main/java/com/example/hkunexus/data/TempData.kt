@@ -5,13 +5,14 @@ import com.example.hkunexus.data.model.Event
 import com.example.hkunexus.data.model.GenericPost
 import com.example.hkunexus.data.model.Post
 import com.example.hkunexus.data.model.dto.ClubDto
+import com.example.hkunexus.data.model.dto.Tag
 
 object TempData {
 
-    val tags: Array<String> = arrayOf(
-        "Genshin",
-        "Relax",
-        "Mahjong"
+    val tags: Array<Tag> = arrayOf(
+        Tag("a", "Genshin"),
+        Tag("b", "Relax"),
+        Tag("c", "Mahjong")
     )
 
     val clubs: Array<ClubDto> = arrayOf(
