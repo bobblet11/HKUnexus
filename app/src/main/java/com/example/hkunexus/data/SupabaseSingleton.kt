@@ -2,14 +2,15 @@ package com.example.hkunexus.data
 
 import android.util.Log
 import com.example.hkunexus.data.model.EventPost
+import com.example.hkunexus.data.model.UserProfile
 import com.example.hkunexus.data.model.dto.ClubDto
 import com.example.hkunexus.data.model.dto.EventDto
 import com.example.hkunexus.data.model.dto.PostDto
 import com.example.hkunexus.data.model.dto.Tag
+import com.example.hkunexus.data.model.dto.UserProfileDto
 import com.example.hkunexus.data.model.dto.UserToClubDto
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.auth.Auth
-import io.github.jan.supabase.auth.OtpType
 import io.github.jan.supabase.auth.auth
 import io.github.jan.supabase.auth.providers.builtin.Email
 import io.github.jan.supabase.auth.user.UserInfo
@@ -18,13 +19,15 @@ import io.github.jan.supabase.createSupabaseClient
 import io.github.jan.supabase.postgrest.Postgrest
 import io.github.jan.supabase.postgrest.postgrest
 import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.put
+import kotlin.system.exitProcess
+
+import io.github.jan.supabase.auth.OtpType
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.encodeToJsonElement
-import kotlinx.serialization.json.put
-import kotlin.system.exitProcess
 
 
 object SupabaseSingleton{
@@ -76,6 +79,9 @@ object SupabaseSingleton{
                 accessToken = session!!.accessToken
 
                 Log.d("SupabaseSingleton", "Sign-in successful: $result")
+                UserSingleton.userID = currentUser!!.id
+//                UserSingleton.userProfile = getUserProfile(userID = currentUser!!.id)
+
 
                 return@runBlocking true
 
@@ -104,6 +110,25 @@ object SupabaseSingleton{
             }
         }
     }
+
+//    fun getUserProfile(userID: String): UserProfileDto? {
+//        val funcName = "get_display_name"
+//        val funcParam = buildJsonObject {
+//            put("user_id", userID)
+//        }
+//        return runBlocking {
+//            try {
+//                val result = client!!.postgrest.rpc(funcName, funcParam)
+//                Log.d("SupabaseSingleton", "$funcName rpc, $result")
+//                val output: UserProfileDto = result.decodeSingle<UserProfileDto>()
+//                Log.d("SupabaseSingleton", "$funcName rpc output, $output")
+//                return@runBlocking output
+//            } catch (e: Exception) {
+//                Log.d("SupabaseSingleton", "Failure, $e")
+//                return@runBlocking null
+//            }
+//        }
+//    }
 
 
     fun isDisplayNameAvailable(displayName: String):Boolean{
@@ -187,14 +212,12 @@ object SupabaseSingleton{
             }
 
         }
-
-
     }
 
-    fun getClubById(club_uuid : String) : ClubDto?{
+    fun getClubById(clubUUID : String) : ClubDto?{
         return runBlocking {
             try {
-                val result = client!!.postgrest.rpc("get_club_by_id", buildJsonObject { put("club_uuid", club_uuid) })
+                val result = client!!.postgrest.rpc("get_club_by_id", buildJsonObject { put("club_uuid", clubUUID) })
                 Log.d("SupabaseSingleton", "get_club_by_id_rpc, $result")
                 val output = result.decodeSingle<ClubDto>()
                 Log.d("SupabaseSingleton", "get_club_by_id_rpc_output, $output")
@@ -206,24 +229,17 @@ object SupabaseSingleton{
         }
     }
 
-    fun getNoOfMembersOfClub(club_uuid: String): Int{
+    fun getNoOfMembersOfClub(clubUUID: String): Int{
         return runBlocking {
-            @Serializable
-            data class OutputDto(
-                @SerialName("id")
-                val id : String,
-                @SerialName("membercount")
-                val memberCount : Int,
-            )
-            val func_name = "get_no_of_members_of_club"
-            val func_param = buildJsonObject {
-                put("club_uuid", club_uuid)
+            val funcName = "get_no_of_members_of_club"
+            val funcParam = buildJsonObject {
+                put("club_uuid", clubUUID)
             }
             try {
-                val result = client!!.postgrest.rpc(func_name, func_param)
-                Log.d("SupabaseSingleton", "$func_name rpc, $result")
-                val output = result.decodeSingle<OutputDto>().memberCount
-                Log.d("SupabaseSingleton", "$func_name rpc output, $output")
+                val result = client!!.postgrest.rpc(funcName, funcParam)
+                Log.d("SupabaseSingleton", "$funcName rpc, $result")
+                val output = result.data.toInt()
+                Log.d("SupabaseSingleton", "$funcName rpc output, $output")
                 return@runBlocking output
             } catch (e: Exception){
                 Log.d("SupabaseSingleton", "Failure, $e")
@@ -233,11 +249,10 @@ object SupabaseSingleton{
 
     }
 
-
-    fun getTagById(tag_id : String): Tag?{
+    fun getTagById(tagID : String): Tag?{
         return runBlocking {
             try {
-                val result = client!!.postgrest.rpc("get_tag_by_id", buildJsonObject { put("tag_id", tag_id) })
+                val result = client!!.postgrest.rpc("get_tag_by_id", buildJsonObject { put("tag_id", tagID) })
                 Log.d("SupabaseSingleton", "get_tag_by_id_rpc, $result")
                 val output = result.decodeSingle<Tag>()
                 Log.d("SupabaseSingleton", "get_tag_by_id_rpc output, $output")
@@ -250,17 +265,17 @@ object SupabaseSingleton{
 
     }
 
-    fun getTagsOfClub(club_uuid: String): List<Tag>?{
+    fun getTagsOfClub(clubUUID: String): List<Tag>?{
         return runBlocking {
-            val func_name = "get_tags_of_club"
-            val func_param = buildJsonObject {
-                put("club_uuid", club_uuid)
+            val funcName = "get_tags_of_club"
+            val funcParam = buildJsonObject {
+                put("club_uuid", clubUUID)
             }
             try {
-                val result = client!!.postgrest.rpc(func_name, func_param)
-                Log.d("SupabaseSingleton", "$func_name rpc, $result")
+                val result = client!!.postgrest.rpc(funcName, funcParam)
+                Log.d("SupabaseSingleton", "$funcName rpc, $result")
                 val output = result.decodeList<Tag>()
-                Log.d("SupabaseSingleton", "$func_name rpc output, $output")
+                Log.d("SupabaseSingleton", "$funcName rpc output, $output")
                 return@runBlocking output
             } catch (e: Exception){
                 Log.d("SupabaseSingleton", "Failure, $e")
@@ -269,19 +284,19 @@ object SupabaseSingleton{
         }
     }
 
-    fun insertOrUpdateUserToClub(user_id_arg: String, club_id_arg:String, role_arg: String): UserToClubDto?{
+    fun insertOrUpdateUserToClub(userIDArg: String, clubIDArg:String, roleArg: String): UserToClubDto?{
         return runBlocking {
-            val func_name = "insert_or_update_user_to_club"
-            val func_param = buildJsonObject {
-                put("user_id_arg", user_id_arg)
-                put("club_id_arg", club_id_arg)
-                put("role_arg", role_arg)
+            val funcName = "insert_or_update_user_to_club"
+            val funcParam = buildJsonObject {
+                put("user_id_arg", userIDArg)
+                put("club_id_arg", clubIDArg)
+                put("role_arg", roleArg)
             }
             try {
-                val result = client!!.postgrest.rpc(func_name, func_param)
-                Log.d("SupabaseSingleton", "$func_name rpc, $result")
+                val result = client!!.postgrest.rpc(funcName, funcParam)
+                Log.d("SupabaseSingleton", "$funcName rpc, $result")
                 val output = result.decodeSingle<UserToClubDto>()
-                Log.d("SupabaseSingleton", "$func_name rpc output, $output")
+                Log.d("SupabaseSingleton", "$funcName rpc output, $output")
                 return@runBlocking output
             } catch (e: Exception){
                 Log.d("SupabaseSingleton", "Failure, $e")
@@ -291,18 +306,18 @@ object SupabaseSingleton{
 
     }
 
-    fun removeUserToClub(user_id_arg: String, club_id_arg:String): UserToClubDto?{
+    fun removeUserToClub(userIDArg: String, clubIDArg: String): UserToClubDto?{
         return runBlocking {
-            val func_name = "remove_user_to_club"
-            val func_param = buildJsonObject {
-                put("user_id_arg", user_id_arg)
-                put("club_id_arg", club_id_arg)
+            val funcName = "remove_user_to_club"
+            val funcParam = buildJsonObject {
+                put("user_id_arg", userIDArg)
+                put("club_id_arg", clubIDArg)
             }
             try {
-                val result = client!!.postgrest.rpc(func_name, func_param)
-                Log.d("SupabaseSingleton", "$func_name rpc, $result")
+                val result = client!!.postgrest.rpc(funcName, funcParam)
+                Log.d("SupabaseSingleton", "$funcName rpc, $result")
                 val output = result.decodeSingle<UserToClubDto>()
-                Log.d("SupabaseSingleton", "$func_name rpc output, $output")
+                Log.d("SupabaseSingleton", "$funcName rpc output, $output")
                 return@runBlocking output
             } catch (e: Exception){
                 Log.d("SupabaseSingleton", "Failure, $e")
@@ -314,15 +329,15 @@ object SupabaseSingleton{
 
     fun searchClubsByLikeName(query : String): List<ClubDto>?{
         return runBlocking {
-            val func_name = "search_clubs_by_like_name"
-            val func_param = buildJsonObject {
+            val funcName = "search_clubs_by_like_name"
+            val funcParam = buildJsonObject {
                 put("query", query)
             }
             try {
-                val result = client!!.postgrest.rpc(func_name, func_param)
-                Log.d("SupabaseSingleton", "$func_name rpc, $result")
+                val result = client!!.postgrest.rpc(funcName, funcParam)
+                Log.d("SupabaseSingleton", "$funcName rpc, $result")
                 val output = result.decodeList<ClubDto>()
-                Log.d("SupabaseSingleton", "$func_name rpc output, $output")
+                Log.d("SupabaseSingleton", "$funcName rpc output, $output")
                 return@runBlocking output
             } catch (e: Exception){
                 Log.d("SupabaseSingleton", "Failure, $e")
@@ -332,17 +347,17 @@ object SupabaseSingleton{
 
     }
 
-    fun searchClubsByTags(tag_ids : Array<String>): List<ClubDto>?{
+    fun searchClubsByTags(tagIDs : Array<String>): List<ClubDto>?{
         return runBlocking {
-            val func_name = "search_clubs_by_tags"
+            val funcName = "search_clubs_by_tags"
             try {
-                val result = client!!.postgrest.rpc(func_name, buildJsonObject {
-                    put("tag_ids", Json.encodeToJsonElement(tag_ids))
+                val result = client!!.postgrest.rpc(funcName, buildJsonObject {
+                    put("tag_ids", Json.encodeToJsonElement(tagIDs))
                     })
 
-                Log.d("SupabaseSingleton", "$func_name rpc, $result")
+                Log.d("SupabaseSingleton", "$funcName rpc, $result")
                 val output = result.decodeList<ClubDto>()
-                Log.d("SupabaseSingleton", "$func_name rpc output, $output")
+                Log.d("SupabaseSingleton", "$funcName rpc output, $output")
                 return@runBlocking output
             } catch (e: Exception){
                 Log.d("SupabaseSingleton", "Failure, $e")
@@ -351,18 +366,18 @@ object SupabaseSingleton{
         }
     }
 
-    fun searchClubs(tag_ids : Array<String>, query : String): List<ClubDto>?{
+    fun searchClubs(tagIDs : Array<String>, query : String): List<ClubDto>?{
         return runBlocking {
-            val func_name = "search_clubs"
-            val func_param = buildJsonObject {
-                put("tag_ids", Json.encodeToJsonElement(tag_ids))
+            val funcName = "search_clubs"
+            val funcParam = buildJsonObject {
+                put("tag_ids", Json.encodeToJsonElement(tagIDs))
                 put("query",  query)
             }
             try {
-                val result = client!!.postgrest.rpc(func_name, func_param)
-                Log.d("SupabaseSingleton", "$func_name rpc, $result")
+                val result = client!!.postgrest.rpc(funcName, funcParam)
+                Log.d("SupabaseSingleton", "$funcName rpc, $result")
                 val output = result.decodeList<ClubDto>()
-                Log.d("SupabaseSingleton", "$func_name rpc output, $output")
+                Log.d("SupabaseSingleton", "$funcName rpc output, $output")
                 return@runBlocking output
             } catch (e: Exception){
                 Log.d("SupabaseSingleton", "Failure, $e")
@@ -374,14 +389,14 @@ object SupabaseSingleton{
     fun getEventPostByUser(): List<EventPost>?{
         return runBlocking {
             val userId = currentUser?.id ?: return@runBlocking null
-            val func_name = "get_event_post_from_user"
+            val funcName = "get_event_post_from_user"
             try{
-                val result = client!!.postgrest.rpc(func_name, buildJsonObject {
+                val result = client!!.postgrest.rpc(funcName, buildJsonObject {
                     put("user_uuid", Json.encodeToJsonElement(userId))
                 })
-                Log.d("SupabaseSingleton", "$func_name rpc, $result")
+                Log.d("SupabaseSingleton", "$funcName rpc, $result")
                 val output = result.decodeList<EventPost>()
-                Log.d("SupabaseSingleton", "$func_name rpc output, $output")
+                Log.d("SupabaseSingleton", "$funcName rpc output, $output")
                 return@runBlocking output
             } catch (e: Exception){
                 Log.d("SupabaseSingleton", "Failure, $e")
@@ -392,12 +407,12 @@ object SupabaseSingleton{
 
     fun getRecentPosts(): List<EventPost>?{
         return runBlocking {
-            val func_name = "get_recent_posts"
+            val funcName = "get_recent_posts"
             try{
-                val result = client!!.postgrest.rpc(func_name)
-                Log.d("SupabaseSingleton", "$func_name rpc, $result")
+                val result = client!!.postgrest.rpc(funcName)
+                Log.d("SupabaseSingleton", "$funcName rpc, $result")
                 val output = result.decodeList<EventPost>()
-                Log.d("SupabaseSingleton", "$func_name rpc output, $output")
+                Log.d("SupabaseSingleton", "$funcName rpc output, $output")
                 return@runBlocking output
             } catch (e: Exception){
                 Log.d("SupabaseSingleton", "Failure, $e")
@@ -408,14 +423,14 @@ object SupabaseSingleton{
 
     fun getRandomClubs(): List<ClubDto>? {
         return runBlocking {
-            val func_name = "get_20_random_clubs"
+            val funcName = "get_20_random_clubs"
             try{
-                val result = client!!.postgrest.rpc(func_name)
+                val result = client!!.postgrest.rpc(funcName)
                 val resultData = result.data
-                Log.d("SupabaseSingleton", "$func_name rpc, $result")
+                Log.d("SupabaseSingleton", "$funcName rpc, $result")
                 Log.d("SupabaseSingleton", resultData)
                 val output = result.decodeList<ClubDto>()
-                Log.d("SupabaseSingleton", "$func_name rpc output, $output")
+                Log.d("SupabaseSingleton", "$funcName rpc output, $output")
                 return@runBlocking output
             } catch (e: Exception){
                 Log.d("SupabaseSingleton", "Failure, $e")
@@ -426,15 +441,15 @@ object SupabaseSingleton{
 
     fun searchTags(query : String): List<Tag>?{
         return runBlocking {
-            val func_name = "search_tags"
-            val func_param = buildJsonObject {
+            val funcName = "search_tags"
+            val funcParam = buildJsonObject {
                 put("query", query)
             }
             try {
-                val result = client!!.postgrest.rpc(func_name, func_param)
-                Log.d("SupabaseSingleton", "$func_name rpc, $result")
+                val result = client!!.postgrest.rpc(funcName, funcParam)
+                Log.d("SupabaseSingleton", "$funcName rpc, $result")
                 val output = result.decodeList<Tag>()
-                Log.d("SupabaseSingleton", "$func_name rpc output, $output")
+                Log.d("SupabaseSingleton", "$funcName rpc output, $output")
                 return@runBlocking output
             } catch (e: Exception){
                 Log.d("SupabaseSingleton", "Failure, $e")
@@ -446,17 +461,17 @@ object SupabaseSingleton{
 
     fun checkIsJoined(clubID: String, userID: String): Boolean {
         return runBlocking {
-            val func_name = "check_is_user_joined_to_club"
-            val func_param = buildJsonObject {
-                put("clubID", clubID)
-                put("userID", userID)
+            val funcName = "check_is_user_joined_to_club"
+            val funcParam = buildJsonObject {
+                put("clubid", clubID)
+                put("userid", userID)
             }
 
             try {
-                val result = client!!.postgrest.rpc(func_name, func_param)
-                Log.d("SupabaseSingleton", "$func_name rpc, $result")
+                val result = client!!.postgrest.rpc(funcName, funcParam)
+                Log.d("SupabaseSingleton", "$funcName rpc, $result")
                 val output: Boolean = result.data.toBoolean()
-                Log.d("SupabaseSingleton", "$func_name rpc output, $output")
+                Log.d("SupabaseSingleton", "$funcName rpc output, $output")
                 return@runBlocking output
             } catch (e: Exception) {
                 Log.d("SupabaseSingleton", "Failure, $e")
@@ -465,19 +480,20 @@ object SupabaseSingleton{
         }
     }
 
-    fun getPostsFromGroup(clubID: String): List<PostDto>{
+    fun getPostsFromClub(clubID: String): List<PostDto>{
 
         return runBlocking {
-            val func_name = "get_posts_from_club"
-            val func_param = buildJsonObject {
+            val funcName = "get_all_posts_and_events_from_a_club"
+            val funcParam = buildJsonObject {
                 put("given_club_id", clubID)
             }
 
             try {
-                val result = client!!.postgrest.rpc(func_name, func_param)
-                Log.d("SupabaseSingleton", "$func_name rpc, $result")
+                val result = client!!.postgrest.rpc(funcName, funcParam)
+                Log.d("SupabaseSingleton", "$funcName rpc, $result")
                 val output: List<PostDto> = result.decodeList<PostDto>()
-                Log.d("SupabaseSingleton", "$func_name rpc output, $output")
+                Log.d("SupabaseSingleton", "$funcName rpc output, $output")
+
                 return@runBlocking output
             } catch (e: Exception) {
                 Log.d("SupabaseSingleton", "Failure, $e")
@@ -486,18 +502,17 @@ object SupabaseSingleton{
         }
     }
 
-    fun getEventFromUser(): List<EventDto> {
-
+    fun getAllJoinedEvents(): List<EventDto> {
         return runBlocking {
             val userId = currentUser?.id ?: return@runBlocking emptyList()
-            val func_name = "get_event_from_user"
+            val funcName = "get_all_joined_events"
             try {
-                val result = client!!.postgrest.rpc(func_name, buildJsonObject {
+                val result = client!!.postgrest.rpc(funcName, buildJsonObject {
                     put("user_uuid", Json.encodeToJsonElement(userId))
                 })
-                Log.d("SupabaseSingleton", "$func_name rpc, $result")
+                Log.d("SupabaseSingleton", "$funcName rpc, $result")
                 val output = result.decodeList<EventDto>()
-                Log.d("SupabaseSingleton", "$func_name rpc output, $output")
+                Log.d("SupabaseSingleton", "$funcName rpc output, $output")
                 return@runBlocking output
             } catch (e: Exception) {
                 Log.d("SupabaseSingleton", "Failure, $e")

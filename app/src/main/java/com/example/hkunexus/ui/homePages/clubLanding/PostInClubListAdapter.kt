@@ -8,10 +8,10 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hkunexus.R
-import com.example.hkunexus.data.model.Post
+import com.example.hkunexus.data.SupabaseSingleton
 import com.example.hkunexus.data.model.dto.PostDto
 
-public final class PostInClubListAdapter(private val dataSet: ArrayList<Post>) :
+public final class PostInClubListAdapter(private val dataSet: ArrayList<PostDto>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var goToPostPage: (Int) -> Unit = { postID: Int -> }
 
@@ -19,8 +19,7 @@ public final class PostInClubListAdapter(private val dataSet: ArrayList<Post>) :
         // Just as an example, return 0 or 2 depending on position
         // Note that unlike in ListView adapters, types don't have to be contiguous
 
-//        return if (dataSet[position].isEvent) 0 else 1
-        return position % 2 * 2;
+        return if (dataSet[position].eventId == null) 1 else 0
     }
 
     override public fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -47,17 +46,17 @@ public final class PostInClubListAdapter(private val dataSet: ArrayList<Post>) :
 
     override public fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
-
-
-        when(holder.getItemViewType()){
+        when(holder.itemViewType){
             //EVENT POST
             0 -> {
                 val viewHolder: EventPostInClubViewHolder = holder as EventPostInClubViewHolder
-                viewHolder.postersUsername.text = dataSet[position].posterUsername
-                viewHolder.description.text = dataSet[position].postText
-                viewHolder.timeSincePosted.text = dataSet[position].timeSincePosted
-                viewHolder.eventLocation.text="Sai wan ho"
-                viewHolder.eventTime.text="today, 11pm"
+//                viewHolder.postersUsername.text = SupabaseSingleton.getDisplayName(dataSet[position].userId)
+                viewHolder.postersUsername.text = dataSet[position].userId
+                viewHolder.description.text = dataSet[position].body
+                viewHolder.timeSincePosted.text = dataSet[position].createdAt
+                viewHolder.eventLocation.text=dataSet[position].eventLocation
+                viewHolder.eventTime.text=dataSet[position].eventTimeStart
+
                 viewHolder.joinButton.visibility = View.VISIBLE
                 viewHolder.leaveButton.visibility = View.INVISIBLE
                 viewHolder.cardView.setOnClickListener {
@@ -67,9 +66,10 @@ public final class PostInClubListAdapter(private val dataSet: ArrayList<Post>) :
             //NORMAL POST
             1 -> {
                 val viewHolder: PostInClubViewHolder = holder as PostInClubViewHolder
-                viewHolder.postersUsername.text = dataSet[position].posterUsername
-                viewHolder.description.text = dataSet[position].postText
-                viewHolder.timeSincePosted.text = dataSet[position].timeSincePosted
+//                viewHolder.postersUsername.text =  SupabaseSingleton.getDisplayName(dataSet[position].userId)
+                viewHolder.postersUsername.text = dataSet[position].userId
+                viewHolder.description.text = dataSet[position].body
+                viewHolder.timeSincePosted.text = dataSet[position].createdAt
                 viewHolder.cardView.setOnClickListener {
                     goToPostPage(position)
                 }
@@ -77,9 +77,9 @@ public final class PostInClubListAdapter(private val dataSet: ArrayList<Post>) :
             //DEFAULT IS NORMAL POST
             else ->{
                 val viewHolder: PostInClubViewHolder = holder as PostInClubViewHolder
-                viewHolder.postersUsername.text = dataSet[position].posterUsername
-                viewHolder.description.text = dataSet[position].postText
-                viewHolder.timeSincePosted.text = dataSet[position].timeSincePosted
+                viewHolder.postersUsername.text = dataSet[position].userId
+                viewHolder.description.text = dataSet[position].body
+                viewHolder.timeSincePosted.text = dataSet[position].createdAt
                 viewHolder.cardView.setOnClickListener {
                     goToPostPage(position)
                 }
@@ -94,7 +94,7 @@ public final class PostInClubListAdapter(private val dataSet: ArrayList<Post>) :
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    public fun updateDataSet(newData:  ArrayList<Post>){
+    public fun updateDataSet(newData:  ArrayList<PostDto>){
         //call when the data changes.
         this.dataSet.clear()
         this.dataSet.addAll(newData)
