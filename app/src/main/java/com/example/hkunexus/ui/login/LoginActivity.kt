@@ -1,5 +1,6 @@
 package com.example.hkunexus.ui.login
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
@@ -24,6 +25,11 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login)
         val email = findViewById<EditText>(R.id.loginEmail)
         val password = findViewById<EditText>(R.id.loginPassword)
+
+        val sharedPreference = getSharedPreferences("Logins", Context.MODE_PRIVATE)
+        email.setText(sharedPreference.getString("email", ""))
+        password.setText(sharedPreference.getString("password", ""))
+
         val loginButton = findViewById<Button>(R.id.loginButton)
         val registerButton = findViewById<Button>(R.id.registerButton)
 
@@ -41,10 +47,15 @@ class LoginActivity : AppCompatActivity() {
         }
 
         loginButton.setOnClickListener {
-            var emailInput = email.text.toString()
+            val emailInput = email.text.toString()
             val passwordInput = password.text.toString()
 
             if (viewModel.attemptLogin(emailInput, passwordInput)){
+                val editor = sharedPreference.edit()
+                editor.putString("email", emailInput)
+                editor.putString("password", passwordInput)
+                editor.apply()
+
                 val goToMain = Intent(this, MainActivity::class.java);
                 startActivity(goToMain);
             }

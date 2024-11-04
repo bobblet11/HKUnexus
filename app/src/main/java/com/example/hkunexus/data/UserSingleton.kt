@@ -4,6 +4,7 @@ import android.util.Log
 import com.example.hkunexus.data.model.Club
 import com.example.hkunexus.data.model.dto.ClubDto
 import com.example.hkunexus.data.model.dto.Tag
+import com.example.hkunexus.data.model.dto.UserProfileDto
 import com.example.hkunexus.data.model.dto.UserToClubDto
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.auth.Auth
@@ -35,19 +36,12 @@ import kotlin.uuid.Uuid
 
 object UserSingleton{
     public var userID = ""
-    private var displayName = ""
-    private val joinedClubIDs: ArrayList<Int> = arrayListOf()
-    private val joinedEventIDs:  ArrayList<Int> = arrayListOf()
+    public var userProfile: UserProfileDto? = null
 
-    public fun login(){
 
-    }
-
-    public fun logout(){
+    public fun clear(){
         userID = ""
-        displayName = ""
-        joinedClubIDs.clear()
-        joinedEventIDs.clear()
+        userProfile = null
     }
 
 }

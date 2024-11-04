@@ -1,6 +1,7 @@
 package com.example.hkunexus.ui.homePages.explore
 
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +14,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.hkunexus.R
-import com.example.hkunexus.data.model.Club
+import com.example.hkunexus.data.model.dto.Tag
 import com.example.hkunexus.databinding.FragmentExploreBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -44,20 +45,21 @@ class ExploreFragment : Fragment()  {
 
         binding.exploreClubsRecycler.adapter = exploreListAdapter
 
-        configureSearchBar(exploreListAdapter)
-        constructClubTagAdaptor(exploreListAdapter)
+        configureSearchBar()
+        constructClubTagAdaptor()
 
         lifecycleScope.launch {
             viewModel.uiState.collect { state ->
                 // Update UI based on the new state
                 tags.clear()
-                tags.addAll(state.listOfTags)
+                tags.addAll(state.listOfTags.map{t: Tag -> t.tagName})
             }
         }
         CoroutineScope(Dispatchers.Main).launch {
             viewModel.uiState.collect { state ->
-                exploreListAdapter.updateDataSet(state.listOfClubsToDisplay.toCollection(ArrayList()))
-                exploreListAdapter.updateFilteredList()
+                exploreListAdapter.updateDataSet(
+                    state.listOfClubsToDisplay.toCollection(ArrayList())
+                )
             }
         }
 
@@ -69,35 +71,43 @@ class ExploreFragment : Fragment()  {
         _binding = null
     }
 
-    private fun configureSearchBar(exploreListAdapter: ExploreListAdapter) {
+    private fun configureSearchBar() {
         val searchView = binding.clubSearchBar
         searchView.isIconifiedByDefault = false
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            // There won't be any update to the data (except when empty) to reduce cost
             override fun onQueryTextChange(kw: String): Boolean {
-                exploreListAdapter.setFilterKeyword(kw)
+                if (TextUtils.isEmpty(kw)) {
+                    viewModel.setKeyword(kw)
+                    viewModel.fetchClubs()
+                }
                 return false
             }
 
             override fun onQueryTextSubmit(kw: String): Boolean {
-                exploreListAdapter.setFilterKeyword(kw)
+//                exploreListAdapter.setFilterKeyword(kw)
+                viewModel.setKeyword(kw)
+                viewModel.fetchClubs()
                 return false
             }
         })
     }
 
-    private fun constructClubTagAdaptor(exploreListAdapter: ExploreListAdapter) {
+    private fun constructClubTagAdaptor() {
         val spinner: Spinner = binding.clubTagsSelector
         spinner.onItemSelectedListener = (object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                 if (p2 == 0) {
-                    exploreListAdapter.setSelectedTag(null)
+                    viewModel.setSelectedTagID(null)
                 } else {
-                    exploreListAdapter.setSelectedTag(viewModel.uiState.value.listOfTags[p2])
+                    viewModel.setSelectedTagID(viewModel.uiState.value.listOfTags[p2].id)
                 }
+                viewModel.fetchClubs()
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {
-                exploreListAdapter.setSelectedTag(null)
+                viewModel.setSelectedTagID(null)
+                viewModel.fetchClubs()
             }
         })
 
