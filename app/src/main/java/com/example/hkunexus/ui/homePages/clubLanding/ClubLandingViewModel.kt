@@ -65,7 +65,14 @@ class ClubLandingViewModel : ViewModel() {
             )
         }
 
-        //TODO: add SUPASBASE RPC here
+        try{
+
+            val result = SupabaseSingleton.insertOrUpdateCurrentUserToClub(clubID, "Member")
+            Log.d("clubLandingViewModel", "Club joining success, $result")
+
+        }catch(e : Exception){
+            Log.e("clubLandingViewModel", "Club joining failed , $e")
+        }
     }
 
     public fun leaveClub(){
@@ -75,7 +82,14 @@ class ClubLandingViewModel : ViewModel() {
             )
         }
 
-        //TODO: add SUPASBASE RPC here
+        try{
+
+            val result = SupabaseSingleton.removeCurrentUserToClub(clubID)
+            Log.d("clubLandingViewModel", "Club leaving success, $result")
+
+        }catch(e : Exception){
+            Log.e("clubLandingViewModel", "Club leaving failed , $e")
+        }
     }
 
     private fun updateClubPosts(newPosts: Array<PostDto>){
