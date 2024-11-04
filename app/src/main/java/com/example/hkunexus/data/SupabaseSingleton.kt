@@ -306,6 +306,10 @@ object SupabaseSingleton{
 
     }
 
+    fun insertOrUpdateCurrentUserToClub(clubIDArg:String, roleArg: String): UserToClubDto?{
+        return insertOrUpdateUserToClub(userIDArg = currentUser!!.id, clubIDArg, roleArg);
+    }
+
     fun removeUserToClub(userIDArg: String, clubIDArg: String): UserToClubDto?{
         return runBlocking {
             val funcName = "remove_user_to_club"
@@ -326,6 +330,12 @@ object SupabaseSingleton{
         }
 
     }
+
+    fun removeCurrentUserToClub(clubIDArg: String): UserToClubDto?{
+        return removeUserToClub(currentUser!!.id, clubIDArg)
+
+    }
+
 
     fun searchClubsByLikeName(query : String): List<ClubDto>?{
         return runBlocking {
@@ -520,4 +530,5 @@ object SupabaseSingleton{
             }
         }
     }
+
 }
