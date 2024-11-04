@@ -2,10 +2,12 @@ package com.example.hkunexus.data
 
 import android.util.Log
 import com.example.hkunexus.data.model.EventPost
+import com.example.hkunexus.data.model.UserProfile
 import com.example.hkunexus.data.model.dto.ClubDto
 import com.example.hkunexus.data.model.dto.EventDto
 import com.example.hkunexus.data.model.dto.PostDto
 import com.example.hkunexus.data.model.dto.Tag
+import com.example.hkunexus.data.model.dto.UserProfileDto
 import com.example.hkunexus.data.model.dto.UserToClubDto
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.auth.Auth
@@ -77,6 +79,9 @@ object SupabaseSingleton{
                 accessToken = session!!.accessToken
 
                 Log.d("SupabaseSingleton", "Sign-in successful: $result")
+                UserSingleton.userID = currentUser!!.id
+//                UserSingleton.userProfile = getUserProfile(userID = currentUser!!.id)
+
 
                 return@runBlocking true
 
@@ -105,6 +110,25 @@ object SupabaseSingleton{
             }
         }
     }
+
+//    fun getUserProfile(userID: String): UserProfileDto? {
+//        val funcName = "get_display_name"
+//        val funcParam = buildJsonObject {
+//            put("user_id", userID)
+//        }
+//        return runBlocking {
+//            try {
+//                val result = client!!.postgrest.rpc(funcName, funcParam)
+//                Log.d("SupabaseSingleton", "$funcName rpc, $result")
+//                val output: UserProfileDto = result.decodeSingle<UserProfileDto>()
+//                Log.d("SupabaseSingleton", "$funcName rpc output, $output")
+//                return@runBlocking output
+//            } catch (e: Exception) {
+//                Log.d("SupabaseSingleton", "Failure, $e")
+//                return@runBlocking null
+//            }
+//        }
+//    }
 
 
     fun isDisplayNameAvailable(displayName: String):Boolean{
@@ -207,13 +231,6 @@ object SupabaseSingleton{
 
     fun getNoOfMembersOfClub(clubUUID: String): Int{
         return runBlocking {
-            @Serializable
-            data class OutputDto(
-                @SerialName("id")
-                val id : String,
-                @SerialName("memberCount")
-                val memberCount : Int,
-            )
             val funcName = "get_no_of_members_of_club"
             val funcParam = buildJsonObject {
                 put("club_uuid", clubUUID)
@@ -221,7 +238,7 @@ object SupabaseSingleton{
             try {
                 val result = client!!.postgrest.rpc(funcName, funcParam)
                 Log.d("SupabaseSingleton", "$funcName rpc, $result")
-                val output = result.decodeSingle<OutputDto>().memberCount
+                val output = result.data.toInt()
                 Log.d("SupabaseSingleton", "$funcName rpc output, $output")
                 return@runBlocking output
             } catch (e: Exception){
@@ -289,6 +306,10 @@ object SupabaseSingleton{
 
     }
 
+    fun insertOrUpdateCurrentUserToClub(clubIDArg:String, roleArg: String): UserToClubDto?{
+        return insertOrUpdateUserToClub(userIDArg = currentUser!!.id, clubIDArg, roleArg);
+    }
+
     fun removeUserToClub(userIDArg: String, clubIDArg: String): UserToClubDto?{
         return runBlocking {
             val funcName = "remove_user_to_club"
@@ -309,6 +330,12 @@ object SupabaseSingleton{
         }
 
     }
+
+    fun removeCurrentUserToClub(clubIDArg: String): UserToClubDto?{
+        return removeUserToClub(currentUser!!.id, clubIDArg)
+
+    }
+
 
     fun searchClubsByLikeName(query : String): List<ClubDto>?{
         return runBlocking {
@@ -446,8 +473,8 @@ object SupabaseSingleton{
         return runBlocking {
             val funcName = "check_is_user_joined_to_club"
             val funcParam = buildJsonObject {
-                put("clubID", clubID)
-                put("userID", userID)
+                put("clubid", clubID)
+                put("userid", userID)
             }
 
             try {
@@ -463,10 +490,10 @@ object SupabaseSingleton{
         }
     }
 
-    fun getPostsFromGroup(clubID: String): List<PostDto>{
+    fun getPostsFromClub(clubID: String): List<PostDto>{
 
         return runBlocking {
-            val funcName = "get_posts_from_club"
+            val funcName = "get_all_posts_and_events_from_a_club"
             val funcParam = buildJsonObject {
                 put("given_club_id", clubID)
             }
@@ -476,6 +503,7 @@ object SupabaseSingleton{
                 Log.d("SupabaseSingleton", "$funcName rpc, $result")
                 val output: List<PostDto> = result.decodeList<PostDto>()
                 Log.d("SupabaseSingleton", "$funcName rpc output, $output")
+
                 return@runBlocking output
             } catch (e: Exception) {
                 Log.d("SupabaseSingleton", "Failure, $e")
@@ -484,11 +512,10 @@ object SupabaseSingleton{
         }
     }
 
-    fun getEventFromUser(): List<EventDto> {
-
+    fun getAllJoinedEvents(): List<EventDto> {
         return runBlocking {
             val userId = currentUser?.id ?: return@runBlocking emptyList()
-            val funcName = "get_event_from_user"
+            val funcName = "get_all_joined_events"
             try {
                 val result = client!!.postgrest.rpc(funcName, buildJsonObject {
                     put("user_uuid", Json.encodeToJsonElement(userId))
@@ -503,4 +530,5 @@ object SupabaseSingleton{
             }
         }
     }
+
 }

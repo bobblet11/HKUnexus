@@ -7,8 +7,6 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hkunexus.R
-import com.example.hkunexus.data.model.Event
-import com.example.hkunexus.data.model.EventPost
 import com.example.hkunexus.data.model.dto.EventDto
 import java.time.ZoneId
 import java.time.ZonedDateTime
@@ -44,9 +42,9 @@ class EventListAdapter(private val dataSet: List<EventDto>) :
         val localTime = localDateTime.toLocalTime().toString()
 
         viewHolder.eventName.text = event.title
-        viewHolder.eventDate.text = "Date: $localDate" // Use the local date part
-        viewHolder.eventTime.text = "Time: $localTime" // Use the local time part
-        viewHolder.eventLocation.text = "Location: " + event.location
+        viewHolder.eventDate.text = "Date:  $localDate" // Use the local date part
+        viewHolder.eventTime.text = "Time:  $localTime" // Use the local time part
+        viewHolder.eventLocation.text = "Location:  " + event.location
 
         viewHolder.cardView.setOnClickListener {
             goToPostPage(position)
