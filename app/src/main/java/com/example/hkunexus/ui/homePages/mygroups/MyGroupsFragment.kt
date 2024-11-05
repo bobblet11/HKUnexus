@@ -37,13 +37,6 @@ class MyGroupsFragment : Fragment() {
 
         return binding.root
 
-
-        val myGroupsViewModel =
-            ViewModelProvider(this).get(MyGroupsViewModel::class.java)
-
-        _binding = FragmentMyGroupsBinding.inflate(inflater, container, false)
-        val root: View = binding.root
-        return root
     }
 
     override fun onDestroyView() {
