@@ -7,11 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
-import com.example.hkunexus.databinding.FragmentMyEventsBinding
 import com.example.hkunexus.databinding.FragmentMyGroupsBinding
-import com.example.hkunexus.ui.homePages.myevents.EventListAdapter
-import com.example.hkunexus.ui.homePages.myevents.MyEventsViewModel
 import com.example.hkunexus.ui.homePages.myevents.MyGroupsViewModel
 
 class MyGroupsFragment : Fragment() {
