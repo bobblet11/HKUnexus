@@ -531,4 +531,23 @@ object SupabaseSingleton{
         }
     }
 
+    fun getAllJoinedClubs(): List<ClubDto>{
+        return runBlocking {
+            val userId = currentUser?.id ?: return@runBlocking emptyList()
+            val funcName = "get_all_joined_clubs"
+            try {
+                val result = client!!.postgrest.rpc(funcName, buildJsonObject {
+                    put("given_user_id", Json.encodeToJsonElement(userId))
+                })
+                Log.d("SupabaseSingleton", "$funcName rpc, $result")
+                val output = result.decodeList<ClubDto>()
+                Log.d("SupabaseSingleton", "$funcName rpc output, $output")
+                return@runBlocking output
+            } catch (e: Exception) {
+                Log.d("SupabaseSingleton", "Failure, $e")
+                return@runBlocking emptyList()
+            }
+        }
+    }
+
 }
