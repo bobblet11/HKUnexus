@@ -307,7 +307,7 @@ object SupabaseSingleton{
     }
 
     fun insertOrUpdateCurrentUserToClub(clubIDArg:String, roleArg: String): UserToClubDto?{
-        return insertOrUpdateUserToClub(userIDArg = currentUser!!.id, clubIDArg, roleArg);
+        return insertOrUpdateUserToClub(userIDArg = currentUser!!.id, clubIDArg, roleArg)
     }
 
     fun removeUserToClub(userIDArg: String, clubIDArg: String): UserToClubDto?{
@@ -387,41 +387,6 @@ object SupabaseSingleton{
                 val result = client!!.postgrest.rpc(funcName, funcParam)
                 Log.d("SupabaseSingleton", "$funcName rpc, $result")
                 val output = result.decodeList<ClubDto>()
-                Log.d("SupabaseSingleton", "$funcName rpc output, $output")
-                return@runBlocking output
-            } catch (e: Exception){
-                Log.d("SupabaseSingleton", "Failure, $e")
-                return@runBlocking null
-            }
-        }
-    }
-
-    fun getEventPostByUser(): List<EventPost>?{
-        return runBlocking {
-            val userId = currentUser?.id ?: return@runBlocking null
-            val funcName = "get_event_post_from_user"
-            try{
-                val result = client!!.postgrest.rpc(funcName, buildJsonObject {
-                    put("user_uuid", Json.encodeToJsonElement(userId))
-                })
-                Log.d("SupabaseSingleton", "$funcName rpc, $result")
-                val output = result.decodeList<EventPost>()
-                Log.d("SupabaseSingleton", "$funcName rpc output, $output")
-                return@runBlocking output
-            } catch (e: Exception){
-                Log.d("SupabaseSingleton", "Failure, $e")
-                return@runBlocking null
-            }
-        }
-    }
-
-    fun getRecentPosts(): List<EventPost>?{
-        return runBlocking {
-            val funcName = "get_recent_posts"
-            try{
-                val result = client!!.postgrest.rpc(funcName)
-                Log.d("SupabaseSingleton", "$funcName rpc, $result")
-                val output = result.decodeList<EventPost>()
                 Log.d("SupabaseSingleton", "$funcName rpc output, $output")
                 return@runBlocking output
             } catch (e: Exception){
