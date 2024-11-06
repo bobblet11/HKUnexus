@@ -59,28 +59,26 @@ class ClubLandingViewModel : ViewModel() {
     }
 
     public fun joinClub(){
-        _uiState.update {
-            it.copy(
-                joined = true
-            )
-        }
 
         try{
-
             val result = SupabaseSingleton.insertOrUpdateCurrentUserToClub(clubID, "Member")
             Log.d("clubLandingViewModel", "Club joining success, $result")
 
         }catch(e : Exception){
             Log.e("clubLandingViewModel", "Club joining failed , $e")
         }
+
+        val numOfMembers = SupabaseSingleton.getNoOfMembersOfClub(clubID)
+        _uiState.update {
+            it.copy(
+                joined = true,
+                numberOfMembers = numOfMembers
+            )
+        }
+
     }
 
     public fun leaveClub(){
-        _uiState.update {
-            it.copy(
-                joined = false
-            )
-        }
 
         try{
 
@@ -89,6 +87,14 @@ class ClubLandingViewModel : ViewModel() {
 
         }catch(e : Exception){
             Log.e("clubLandingViewModel", "Club leaving failed , $e")
+        }
+
+        val numOfMembers = SupabaseSingleton.getNoOfMembersOfClub(clubID)
+        _uiState.update {
+            it.copy(
+                joined = false,
+                numberOfMembers = numOfMembers
+            )
         }
     }
 
