@@ -69,17 +69,17 @@ class MainActivity : AppCompatActivity() {
 
         val toolbar: Toolbar = binding.toolbar
         setSupportActionBar(toolbar)
-
-        val drawerLayout: DrawerLayout = binding.drawerLayout
-        val toggle = ActionBarDrawerToggle(
-            this,
-            drawerLayout,
-            toolbar,
-            R.string.open_nav,
-            R.string.close_nav
-        )
-        drawerLayout.addDrawerListener(toggle)
-        toggle.syncState()
+//
+//        val drawerLayout: DrawerLayout = binding.drawerLayout
+//        val toggle = ActionBarDrawerToggle(
+//            this,
+//            drawerLayout,
+//            toolbar,
+//            R.string.open_nav,
+//            R.string.close_nav
+//        )
+//        drawerLayout.addDrawerListener(toggle)
+//        toggle.syncState()
 
         val bottomNavView: BottomNavigationView = binding.bottomNavView
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
