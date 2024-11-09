@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.hkunexus.R
-import com.example.hkunexus.databinding.FragmentMyEventsBinding
 import com.example.hkunexus.ui.homePages.myevents.MyEventsViewModel
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap

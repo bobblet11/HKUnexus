@@ -1,5 +1,6 @@
 package com.example.hkunexus
 
+import MyEventsSlide
 import android.os.Bundle
 import android.view.MenuItem
 import android.content.Intent
@@ -24,7 +25,7 @@ import com.example.hkunexus.databinding.ActivityMainBinding
 import com.example.hkunexus.ui.homePages.create.CreateFragment
 import com.example.hkunexus.ui.homePages.explore.ExploreFragment
 import com.example.hkunexus.ui.homePages.home.HomeFragment
-import com.example.hkunexus.ui.homePages.myevents.MyEventsFragment
+
 import com.example.hkunexus.ui.homePages.mygroups.MyGroupsFragment
 import com.example.hkunexus.ui.login.LoginActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -77,7 +78,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 R.id.navigation_home ->openFragment(HomeFragment())
                 R.id.navigation_explore ->openFragment(ExploreFragment())
                 R.id.navigation_create ->openFragment(CreateFragment())
-                R.id.navigation_my_events ->openFragment(MyEventsFragment())
+                R.id.navigation_my_events ->openFragment(MyEventsSlide())
                 R.id.navigation_my_groups ->openFragment(MyGroupsFragment())
             }
             true

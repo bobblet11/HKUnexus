@@ -35,9 +35,8 @@
 
     <fragment
         android:id="@+id/navigation_my_events"
-        android:name="com.example.hkunexus.ui.homePages.myevents.MyEventsFragment"
-        android:label="@string/title_my_events"
-        tools:layout="@layout/fragment_my_events" />
+        android:name="MyEventsSlide"
+        android:label="@string/title_my_events" />
 
     <fragment
         android:id="@+id/navigation_notifications"
