@@ -1,12 +1,8 @@
 package com.example.hkunexus.ui.homePages.home
 
-import android.content.Context
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import com.example.hkunexus.data.SupabaseSingleton
-import com.example.hkunexus.data.UserSingleton
-import com.example.hkunexus.data.model.dto.ClubDto
 import com.example.hkunexus.data.model.dto.PostDto
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -19,7 +15,6 @@ data class PostInHomeUiState(
 )
 
 
-
 // Taken from MyEventsViewModel
 class HomeViewModel : ViewModel() {
 
@@ -29,8 +24,8 @@ class HomeViewModel : ViewModel() {
     init {
         fetchPosts()
     }
-    
-    private fun updateHomePosts(newPosts: Array<PostDto>){
+
+    private fun updateHomePosts(newPosts: Array<PostDto>) {
         _uiStatePosts.update {
             it.copy(
                 posts = newPosts

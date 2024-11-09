@@ -7,7 +7,7 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hkunexus.R
 
-public class EventPostInHomeViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+class EventPostInHomeViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     val cardView: CardView = view.findViewById(R.id.compactEventPostCard)
     var clubName = view.findViewById<TextView>(R.id.clubNamePost)
     var postersUsername = view.findViewById<TextView>(R.id.postersUsername)

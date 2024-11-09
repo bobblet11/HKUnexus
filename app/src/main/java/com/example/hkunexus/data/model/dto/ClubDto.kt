@@ -1,6 +1,5 @@
 package com.example.hkunexus.data.model.dto
 
-import com.example.hkunexus.data.model.Club
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
