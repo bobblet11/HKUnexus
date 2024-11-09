@@ -1,17 +1,19 @@
 package com.example.hkunexus.ui.homePages.myevents
 
+import android.R
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.annotation.Nullable
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.example.hkunexus.databinding.FragmentMyEventsBinding
+import com.example.hkunexus.databinding.FragmentMyEventsListBinding
 
-class MyEventsFragment : Fragment() {
 
-    private var _binding: FragmentMyEventsBinding? = null
+class MyEventsListFragment : Fragment() {
+    private var _binding: FragmentMyEventsListBinding? = null
     private val viewModel: MyEventsViewModel by viewModels()
     private val binding get() = _binding!!
 
@@ -20,7 +22,7 @@ class MyEventsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentMyEventsBinding.inflate(inflater, container, false)
+        _binding = FragmentMyEventsListBinding.inflate(inflater, container, false)
         val eventListAdapter = EventListAdapter(viewModel.uiState.value.listOfEventsToDisplay)
         eventListAdapter.setPostPageCallBack {
                 position: Int ->
@@ -30,6 +32,8 @@ class MyEventsFragment : Fragment() {
 
         return binding.root
     }
+
+
 
     override fun onDestroyView() {
         super.onDestroyView()
