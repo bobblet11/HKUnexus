@@ -6,7 +6,6 @@ import android.view.MenuItem
 import android.content.Intent
 import android.view.View
 import android.widget.TextView
-import androidx.annotation.GravityInt
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -14,15 +13,10 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
 import com.example.hkunexus.data.SupabaseSingleton
 import com.example.hkunexus.data.UserSingleton
 import com.example.hkunexus.databinding.ActivityMainBinding
-import com.example.hkunexus.ui.homePages.create.CreateFragment
+import com.example.hkunexus.ui.homePages.create.CreateSlideFragment
 import com.example.hkunexus.ui.homePages.explore.ExploreFragment
 import com.example.hkunexus.ui.homePages.home.HomeFragment
 
@@ -33,7 +27,7 @@ import com.google.android.material.navigation.NavigationView
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
-
+    private lateinit var toolbar: Toolbar
     private lateinit var binding: ActivityMainBinding
     private lateinit var drawerLayout : DrawerLayout
     private lateinit var bottomNavView: BottomNavigationView
@@ -47,9 +41,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         drawerLayout = binding.drawerLayout
 
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
-
         val toggle = ActionBarDrawerToggle(
             this,
             drawerLayout,
@@ -75,15 +68,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         bottomNavView = binding.bottomNavView
         bottomNavView.setOnItemSelectedListener{ item ->
             when(item.itemId){
-                R.id.navigation_home ->openFragment(HomeFragment())
-                R.id.navigation_explore ->openFragment(ExploreFragment())
-                R.id.navigation_create ->openFragment(CreateFragment())
-                R.id.navigation_my_events ->openFragment(MyEventsSlide())
-                R.id.navigation_my_groups ->openFragment(MyGroupsFragment())
+                R.id.navigation_home ->openFragment(HomeFragment(), "Home")
+                R.id.navigation_explore ->openFragment(ExploreFragment(), "Explore")
+                R.id.navigation_create ->openFragment(CreateSlideFragment(), "Create")
+                R.id.navigation_my_events ->openFragment(MyEventsSlide(), "My Events")
+                R.id.navigation_my_groups ->openFragment(MyGroupsFragment(), "My Groups")
             }
             true
         }
-        openFragment(HomeFragment())
+        openFragment(HomeFragment(),"Home")
 
         /*val navController = findNavController(R.id.nav_host_fragment_activity_main)
         // Passing each menu ID as a set of Ids because each
@@ -123,9 +116,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
-    private fun openFragment(fragment: Fragment){
+    private fun openFragment(fragment: Fragment, name: String){
+        getSupportActionBar()?.setTitle(name);
         val manager: FragmentManager = supportFragmentManager
-       manager.beginTransaction().replace(R.id.fragmentFrame, fragment).commit()
+        manager.beginTransaction().replace(R.id.fragmentFrame, fragment).commit()
+
     }
 
    /* override fun onOptionsItemSelected(item: MenuItem): Boolean {
