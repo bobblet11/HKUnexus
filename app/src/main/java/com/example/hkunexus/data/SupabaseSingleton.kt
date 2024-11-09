@@ -154,6 +154,32 @@ object SupabaseSingleton{
         }
     }
 
+    fun getClubName(clubID: String): String {
+
+        @Serializable
+        data class outputDTO(
+            @SerialName("name")
+            var name: String = "0",
+        )
+
+        val funcName = "get_club_name"
+        val funcParam = buildJsonObject {
+            put("club_uuid", clubID)
+        }
+        return runBlocking {
+            try {
+                val result = client!!.postgrest.rpc(funcName, funcParam)
+                Log.d("SupabaseSingleton", "$funcName rpc, $result")
+                val output: outputDTO = result.decodeSingle<outputDTO>()
+                Log.d("SupabaseSingleton", "$funcName rpc output, $output")
+                return@runBlocking output.name
+            } catch (e: Exception) {
+                Log.d("SupabaseSingleton", "Failure, $e")
+                return@runBlocking clubID.substring(0,10)
+            }
+        }
+    }
+
 
     fun isDisplayNameAvailable(displayName: String):Boolean{
         //query public user table

@@ -8,7 +8,8 @@ import com.example.hkunexus.R
 
 public class PostInHomeViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     val cardView: CardView = view.findViewById(R.id.compactPostCard)
-
+    var clubName = view.findViewById<TextView>(R.id.clubNamePost)
+    var postTitle = view.findViewById<TextView>(R.id.postTitle)
     var postersUsername = view.findViewById<TextView>(R.id.postersUsername)
     var description = view.findViewById<TextView>(R.id.postDescription)
     var timeSincePosted = view.findViewById<TextView>(R.id.timeSincePosted)

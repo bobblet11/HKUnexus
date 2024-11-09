@@ -24,17 +24,17 @@ public final class PostInHomeListAdapter(private val dataSet: ArrayList<PostDto>
         when(viewType){
             //EVENT POST
             0 -> {
-                val view = LayoutInflater.from(viewGroup.context).inflate(R.layout.fragment_post_event_card, viewGroup, false)
+                val view = LayoutInflater.from(viewGroup.context).inflate(R.layout.fragment_post_event_card_home, viewGroup, false)
                 return EventPostInHomeViewHolder(view)
             }
             //NORMAL POST
             1 -> {
-                val view = LayoutInflater.from(viewGroup.context).inflate(R.layout.fragment_post_card, viewGroup, false)
+                val view = LayoutInflater.from(viewGroup.context).inflate(R.layout.fragment_post_card_home, viewGroup, false)
                 return PostInHomeViewHolder(view)
             }
             //DEFAULT IS NORMAL POST
             else ->{
-                val view = LayoutInflater.from(viewGroup.context).inflate(R.layout.fragment_post_card, viewGroup, false)
+                val view = LayoutInflater.from(viewGroup.context).inflate(R.layout.fragment_post_card_home, viewGroup, false)
                 return PostInHomeViewHolder(view)
             }
         }
@@ -48,12 +48,13 @@ public final class PostInHomeListAdapter(private val dataSet: ArrayList<PostDto>
             0 -> {
                 val viewHolder: EventPostInHomeViewHolder = holder as EventPostInHomeViewHolder
 //                viewHolder.postersUsername.text = SupabaseSingleton.getDisplayName(dataSet[position].userId)
-                viewHolder.postersUsername.text = SupabaseSingleton.getDisplayName(dataSet[position].userId)
+                viewHolder.postersUsername.text = "posted by " + SupabaseSingleton.getDisplayName(dataSet[position].userId)
                 viewHolder.description.text = dataSet[position].body
                 viewHolder.timeSincePosted.text = dataSet[position].createdAt
                 viewHolder.eventLocation.text=dataSet[position].eventLocation
                 viewHolder.eventTime.text=dataSet[position].eventTimeStart
-
+                viewHolder.postTitle.text=dataSet[position].title
+                viewHolder.clubName.text = SupabaseSingleton.getClubName(dataSet[position].clubId)
                 viewHolder.joinButton.visibility = View.VISIBLE
                 viewHolder.leaveButton.visibility = View.INVISIBLE
                 viewHolder.cardView.setOnClickListener {
@@ -64,9 +65,11 @@ public final class PostInHomeListAdapter(private val dataSet: ArrayList<PostDto>
             1 -> {
                 val viewHolder: PostInHomeViewHolder = holder as PostInHomeViewHolder
 //                viewHolder.postersUsername.text =  SupabaseSingleton.getDisplayName(dataSet[position].userId)
-                viewHolder.postersUsername.text = SupabaseSingleton.getDisplayName(dataSet[position].userId)
+                viewHolder.postersUsername.text = "posted by " + SupabaseSingleton.getDisplayName(dataSet[position].userId)
                 viewHolder.description.text = dataSet[position].body
                 viewHolder.timeSincePosted.text = dataSet[position].createdAt
+                viewHolder.postTitle.text=dataSet[position].title
+                viewHolder.clubName.text = SupabaseSingleton.getClubName(dataSet[position].clubId)
                 viewHolder.cardView.setOnClickListener {
                     goToPostPage(position)
                 }
@@ -74,9 +77,11 @@ public final class PostInHomeListAdapter(private val dataSet: ArrayList<PostDto>
             //DEFAULT IS NORMAL POST
             else ->{
                 val viewHolder: PostInHomeViewHolder = holder as PostInHomeViewHolder
-                viewHolder.postersUsername.text = SupabaseSingleton.getDisplayName(dataSet[position].userId)
+                viewHolder.postersUsername.text = "posted by " + SupabaseSingleton.getDisplayName(dataSet[position].userId)
                 viewHolder.description.text = dataSet[position].body
                 viewHolder.timeSincePosted.text = dataSet[position].createdAt
+                viewHolder.postTitle.text=dataSet[position].title
+                viewHolder.clubName.text = SupabaseSingleton.getClubName(dataSet[position].clubId)
                 viewHolder.cardView.setOnClickListener {
                     goToPostPage(position)
                 }
