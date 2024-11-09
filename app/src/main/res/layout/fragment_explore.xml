@@ -16,21 +16,20 @@
             android:id="@+id/club_search_bar"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            app:layout_constraintTop_toTopOf="parent"
+            android:layoutDirection="rtl"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@id/club_tags_selector"
-            android:layoutDirection="rtl">
-        </SearchView>
+            app:layout_constraintTop_toTopOf="parent"></SearchView>
 
         <Spinner
             android:id="@+id/club_tags_selector"
             android:layout_width="150sp"
             android:layout_height="50sp"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_weight="1"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_weight="1" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
