@@ -30,7 +30,6 @@ class HomeFragment : Fragment() {
         val postListAdapter = PostInHomeListAdapter(arrayListOf())
 
         homePostsRecycler.adapter = postListAdapter
-
         CoroutineScope(Dispatchers.Main).launch {
             viewModel.uiStatePosts.collect { state ->
                 postListAdapter.updateDataSet(state.posts.toCollection(ArrayList()))
@@ -38,6 +37,7 @@ class HomeFragment : Fragment() {
         }
         return binding.root
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
