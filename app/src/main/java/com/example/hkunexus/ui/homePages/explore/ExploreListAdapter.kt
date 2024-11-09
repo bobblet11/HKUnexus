@@ -3,10 +3,10 @@ package com.example.hkunexus.ui.homePages.explore
 import android.annotation.SuppressLint
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hkunexus.R
 import com.example.hkunexus.data.model.dto.ClubDto
-import android.view.ViewGroup as ViewGroup
 
 class ExploreListAdapter(private val dataSet: ArrayList<ClubDto>) :
     RecyclerView.Adapter<ClubInExploreListViewHolder>() {
