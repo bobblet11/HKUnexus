@@ -37,7 +37,7 @@ data class PostDto(
     val eventBody : String?,
 
     @SerialName("event_time_start")
-    val eventTimeStart : String?,
+    var eventTimeStart : String?,
 
     @SerialName("event_duration")
     val eventDuration : Int?,
