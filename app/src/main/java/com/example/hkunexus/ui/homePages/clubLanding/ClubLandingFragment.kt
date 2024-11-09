@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.example.hkunexus.R
 import com.example.hkunexus.databinding.FragmentGroupLandingBinding
 import kotlinx.coroutines.CoroutineScope
@@ -44,10 +45,6 @@ class ClubLandingFragment : Fragment() {
 
         viewModel.setClubID(arguments?.getString("clubID"), context)
 
-        postListAdapter.setPostPageCallBack {
-            position: Int ->
-            Toast.makeText(context, "Should go to post page $position", Toast.LENGTH_SHORT).show()
-        }
         groupLandingPostsRecycler.adapter = postListAdapter
 
         lifecycleScope.launch {
