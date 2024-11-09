@@ -38,4 +38,5 @@ class HomeViewModel : ViewModel() {
         Log.d("homeViewModel", tempList.toString())
         updateHomePosts(tempList)
     }
+
 }
