@@ -509,17 +509,29 @@ object SupabaseSingleton{
         }
     }
 
-    fun getLargestDenomination(duration: Duration): String {
+    fun getLargestDenominationPast(duration: Duration): String {
         return when {
-            duration.toDays() > 30 -> "${duration.toDays() / 30} months ago"
-            duration.toDays() == 30L -> "${duration.toDays() / 30} month ago"
-            duration.toDays() > 1 -> "${duration.toDays()} days ago"
-            duration.toDays() == 1L -> "${duration.toDays()} day ago"
-            duration.toHours() > 1 -> "${duration.toHours()} hours ago"
-            duration.toHours() == 1L -> "${duration.toHours()} hour ago"
-            duration.seconds > 60 -> "${duration.toMinutes()} minutes ago"
-            duration.seconds == 60L -> "${duration.toMinutes()} minute ago"
-            else -> "${duration.seconds} second(s) ago"
+            duration.toDays() > 60 -> "${duration.toDays() / 30} months ago"
+            duration.toDays() >= 30 -> "${duration.toDays() / 30} month ago"
+            duration.toDays() > 2 -> "${duration.toDays()} days ago"
+            duration.toDays() >= 1 -> "${duration.toDays()} day ago"
+            duration.toHours() > 2 -> "${duration.toHours()} hours ago"
+            duration.toHours() >= 1 -> "${duration.toHours()} hour ago"
+            duration.seconds > 120 -> "${duration.toMinutes()} minutes ago"
+            duration.seconds >= 60 -> "${duration.toMinutes()} minute ago"
+            else -> "just now"
+        }
+    }
+
+    fun getLargestDenominationFuture(duration: Duration): String {
+        return when {
+            duration.toDays() > 60 -> "in ${duration.toDays() / 30} months"
+            duration.toDays() >= 30 -> "in ${duration.toDays() / 30} month"
+            duration.toDays() > 2 -> "in ${duration.toDays()} days"
+            duration.toDays() >= 1 -> "in ${duration.toDays()} day"
+            duration.toHours() > 2 -> "in ${duration.toHours()} hours"
+            duration.toHours() >= 1 -> "in ${duration.toHours()} hour"
+            else -> "starting soon"
         }
     }
 
@@ -541,8 +553,15 @@ object SupabaseSingleton{
                 for (P in output){
                     val postDateTime = OffsetDateTime.parse(P.createdAt, firstApiFormat)
                     val duration = Duration.between(postDateTime, currentDateTime)
-                    Log.d( "test",getLargestDenomination(duration))
-                    P.createdAt = getLargestDenomination(duration)
+                    Log.d( "test",getLargestDenominationPast(duration))
+                    P.createdAt = getLargestDenominationPast(duration)
+
+                    if (P.eventId != null){
+                        val eventDateTime = OffsetDateTime.parse(P.eventTimeStart, firstApiFormat)
+                        val durationE = Duration.between(currentDateTime, eventDateTime)
+                        P.eventTimeStart = getLargestDenominationFuture(durationE)
+                    }
+
                 }
 
 
@@ -614,8 +633,14 @@ object SupabaseSingleton{
                 for (P in output){
                     val postDateTime = OffsetDateTime.parse(P.createdAt, firstApiFormat)
                     val duration = Duration.between(postDateTime, currentDateTime)
-                    Log.d( "test",getLargestDenomination(duration))
-                    P.createdAt = getLargestDenomination(duration)
+                    Log.d( "test",getLargestDenominationPast(duration))
+                    P.createdAt = getLargestDenominationPast(duration)
+
+                    if (P.eventId != null){
+                        val eventDateTime = OffsetDateTime.parse(P.eventTimeStart, firstApiFormat)
+                        val durationE = Duration.between(currentDateTime, eventDateTime)
+                        P.eventTimeStart = getLargestDenominationFuture(durationE)
+                    }
                 }
 
                 return@runBlocking output
