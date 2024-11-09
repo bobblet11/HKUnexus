@@ -40,6 +40,7 @@ class ExploreFragment : Fragment()  {
         exploreListAdapter.setLandingCallback ({ clubId: String ->
             val b = Bundle()
             b.putString("clubID", clubId)
+
             findNavController().navigate(R.id.navigation_group_landing, b)
         })
 
