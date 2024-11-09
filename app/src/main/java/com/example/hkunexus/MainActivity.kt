@@ -3,6 +3,8 @@ package com.example.hkunexus
 import android.os.Bundle
 import android.view.MenuItem
 import android.content.Intent
+import android.view.View
+import android.widget.TextView
 import androidx.annotation.GravityInt
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -17,6 +19,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.hkunexus.data.SupabaseSingleton
+import com.example.hkunexus.data.UserSingleton
 import com.example.hkunexus.databinding.ActivityMainBinding
 import com.example.hkunexus.ui.homePages.create.CreateFragment
 import com.example.hkunexus.ui.homePages.explore.ExploreFragment
@@ -34,27 +37,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var drawerLayout : DrawerLayout
     private lateinit var bottomNavView: BottomNavigationView
 
-    fun addFragment(fragment: Fragment?, addToBackStack: Boolean, tag: String?) {
-        val manager: FragmentManager = supportFragmentManager
-        val ft: FragmentTransaction = manager.beginTransaction()
-        if (addToBackStack) {
-            ft.addToBackStack(tag)
-        }
-        if (fragment != null) {
-            ft.replace(R.id.fragmentFrame, fragment, tag)
-        }
-        ft.commitAllowingStateLoss()
-    }
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
-        //val dfrag = DashboardFragment()
-        //dfrag.accessToken = SupabaseSingleton.getAccessToken()
-        //dfrag.mainActivity = this;
-        //addFragment(dfrag, false, "Dashboard")
-
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -71,12 +56,19 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.string.open_nav,
             R.string.close_nav
         )
+
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
         val navView: NavigationView = binding.navView
         navView.setNavigationItemSelectedListener(this)
 
+        val headerView : View = navView.getHeaderView(0)
+        val navUsername : TextView = headerView.findViewById(R.id.usernameAside)
+        val navUserEmail : TextView = headerView.findViewById(R.id.emailAside)
+
+        navUsername.text = UserSingleton.display_name
+        navUserEmail.text = UserSingleton.email
 
 
         bottomNavView = binding.bottomNavView
@@ -123,7 +115,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onBackPressed() {
-        super.onBackPressed()
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START)
         } else {

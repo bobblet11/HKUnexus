@@ -83,7 +83,9 @@ object SupabaseSingleton{
                 accessToken = session!!.accessToken
 
                 Log.d("SupabaseSingleton", "Sign-in successful: $result")
-                UserSingleton.userID = currentUser!!.id
+                UserSingleton.userID = currentUser!!.id!!
+                UserSingleton.email = currentUser!!.email!!
+                UserSingleton.display_name = getDisplayName(currentUser!!.id)
 //                UserSingleton.userProfile = getUserProfile(userID = currentUser!!.id)
 
 
