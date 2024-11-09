@@ -23,6 +23,14 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.encodeToJsonElement
 import kotlinx.serialization.json.put
+import java.time.Duration
+import java.time.Instant
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.OffsetDateTime
+import java.time.Period
+import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
 import kotlin.system.exitProcess
 
 
@@ -501,6 +509,20 @@ object SupabaseSingleton{
         }
     }
 
+    fun getLargestDenomination(duration: Duration): String {
+        return when {
+            duration.toDays() > 30 -> "${duration.toDays() / 30} months ago"
+            duration.toDays() == 30L -> "${duration.toDays() / 30} month ago"
+            duration.toDays() > 1 -> "${duration.toDays()} days ago"
+            duration.toDays() == 1L -> "${duration.toDays()} day ago"
+            duration.toHours() > 1 -> "${duration.toHours()} hours ago"
+            duration.toHours() == 1L -> "${duration.toHours()} hour ago"
+            duration.seconds > 60 -> "${duration.toMinutes()} minutes ago"
+            duration.seconds == 60L -> "${duration.toMinutes()} minute ago"
+            else -> "${duration.seconds} second(s) ago"
+        }
+    }
+
     fun getPostsFromClub(clubID: String): List<PostDto>{
 
         return runBlocking {
@@ -513,6 +535,17 @@ object SupabaseSingleton{
                 val result = client!!.postgrest.rpc(funcName, funcParam)
                 Log.d("SupabaseSingleton", "$funcName rpc, $result")
                 val output: List<PostDto> = result.decodeList<PostDto>()
+
+                val firstApiFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssXXX")
+                val currentDateTime = LocalDateTime.now()
+                for (P in output){
+                    val postDateTime = OffsetDateTime.parse(P.createdAt, firstApiFormat)
+                    val duration = Duration.between(postDateTime, currentDateTime)
+                    Log.d( "test",getLargestDenomination(duration))
+                    P.createdAt = getLargestDenomination(duration)
+                }
+
+
                 Log.d("SupabaseSingleton", "$funcName rpc output, $output")
 
                 return@runBlocking output
@@ -576,6 +609,14 @@ object SupabaseSingleton{
                 Log.d("SupabaseSingleton", "$funcName rpc, $result")
                 val output: List<PostDto> = result.decodeList<PostDto>()
                 Log.d("SupabaseSingleton", "$funcName rpc output, $output")
+                val firstApiFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssXXX")
+                val currentDateTime = OffsetDateTime.now(ZoneOffset.UTC)
+                for (P in output){
+                    val postDateTime = OffsetDateTime.parse(P.createdAt, firstApiFormat)
+                    val duration = Duration.between(postDateTime, currentDateTime)
+                    Log.d( "test",getLargestDenomination(duration))
+                    P.createdAt = getLargestDenomination(duration)
+                }
 
                 return@runBlocking output
             } catch (e: Exception) {

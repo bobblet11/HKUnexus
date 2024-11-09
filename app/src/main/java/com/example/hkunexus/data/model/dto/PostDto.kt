@@ -25,7 +25,7 @@ data class PostDto(
     val media : String,
 
     @SerialName("created_at")
-    val createdAt : String,
+    var createdAt : String,
 
     @SerialName("event_id")
     val eventId : String?,
