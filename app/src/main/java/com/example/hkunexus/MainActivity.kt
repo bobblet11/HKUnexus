@@ -16,6 +16,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.example.hkunexus.data.SupabaseSingleton
 import com.example.hkunexus.databinding.ActivityMainBinding
 import com.example.hkunexus.ui.homePages.create.CreateFragment
 import com.example.hkunexus.ui.homePages.explore.ExploreFragment
@@ -112,6 +113,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         when (item.itemId) {
             R.id.nav_logout -> {
                 val intent = Intent(this, LoginActivity::class.java)
+                SupabaseSingleton.logout()
                 startActivity(intent)
             }
         }

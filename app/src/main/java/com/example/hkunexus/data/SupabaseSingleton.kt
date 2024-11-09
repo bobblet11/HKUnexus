@@ -95,6 +95,23 @@ object SupabaseSingleton{
         }
     }
 
+    fun logout():Boolean{
+
+        return runBlocking {
+            try {
+                val result = client!!.auth.signOut()
+                UserSingleton.clear()
+
+                Log.d("SupabaseSingleton", "Sign-out successful: $result")
+                return@runBlocking true
+
+            } catch (e: Exception) {
+                Log.d("SupabaseSingleton", "Sign-out failed: $e")
+                return@runBlocking false
+            }
+        }
+    }
+
     fun isEmailAvailable(email: String):Boolean{
         return runBlocking {
             try{
