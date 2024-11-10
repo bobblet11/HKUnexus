@@ -2,7 +2,6 @@ package com.example.hkunexus.data
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.media.Image
 import android.util.Log
 import com.example.hkunexus.data.model.dto.ClubDto
 import com.example.hkunexus.data.model.dto.EventDto
@@ -23,6 +22,10 @@ import io.github.jan.supabase.postgrest.Postgrest
 import io.github.jan.supabase.postgrest.postgrest
 import io.github.jan.supabase.storage.Storage
 import io.github.jan.supabase.storage.storage
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -728,19 +731,18 @@ object SupabaseSingleton{
         }
     }
 
-    fun getImageFromBucket(imageName: String, bucketName: String): ByteArray? {
-        return runBlocking {
+    fun getImageUrl(imageName: String, bucketName: String): Deferred<String?> {
+        return CoroutineScope(Dispatchers.IO).async {
             try {
-                val imagePath = buildString {
-                    append(imageName)
-                    append(".jpg")
-                }
-                val bytes = client!!.storage.from(bucketName).downloadAuthenticated(imagePath)
-                Log.d("SupabaseSingleton", "Retrieved Image URL: $bytes")
-                return@runBlocking bytes
+                // Construct the image URL based on your bucket URL structure
+                val imagePath = "$imageName.jpg"
+                // Assuming you have a base URL for your Supabase storage
+                val url = client!!.storage.from(bucketName).publicUrl(imagePath)
+                Log.d("SupabaseSingleton", url)
+                url
             } catch (e: Exception) {
-                Log.d("SupabaseSingleton", "Error retrieving image: $e")
-                return@runBlocking null
+                Log.d("SupabaseSingleton", "Error constructing image URL: $e")
+                null
             }
         }
     }
