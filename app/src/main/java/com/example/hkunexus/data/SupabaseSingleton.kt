@@ -694,19 +694,21 @@ object SupabaseSingleton{
 
     fun insertOrUpdatePost(
         idArg:          String,
-        createdAtArg:   String,
         userIdArg:      String,
         clubIdArg:      String,
         titleArg:       String,
         bodyArg:        String,
         mediaArg:       String,
         ): PostDto?{
+        val firstApiFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssXXX")
+        val currentDateTime = OffsetDateTime.now(ZoneOffset.UTC)
+        val formattedTime = currentDateTime.format(firstApiFormat)
         return runBlocking {
             val funcName = "insert_or_update_post"
             val funcParam = buildJsonObject {
                 put("body_arg", bodyArg)
                 put("club_id_arg", clubIdArg)
-                put("created_at_arg", createdAtArg)
+                put("created_at_arg", formattedTime)
                 put("id_arg", idArg)
                 put("media_arg", mediaArg)
                 put("title_arg", titleArg)
@@ -733,14 +735,15 @@ object SupabaseSingleton{
         timeStartArg:   String,
         durationArg:    Int,
         locationArg:    String,
-        createdAtArg:   String,
     ): EventDto?{
+        val firstApiFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssXXX")
+        val currentDateTime = OffsetDateTime.now(ZoneOffset.UTC)
         return runBlocking {
             val funcName = "insert_or_update_event"
             val funcParam = buildJsonObject {
                 put("body_arg", bodyArg)
                 put("club_id_arg", clubIdArg)
-                put("created_at_arg", createdAtArg)
+                put("created_at_arg", currentDateTime.toString())
                 put("id_arg", idArg)
                 put("time_start_arg", timeStartArg)
                 put("title_arg", titleArg)

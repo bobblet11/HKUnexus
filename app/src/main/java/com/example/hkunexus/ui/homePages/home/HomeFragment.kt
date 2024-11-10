@@ -35,6 +35,25 @@ class HomeFragment : Fragment() {
                 postListAdapter.updateDataSet(state.posts.toCollection(ArrayList()))
             }
         }
+
+        val swipeRefreshLayout = binding.refreshLayout
+
+        // Refresh function for the layout
+        swipeRefreshLayout.setOnRefreshListener{
+
+            // Your code goes here
+            // In this code, we are just changing the text in the
+            // textbox
+
+            viewModel.fetchPosts()
+
+            // This line is important as it explicitly refreshes only once
+            // If "true" it implicitly refreshes forever
+            swipeRefreshLayout.isRefreshing = false
+        }
+
+
+
         return binding.root
     }
 

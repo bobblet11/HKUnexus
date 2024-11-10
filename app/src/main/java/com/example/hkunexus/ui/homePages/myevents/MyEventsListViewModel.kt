@@ -20,7 +20,7 @@ class MyEventsViewModel : ViewModel() {
         fetchMyEvents()
     }
 
-    private fun fetchMyEvents() {
+    public fun fetchMyEvents() {
         //FETCH USING SUPABASE
         //USE USER ID HERE FROM SINGLETON
 

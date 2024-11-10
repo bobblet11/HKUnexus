@@ -60,7 +60,7 @@ class ExploreViewModel : ViewModel() {
         selectedTagID = tag_id
     }
 
-    fun fetchClubs(){
+    public fun fetchClubs(){
         val query = keyword.trim().lowercase()
         var tempList: Array<ClubDto>?
         val id = selectedTagID
@@ -90,7 +90,7 @@ class ExploreViewModel : ViewModel() {
         updateClubList(tempList)
     }
 
-    private fun fetchTags() {
+    public fun fetchTags() {
         var tempList: Array<Tag>? = SupabaseSingleton.searchTags("")?.toTypedArray()
 
         if (tempList == null){

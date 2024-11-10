@@ -6,12 +6,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.hkunexus.data.SupabaseSingleton
 import com.example.hkunexus.data.SupabaseSingleton.getAllJoinedClubs
+import com.example.hkunexus.data.UserSingleton
 import com.example.hkunexus.data.model.dto.ClubDto
 import com.example.hkunexus.data.model.dto.EventDto
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import java.util.UUID
 
 data class MyGroupsUiState(
     val selectedClub: ClubDto? = null,
@@ -123,7 +125,14 @@ class CreatePostViewModel: ViewModel() {
                 isPostValid = bool
             )
         }
+    }
 
+    public fun createPost(){
+        if (!uiState.value.isEventPost){
+            val result = SupabaseSingleton.insertOrUpdatePost(UUID.randomUUID().toString(), UserSingleton.userID, uiState.value.selectedClub!!.clubId!!, uiState.value.postTitle,
+                uiState.value.postBody, "")
+            Log.d("POST", result.toString())
+        }
     }
 }
 

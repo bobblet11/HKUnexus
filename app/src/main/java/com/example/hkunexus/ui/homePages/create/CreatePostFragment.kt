@@ -153,6 +153,10 @@ class CreatePostFragment : Fragment() {
             }
         })
 
+        postButton.setOnClickListener{
+            viewModel.createPost()
+        }
+
 
 
 
