@@ -6,6 +6,7 @@ import com.example.hkunexus.data.model.dto.EventDto
 import com.example.hkunexus.data.model.dto.PostDto
 import com.example.hkunexus.data.model.dto.Tag
 import com.example.hkunexus.data.model.dto.UserToClubDto
+import com.example.hkunexus.data.model.dto.fromPostToEvent
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.auth.Auth
 import io.github.jan.supabase.auth.OtpType
@@ -566,6 +567,44 @@ object SupabaseSingleton{
 
                 }
 
+
+                Log.d("SupabaseSingleton", "$funcName rpc output, $output")
+
+                return@runBlocking output
+            } catch (e: Exception) {
+                Log.d("SupabaseSingleton", "Failure, $e")
+                return@runBlocking listOf()
+            }
+        }
+    }
+
+    fun getEventsFromClub(clubID: String): List<EventDto>{
+
+        return runBlocking {
+            val funcName = "get_all_posts_and_events_from_a_club"
+            val funcParam = buildJsonObject {
+                put("given_club_id", clubID)
+            }
+
+            try {
+                val result = client!!.postgrest.rpc(funcName, funcParam)
+                Log.d("SupabaseSingleton", "$funcName rpc, $result")
+                val temp: List<PostDto> = result.decodeList<PostDto>()
+                val output: ArrayList<EventDto> = arrayListOf()
+
+                val firstApiFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssXXX")
+                val currentDateTime = OffsetDateTime.now(ZoneOffset.UTC)
+
+                for (P in temp){
+                    if (P.eventId != null){
+                        val eventDateTime = OffsetDateTime.parse(P.eventTimeStart, firstApiFormat)
+                        val durationE = Duration.between(currentDateTime, eventDateTime)
+                        P.eventTimeStart = getLargestDenominationFuture(durationE)
+                        var e = fromPostToEvent(P)
+                        output.add(e)
+                    }
+
+                }
 
                 Log.d("SupabaseSingleton", "$funcName rpc output, $output")
 

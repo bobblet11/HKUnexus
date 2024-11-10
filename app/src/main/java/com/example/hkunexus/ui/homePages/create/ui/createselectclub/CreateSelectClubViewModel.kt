@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
 data class CreateSelectClubUiState(
-    val listOfGroupsToDisplay: List<ClubDto> = SupabaseSingleton.getAllJoinedClubs(),
+    val listOfGroupsToDisplay: ArrayList<ClubDto> = arrayListOf()
 )
 
 
@@ -22,17 +22,17 @@ class CreateSelectClubViewModel : ViewModel() {
         fetchMyGroups()
     }
 
+
+
     private fun fetchMyGroups() {
 
         val tempList = SupabaseSingleton.getAllJoinedClubs()
 
-        for (item: ClubDto in tempList) {
-
-            _uiState.update {
-                it.copy(
-                    listOfGroupsToDisplay = tempList
-                )
-            }
+        _uiState.update {
+            it.copy(
+                listOfGroupsToDisplay = tempList.toCollection(ArrayList())
+            )
         }
+
     }
 }

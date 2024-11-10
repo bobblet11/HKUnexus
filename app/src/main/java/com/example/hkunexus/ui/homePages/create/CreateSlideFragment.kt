@@ -66,7 +66,7 @@ class MyPagerAdapter2(fragmentActivity: FragmentActivity) : FragmentStateAdapter
     override fun createFragment(position: Int): Fragment {
         return when (position) {
             0 -> CreatePostFragment()
-            1 -> MyEventsMapFragment()
+            1 -> CreateEventFragment()
             2 -> MyGroupsFragment()
             else -> throw IllegalStateException("Unexpected position $position")
         }
