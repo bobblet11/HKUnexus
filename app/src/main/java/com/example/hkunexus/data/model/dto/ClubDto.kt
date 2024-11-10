@@ -21,7 +21,7 @@ data class ClubDto(
     var joined: Boolean = false,
     val tags: Array<String> = arrayOf(),
     var numberOfMembers: Int = 0,
-)
+) : java.io.Serializable
 
 
 

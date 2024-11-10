@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         drawerLayout = binding.drawerLayout
 
-        toolbar = findViewById<Toolbar>(R.id.toolbar)
+        toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         val toggle = ActionBarDrawerToggle(
             this,
@@ -67,18 +67,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         bottomNavView = binding.bottomNavView
         bottomNavView.setOnItemSelectedListener{ item ->
-            when(item.itemId){
-                R.id.navigation_home ->openFragment(HomeFragment(), "Home")
-                R.id.navigation_explore ->openFragment(ExploreFragment(), "Explore")
-                R.id.navigation_create ->openFragment(CreateSlideFragment(), "Create")
-                R.id.navigation_my_events ->openFragment(MyEventsSlide(), "My Events")
-                R.id.navigation_my_groups ->openFragment(MyGroupsFragment(), "My Groups")
+            when (item.itemId) {
+                R.id.navigation_home -> openFragment(HomeFragment(), "Home")
+                R.id.navigation_explore -> openFragment(ExploreFragment(), "Explore")
+                R.id.navigation_create -> openFragment(CreateSlideFragment(), "Create")
+                R.id.navigation_my_events -> openFragment(MyEventsSlide(), "My Events")
+                R.id.navigation_my_groups -> openFragment(MyGroupsFragment(), "My Groups")
             }
             true
         }
         openFragment(HomeFragment(),"Home")
 
-        /*val navController = findNavController(R.id.nav_host_fragment_activity_main)
+        /* val navController = findNavController(R.id.nav_host_fragment_activity_main)
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
