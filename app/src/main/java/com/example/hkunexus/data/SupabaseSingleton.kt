@@ -1,5 +1,7 @@
 package com.example.hkunexus.data
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.util.Log
 import com.example.hkunexus.data.model.dto.ClubDto
 import com.example.hkunexus.data.model.dto.EventDto
@@ -12,11 +14,18 @@ import io.github.jan.supabase.auth.Auth
 import io.github.jan.supabase.auth.OtpType
 import io.github.jan.supabase.auth.auth
 import io.github.jan.supabase.auth.providers.builtin.Email
+import io.github.jan.supabase.auth.status.SessionSource
 import io.github.jan.supabase.auth.user.UserInfo
 import io.github.jan.supabase.auth.user.UserSession
 import io.github.jan.supabase.createSupabaseClient
 import io.github.jan.supabase.postgrest.Postgrest
 import io.github.jan.supabase.postgrest.postgrest
+import io.github.jan.supabase.storage.Storage
+import io.github.jan.supabase.storage.storage
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -24,6 +33,8 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.encodeToJsonElement
 import kotlinx.serialization.json.put
+import java.io.ByteArrayOutputStream
+import java.io.File
 import java.time.Duration
 import java.time.Instant
 import java.time.LocalDate
@@ -62,6 +73,7 @@ object SupabaseSingleton{
             ) {
                 install(Postgrest)
                 install(Auth)
+                install(Storage)
             }
         }catch (e: Exception) {
             Log.e("SupabaseSingleton", "could not create supabase client\nClosing app", e)
@@ -688,6 +700,49 @@ object SupabaseSingleton{
             } catch (e: Exception) {
                 Log.d("SupabaseSingleton", "Failure, $e")
                 return@runBlocking listOf()
+            }
+        }
+    }
+
+
+    //valid bucketNames: "post_images", "club_images"
+    fun uploadImageToBucket(imageFile: File, bucketName: String, quality: Int = 80): String? {
+        return runBlocking {
+            val userId = currentUser?.id ?: return@runBlocking null
+
+            // Step 1: Decode the image file to a Bitmap
+            val originalBitmap: Bitmap = BitmapFactory.decodeFile(imageFile.absolutePath)
+
+            // Step 2: Prepare for compression
+            val compressedImageOutput = ByteArrayOutputStream()
+            // Compress the bitmap to JPEG format
+            originalBitmap.compress(Bitmap.CompressFormat.JPEG, quality, compressedImageOutput)
+
+            // Step 3: Upload the compressed image
+            val filePath = "images/${imageFile.nameWithoutExtension}.jpg" // Save as JPEG
+            return@runBlocking try {
+                val uploadResult = client!!.storage.from(bucketName).upload(filePath, compressedImageOutput.toByteArray())
+                Log.d("SupabaseSingleton", "Upload result: $uploadResult")
+                filePath
+            } catch (e: Exception) {
+                Log.d("SupabaseSingleton", "Error uploading image: $e")
+                null
+            }
+        }
+    }
+
+    fun getImageUrl(imageName: String, bucketName: String): Deferred<String?> {
+        return CoroutineScope(Dispatchers.IO).async {
+            try {
+                // Construct the image URL based on your bucket URL structure
+                val imagePath = "$imageName.jpg"
+                // Assuming you have a base URL for your Supabase storage
+                val url = client!!.storage.from(bucketName).publicUrl(imagePath)
+                Log.d("SupabaseSingleton", url)
+                url
+            } catch (e: Exception) {
+                Log.d("SupabaseSingleton", "Error constructing image URL: $e")
+                null
             }
         }
     }

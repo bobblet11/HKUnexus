@@ -1,11 +1,25 @@
 package com.example.hkunexus.ui.homePages.mygroups
+import android.graphics.drawable.Drawable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.example.hkunexus.R
+import com.example.hkunexus.data.SupabaseSingleton
 import com.example.hkunexus.data.model.dto.ClubDto
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import android.view.ViewGroup as ViewGroup
 
 class GroupListAdapter(private val dataSet: List<ClubDto>) :
@@ -14,10 +28,11 @@ class GroupListAdapter(private val dataSet: List<ClubDto>) :
     private var goToPostPage: (Int) -> Unit = { postID: Int -> }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        //var clubImage: TextView = view.findViewById<TextView>(R.id.club_banner_image)
+        var clubBannerImage: ImageView = view.findViewById<ImageView>(R.id.club_banner_image)
         var clubName: TextView = view.findViewById<TextView>(R.id.club_name)
         var clubDescription: TextView = view.findViewById<TextView>(R.id.club_description)
         var cardView: CardView = view.findViewById<CardView>(R.id.club_card)
+        val clubImageContainer: ConstraintLayout = view.findViewById<ConstraintLayout>(R.id.club_banner_container)
 
     }
 
@@ -30,10 +45,62 @@ class GroupListAdapter(private val dataSet: List<ClubDto>) :
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         val club = dataSet[position]
-        //val clubImage = club.xxxxx
-
         viewHolder.clubName.text = club.clubName
-        viewHolder.clubDescription.text = club.clubDesc // Use the local date part
+        viewHolder.clubDescription.text = club.clubDesc
+
+        // Load image asynchronously
+        club.clubId?.let { clubId ->
+            CoroutineScope(Dispatchers.Main).launch {
+                val imageURL = SupabaseSingleton.getImageUrl(clubId, "club_images").await()
+                Log.d("ImageURL", "Fetched URL: $imageURL") // Log the fetched URL
+
+                if (imageURL != null) {
+                    val placeholderImage = R.drawable.placeholder_view_vector
+                    // Load image using Glide with RequestListener
+                    Glide.with(viewHolder.itemView.context)
+                        .load(imageURL) // Load the image from the URL
+                        .placeholder(placeholderImage) // Placeholder while loading
+                        .error(placeholderImage) // Error image if loading fails
+                        .override(300, 200) // Resize to desired size (adjust as needed)
+                        .diskCacheStrategy(DiskCacheStrategy.ALL) // Enable caching
+                        .thumbnail(0.1f) // Load a smaller thumbnail first
+                        .listener(object : RequestListener<Drawable> {
+                            override fun onLoadFailed(
+                                e: GlideException?,
+                                model: Any?,
+                                target: Target<Drawable>?,
+                                isFirstResource: Boolean
+                            ): Boolean {
+                                // Hide the image container on error
+                                viewHolder.clubImageContainer.visibility = View.GONE
+                                Log.d("Glide", "Image load failed: ${e?.message}")
+                                return false // Allow Glide to handle the error placeholder
+                            }
+
+                            override fun onResourceReady(
+                                resource: Drawable?,
+                                model: Any?,
+                                target: Target<Drawable>?,
+                                dataSource: DataSource?,
+                                isFirstResource: Boolean
+                            ): Boolean {
+                                // Show the image container when image is loaded successfully
+                                viewHolder.clubImageContainer.visibility = View.VISIBLE
+                                Log.d("Glide", "Image loaded successfully")
+                                return false // Allow Glide to handle the resource
+                            }
+                        })
+                        .into(viewHolder.clubBannerImage) // Set the ImageView
+                } else {
+                    viewHolder.clubImageContainer.visibility = View.GONE // Hide if no image URL
+                    Log.d("Glide", "Image URL is null")
+                }
+            }
+        } ?: run {
+            // If clubId is null, hide the image container
+            viewHolder.clubImageContainer.visibility = View.GONE
+            Log.d("Glide", "clubId is null, hiding image container")
+        }
 
         viewHolder.cardView.setOnClickListener {
             goToPostPage(position)
