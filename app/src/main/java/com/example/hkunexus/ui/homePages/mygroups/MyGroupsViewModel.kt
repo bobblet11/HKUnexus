@@ -18,10 +18,10 @@ class MyGroupsViewModel: ViewModel() {
     val uiState: StateFlow<MyGroupsUiState> = _uiState.asStateFlow()
 
     init {
-        fetchMyEvents()
+        fetchMyGroups()
     }
 
-    private fun fetchMyEvents() {
+    public fun fetchMyGroups() {
         val tempList = SupabaseSingleton.getAllJoinedClubs()
 
         for (item: ClubDto in tempList) {

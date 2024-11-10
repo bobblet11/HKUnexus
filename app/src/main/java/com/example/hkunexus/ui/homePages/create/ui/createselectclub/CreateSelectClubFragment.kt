@@ -16,6 +16,9 @@ import com.example.hkunexus.data.model.dto.ClubDto
 import com.example.hkunexus.databinding.FragmentCreateSelectClubBinding
 import com.example.hkunexus.databinding.FragmentMyGroupsBinding
 import com.example.hkunexus.ui.homePages.mygroups.GroupListAdapter
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class CreateSelectClubFragment : Fragment() {
     private var _binding: FragmentCreateSelectClubBinding? = null
@@ -30,8 +33,14 @@ class CreateSelectClubFragment : Fragment() {
         _binding = FragmentCreateSelectClubBinding.inflate(inflater, container, false)
 
         val adapter = ClubListAdapter (
-            viewModel.uiState.value.listOfGroupsToDisplay
+            arrayListOf()
         )
+
+        CoroutineScope(Dispatchers.Main).launch {
+            viewModel.uiState.collect { state ->
+                adapter.updateDataSet(state.listOfGroupsToDisplay.toCollection(ArrayList()))
+            }
+        }
 
         Log.d("clubListAdapter", viewModel.uiState.value.listOfGroupsToDisplay.toString())
 
@@ -44,6 +53,8 @@ class CreateSelectClubFragment : Fragment() {
         }
 
         binding.clubListRecycler.adapter = adapter
+
+
 
         return binding.root
     }

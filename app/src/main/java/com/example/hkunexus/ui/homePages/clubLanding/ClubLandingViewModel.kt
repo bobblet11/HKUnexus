@@ -118,7 +118,7 @@ class ClubLandingViewModel : ViewModel() {
         }
     }
 
-    private fun fetchClubData() {
+    public fun fetchClubData() {
         // TODO: Fetch using Supabase using clubID
         Log.d("clubLandingViewModel", clubID)
         var tempClub: ClubDto = SupabaseSingleton.getClubById(clubID)!!
@@ -132,7 +132,7 @@ class ClubLandingViewModel : ViewModel() {
         updateClubInfo(tempClub)
     }
 
-    private fun fetchPosts() {
+    public fun fetchPosts() {
         // TODO: FETCH USING SUPABASE using clubID
         Log.d("cTEST", clubID)
         val tempList: Array<PostDto> = SupabaseSingleton.getPostsFromClub(clubID).toTypedArray()

@@ -7,13 +7,16 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.example.hkunexus.databinding.FragmentMyEventsSlideBinding
+import com.example.hkunexus.ui.homePages.home.HomeViewModel
 import com.example.hkunexus.ui.homePages.myevents.MyEventsListFragment
 import com.example.hkunexus.ui.homePages.myevents.MyEventsMapFragment
+import com.example.hkunexus.ui.homePages.myevents.MyEventsViewModel
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -21,6 +24,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 class MyEventsSlide : Fragment() {
     private var _binding: FragmentMyEventsSlideBinding? = null
     private val binding get() = _binding!!
+    private val myEventsListViewModel: MyEventsViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,6 +52,23 @@ class MyEventsSlide : Fragment() {
                 else -> null
             }
         }.attach()
+
+
+        val swipeRefreshLayout = binding.refreshLayout
+
+        // Refresh function for the layout
+        swipeRefreshLayout.setOnRefreshListener{
+
+            // Your code goes here
+            // In this code, we are just changing the text in the
+            // textbox
+
+            myEventsListViewModel.fetchMyEvents()
+
+            // This line is important as it explicitly refreshes only once
+            // If "true" it implicitly refreshes forever
+            swipeRefreshLayout.isRefreshing = false
+        }
 
         return binding.root
     }
