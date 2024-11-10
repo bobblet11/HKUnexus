@@ -1,5 +1,6 @@
 package com.example.hkunexus.ui.homePages.create.ui.createselectclub
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.hkunexus.data.SupabaseSingleton
 import com.example.hkunexus.data.model.dto.ClubDto
@@ -22,8 +23,6 @@ class CreateSelectClubViewModel : ViewModel() {
     }
 
     private fun fetchMyGroups() {
-        //FETCH USING SUPABASE
-        //USE USER ID HERE FROM SINGLETON
 
         val tempList = SupabaseSingleton.getAllJoinedClubs()
 
