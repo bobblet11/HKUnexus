@@ -7,26 +7,32 @@ import kotlinx.serialization.Serializable
 data class EventDto(
 
     @SerialName("id")
-    val id : String,
+    var id : String?,
 
     @SerialName("club_id")
-    val clubId : String,
+    var clubId : String?,
 
     @SerialName("title")
-    val title : String,
+    var title : String?,
 
     @SerialName("body")
-    val body : String,
+    var body : String?,
 
     @SerialName("time_start")
-    val timeStart : String,
+    var timeStart : String?,
 
     @SerialName("duration")
-    val duration : Int,
+    var duration : Int?,
 
     @SerialName("location")
-    val location : String,
+    var location : String?,
 
     @SerialName("created_at")
-    val createdAt: String,
-)
+    var createdAt: String?,
+
+) : java.io.Serializable
+
+public fun fromPostToEvent(post: PostDto) : EventDto{
+    val e = EventDto(id=post.eventId, clubId = post.clubId, title = post.eventTitle, body = post.eventBody, timeStart = post.eventTimeStart, duration = post.eventDuration, location = post.eventLocation, createdAt = post.eventCreatedAt)
+    return e
+}

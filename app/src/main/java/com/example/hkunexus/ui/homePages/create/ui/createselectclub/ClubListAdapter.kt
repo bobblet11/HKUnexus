@@ -1,5 +1,6 @@
 package com.example.hkunexus.ui.homePages.create.ui.createselectclub
 
+import android.annotation.SuppressLint
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +16,7 @@ class ClubListViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     val cardView: CardView = view.findViewById(R.id.club_card)
 }
 
-class ClubListAdapter(private val dataSet: List<ClubDto>) :
+class ClubListAdapter(private val dataSet: ArrayList<ClubDto>) :
     RecyclerView.Adapter<ClubListViewHolder>() {
 
     private var select: (ClubDto) -> Unit = {
@@ -42,4 +43,15 @@ class ClubListAdapter(private val dataSet: List<ClubDto>) :
     override fun getItemCount() = dataSet.size
 
     fun setSelectCallback(callback: (ClubDto) -> Unit) { select = callback }
+
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateDataSet(newData:  ArrayList<ClubDto>) {
+        //call when the data changes.
+        this.dataSet.clear()
+        this.dataSet.addAll(newData)
+        notifyDataSetChanged()
+        Log.d("adapter", dataSet.toString())
+    }
+
 }

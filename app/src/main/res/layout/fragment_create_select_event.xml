@@ -24,11 +24,11 @@
             <!-- RecyclerView below the Top Toolbar -->
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/club_list_recycler"
+                android:id="@+id/event_list_recycler"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/create_select_clubs_card" />
+                tools:listitem="@layout/create_select_event_card" />
 
             <!-- Bottom Navigation Bar -->
 

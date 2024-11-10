@@ -17,45 +17,51 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal"
+            android:layout_height="match_parent"
+            android:layout_weight="11"
+            android:orientation="vertical"
             android:padding="10dp">
 
             <TextView
-                android:id="@+id/club_name"
-                android:layout_width="wrap_content"
+                android:id="@+id/event_name2"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="0"
+                android:layout_weight="1"
+                android:width="250dp"
+                android:gravity="left|center_vertical"
+                android:maxWidth="300dp"
+                android:text="Event Name"
+                android:textSize="34sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/event_start_time"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:width="250dp"
                 android:gravity="left|center_vertical"
                 android:maxWidth="300dp"
                 android:paddingLeft="20dp"
-                android:text="(Club Name)"
+                android:text="Event Name"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <TextView
+                android:id="@+id/event_location"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:layout_weight="0"
-                android:paddingLeft="30dp">
-
-                <ImageView
-                    android:id="@+id/clubBannerImage"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/ic_launcher_background"
-                    android:scaleType="centerCrop"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/gradient" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:width="250dp"
+                android:gravity="left|center_vertical"
+                android:maxWidth="300dp"
+                android:paddingLeft="20dp"
+                android:text="Event Name"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
         </LinearLayout>
 
 
