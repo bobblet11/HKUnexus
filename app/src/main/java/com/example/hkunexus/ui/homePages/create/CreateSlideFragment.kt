@@ -9,9 +9,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
-import com.example.hkunexus.databinding.FragmentCreateBinding
 import com.example.hkunexus.databinding.FragmentCreateSlideBinding
-import com.example.hkunexus.databinding.FragmentMyEventsSlideBinding
 import com.example.hkunexus.ui.homePages.myevents.MyEventsListFragment
 import com.example.hkunexus.ui.homePages.myevents.MyEventsMapFragment
 import com.example.hkunexus.ui.homePages.mygroups.MyGroupsFragment
@@ -68,7 +66,7 @@ class MyPagerAdapter2(fragmentActivity: FragmentActivity) : FragmentStateAdapter
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {
-            0 -> MyEventsListFragment()
+            0 -> CreatePostFragment()
             1 -> MyEventsMapFragment()
             2 -> MyGroupsFragment()
             else -> throw IllegalStateException("Unexpected position $position")

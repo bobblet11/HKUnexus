@@ -16,76 +16,51 @@
         <TextView
             android:id="@+id/Createapost"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
             android:text="Create a Post"
             android:textSize="34sp"
-            android:textStyle="bold"
-            android:textColor="#000000" />
+            android:textStyle="bold"  />
 
         <TextView
             android:id="@+id/Select"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Select a club"
-            android:textSize="34dp"
-            android:textStyle="bold"
-            android:textColor="#000000" />
+            android:textSize="28dp" />
 
         <Spinner
-            android:id="@+id/Selectaclub"
+            android:id="@+id/select_a_club"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="48sp"
             android:background="#D3D3D3"
-            android:textColor="#000000"
             android:layout_marginBottom="20dp" />
-
-        <TextView
-            android:id="@+id/Post"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Post"
-            android:textSize="34dp"
-            android:textStyle="bold"
-            android:textColor="#000000" />
 
         <EditText
             android:id="@+id/Entertitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter your title of the post"
-            android:textColor="#000000" />
+            android:hint="Title"
+            android:textSize="24sp"/>
 
-        <ScrollView
+        <EditText
+            android:id="@+id/content"
             android:layout_width="match_parent"
+            android:hint="body text"
             android:layout_height="350dp"
-            android:background="#D3D3D3"
-            android:textColor="#000000" >
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical" >
-
-                <EditText
-                    android:id="@+id/content"
-                    android:layout_width="match_parent"
-                    android:gravity="top|start"
-                    android:hint="Type something here..."
-                    android:layout_height="350dp"
-                    android:background="#D3D3D3"
-                    android:textColor="#000000" />
-            </LinearLayout>
-        </ScrollView>
+            android:layout_margin="8dp"
+            android:padding="8dp"
+            android:inputType="textMultiLine"
+            android:gravity="top"/>
 
         <Button
-            android:id="@+id/sendpost"
+            android:id="@+id/create_post_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginVertical="20dp"
             android:layout_gravity="end"
-            android:text="Send post" />
-
+            android:text="Post" />
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
