@@ -14,28 +14,43 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/Createapost"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
-            android:text="Create a Post"
-            android:textSize="34sp"
+            android:text="New Post"
+            android:textSize="30sp"
             android:textStyle="bold"  />
 
         <TextView
-            android:id="@+id/Select"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Select a club"
-            android:textSize="28dp" />
+            android:textSize="24dp" />
 
-        <Spinner
-            android:id="@+id/select_a_club"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="48sp"
-            android:background="#D3D3D3"
-            android:layout_marginBottom="20dp" />
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/selected_club"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:text="Current: ---" />
+
+            <Button
+                android:id="@+id/select_club_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:text="Select" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
         <EditText
             android:id="@+id/Entertitle"

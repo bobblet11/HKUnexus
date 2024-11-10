@@ -22,9 +22,6 @@ class MyGroupsViewModel: ViewModel() {
     }
 
     private fun fetchMyEvents() {
-        //FETCH USING SUPABASE
-        //USE USER ID HERE FROM SINGLETON
-
         val tempList = SupabaseSingleton.getAllJoinedClubs()
 
         for (item: ClubDto in tempList) {
