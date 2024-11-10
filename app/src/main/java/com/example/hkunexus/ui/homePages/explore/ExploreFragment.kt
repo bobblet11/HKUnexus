@@ -10,12 +10,17 @@ import android.widget.ArrayAdapter
 import android.widget.SearchView
 import android.widget.Spinner
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.example.hkunexus.R
 import com.example.hkunexus.data.model.dto.Tag
 import com.example.hkunexus.databinding.FragmentExploreBinding
+import com.example.hkunexus.databinding.FragmentGroupLandingBinding
+import com.example.hkunexus.ui.homePages.clubLanding.ClubLandingFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -26,7 +31,7 @@ class ExploreFragment : Fragment()  {
     private val viewModel: ExploreViewModel by viewModels()
     private var _binding: FragmentExploreBinding? = null
     private val binding get() = _binding!!
-    val tags = arrayListOf("")
+    private val tags = arrayListOf("")
     private val exploreListAdapter = ExploreListAdapter(arrayListOf())
 
     override fun onCreateView(
@@ -42,6 +47,7 @@ class ExploreFragment : Fragment()  {
             b.putString("clubID", clubId)
 
             findNavController().navigate(R.id.navigation_group_landing, b)
+
         })
 
         binding.exploreClubsRecycler.adapter = exploreListAdapter
