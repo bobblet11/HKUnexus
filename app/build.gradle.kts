@@ -59,6 +59,7 @@ dependencies {
     implementation(libs.postgrest.kt)
     implementation(libs.auth.kt)
     implementation(libs.realtime.kt)
+    implementation("io.github.jan-tennert.supabase:storage-kt")
     implementation(libs.ktor.client.android)
     implementation(libs.androidx.legacy.support.v4)
     implementation(libs.androidx.fragment.ktx)
