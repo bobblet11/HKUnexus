@@ -551,7 +551,7 @@ object SupabaseSingleton{
                 val output: List<PostDto> = result.decodeList<PostDto>()
 
                 val firstApiFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssXXX")
-                val currentDateTime = LocalDateTime.now()
+                val currentDateTime = OffsetDateTime.now(ZoneOffset.UTC)
                 for (P in output){
                     val postDateTime = OffsetDateTime.parse(P.createdAt, firstApiFormat)
                     val duration = Duration.between(postDateTime, currentDateTime)
