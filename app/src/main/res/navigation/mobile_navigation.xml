@@ -53,5 +53,5 @@
         android:id="@+id/navigation_create"
         android:name="com.example.hkunexus.ui.homePages.create.CreateSlideFragment"
         android:label="@string/title_create"
-        tools:layout="@layout/fragment_create" />
+        tools:layout="@layout/fragment_create_post" />
 </navigation>
