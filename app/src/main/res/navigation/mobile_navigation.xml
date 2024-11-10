@@ -8,9 +8,12 @@
     <fragment
         android:id="@+id/navigation_home"
         android:name="com.example.hkunexus.ui.homePages.home.HomeFragment"
-        tools:layout="@layout/fragment_home"
-        android:label="@string/title_home"/>
-
+        android:label="@string/title_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_navigation_home_to_loginActivity"
+            app:destination="@id/loginActivity" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_explore"
@@ -56,4 +59,9 @@
         android:label="@string/title_create"
         tools:layout="@layout/fragment_create_post" />
 
+    <activity
+        android:id="@+id/loginActivity"
+        android:name="com.example.hkunexus.ui.login.LoginActivity"
+        android:label="activity_login"
+        tools:layout="@layout/activity_login" />
 </navigation>
