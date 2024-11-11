@@ -8,6 +8,8 @@ import android.app.TimePickerDialog
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.text.format.DateFormat
 import android.view.LayoutInflater
 import android.view.View
@@ -21,6 +23,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.hkunexus.data.model.dto.ClubDto
 import com.example.hkunexus.databinding.FragmentCreateEventBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
 
@@ -103,13 +108,54 @@ class CreateEventFragment : Fragment() {
     ): View {
         _binding = FragmentCreateEventBinding.inflate(inflater, container, false)
 
+        setDateButtonEventListeners()
+        updateDateTime()
+
+        val eventTitle = binding.Entertitle
+        val eventDesc = binding.content
+
+        eventTitle.addTextChangedListener(object : TextWatcher {
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+            override fun afterTextChanged(s: Editable) {
+                viewModel.setTitle(s.toString())
+            }
+        })
+
+        eventDesc.addTextChangedListener(object : TextWatcher {
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+            override fun afterTextChanged(s: Editable) {
+                viewModel.setDesc(s.toString())
+            }
+        })
+
+        binding.createEventButton.setOnClickListener {
+            viewModel.post()
+        }
+
+        updateCreateButton()
+
+        val clubButton: Button = binding.selectClubButton
+        clubButton.setOnClickListener {
+            val intent = Intent(activity, CreateSelectClubActivity::class.java)
+            requestSelectedClubLauncher.launch(intent)
+        }
+        return binding.root
+    }
+
+    private fun updateCreateButton() {
+        binding.createEventButton.isEnabled = viewModel.canPost()
+    }
+
+    private fun setDateButtonEventListeners() {
         binding.selectStartDate.setOnClickListener {
             activity?.let { it1 ->
                 val datePicker = DatePickerFragment(viewModel.uiState.value.startDate)
-                datePicker.setDateSetCallback({
-                        view: DatePicker, y: Int, m: Int, d: Int ->
+                datePicker.setDateSetCallback({ view: DatePicker, y: Int, m: Int, d: Int ->
                     viewModel.setStartDate(y, m, d)
                     updateDateTime()
+                    updateCreateButton()
                 })
                 datePicker.show(it1.supportFragmentManager, "datePicker")
             }
@@ -118,10 +164,10 @@ class CreateEventFragment : Fragment() {
         binding.selectStartTime.setOnClickListener {
             activity?.let { it1 ->
                 val timePicker = TimePickerFragment(viewModel.uiState.value.startDate)
-                timePicker.setTimeSetCallback({
-                    view: TimePicker, h: Int, m: Int ->
+                timePicker.setTimeSetCallback({ view: TimePicker, h: Int, m: Int ->
                     viewModel.setStartTime(h, m)
                     updateDateTime()
+                    updateCreateButton()
                 })
                 timePicker.show(it1.supportFragmentManager, "timePicker")
             }
@@ -130,10 +176,10 @@ class CreateEventFragment : Fragment() {
         binding.selectEndDate.setOnClickListener {
             activity?.let { it1 ->
                 val datePicker = DatePickerFragment(viewModel.uiState.value.endDate)
-                datePicker.setDateSetCallback({
-                        view: DatePicker, y: Int, m: Int, d: Int ->
+                datePicker.setDateSetCallback({ view: DatePicker, y: Int, m: Int, d: Int ->
                     viewModel.setEndDate(y, m, d)
                     updateDateTime()
+                    updateCreateButton()
                 })
                 datePicker.show(it1.supportFragmentManager, "datePicker")
             }
@@ -142,23 +188,14 @@ class CreateEventFragment : Fragment() {
         binding.selectEndTime.setOnClickListener {
             activity?.let { it1 ->
                 val timePicker = TimePickerFragment(viewModel.uiState.value.endDate)
-                timePicker.setTimeSetCallback({
-                        view: TimePicker, h: Int, m: Int ->
+                timePicker.setTimeSetCallback({ view: TimePicker, h: Int, m: Int ->
                     viewModel.setEndTime(h, m)
                     updateDateTime()
+                    updateCreateButton()
                 })
                 timePicker.show(it1.supportFragmentManager, "timePicker")
             }
         }
-
-        updateDateTime()
-
-        val clubButton: Button = binding.selectClubButton
-        clubButton.setOnClickListener {
-            val intent = Intent(activity, CreateSelectClubActivity::class.java)
-            requestSelectedClubLauncher.launch(intent)
-        }
-        return binding.root
     }
 
     @SuppressLint("SimpleDateFormat")

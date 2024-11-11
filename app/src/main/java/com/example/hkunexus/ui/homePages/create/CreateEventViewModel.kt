@@ -127,9 +127,27 @@ class CreateEventViewModel: ViewModel() {
     private fun isValidTitle(): Boolean {
         return _uiState.value.eventTitle.trim().isNotEmpty()
     }
+    
+    fun setTitle(title: String) {
+        _uiState.update {
+            it.copy(
+                eventTitle = title
+            )
+        }
+    }
+
+    fun setDesc(desc: String) {
+        _uiState.update {
+            it.copy(
+                eventDesc = desc
+            )
+        }
+    }
 
     fun canPost(): Boolean {
-        return isValidDate() && isValidTitle()
+        return _uiState.value.selectedClub != null
+                && isValidDate()
+                && isValidTitle()
     }
 
     fun post() {
