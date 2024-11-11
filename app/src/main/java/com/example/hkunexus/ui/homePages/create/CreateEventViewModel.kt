@@ -16,6 +16,7 @@ class CreateEventViewModel: ViewModel() {
         val endDate: Calendar = Calendar.getInstance(),
         val eventTitle: String = "",
         val eventDesc: String = "",
+        val eventLocation: String = "",
     )
 
     private val _uiState = MutableStateFlow(UiState())
@@ -140,6 +141,14 @@ class CreateEventViewModel: ViewModel() {
         _uiState.update {
             it.copy(
                 eventDesc = desc
+            )
+        }
+    }
+
+    fun setLocation(loc: String) {
+        _uiState.update {
+            it.copy(
+                eventLocation = loc
             )
         }
     }
