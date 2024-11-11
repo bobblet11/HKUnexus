@@ -6,6 +6,7 @@ import android.app.DatePickerDialog
 import android.app.Dialog
 import android.app.TimePickerDialog
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.text.format.DateFormat
 import android.view.LayoutInflater
@@ -162,6 +163,7 @@ class CreateEventFragment : Fragment() {
 
     @SuppressLint("SimpleDateFormat")
     private fun updateDateTime() {
+
         val dateFormat = SimpleDateFormat("yyyy/MM/dd")
         val timeFormat = if (DateFormat.is24HourFormat(activity)) {
             SimpleDateFormat("HH:mm")
@@ -176,6 +178,23 @@ class CreateEventFragment : Fragment() {
         binding.selectStartTime.text = startTime
         binding.selectEndDate.text = endDate
         binding.selectEndTime.text = endTime
+
+        val components = arrayOf(
+            binding.startsText,
+            binding.endsText
+        )
+
+        val defaultColour: Int = android.R.color.tab_indicator_text
+
+        if (viewModel.isValidDate()) {
+            for (el in components) {
+                el.setTextColor(resources.getColor(defaultColour))
+            }
+        } else {
+            for (el in components) {
+                el.setTextColor(Color.RED)
+            }
+        }
     }
 
     override fun onDestroyView() {

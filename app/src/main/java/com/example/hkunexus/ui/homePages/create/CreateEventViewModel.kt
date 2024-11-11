@@ -14,10 +14,23 @@ class CreateEventViewModel: ViewModel() {
         val selectedClub: ClubDto? = null,
         val startDate: Calendar = Calendar.getInstance(),
         val endDate: Calendar = Calendar.getInstance(),
+        val eventTitle: String = "",
+        val eventDesc: String = "",
     )
 
     private val _uiState = MutableStateFlow(UiState())
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
+
+    init {
+        val newEndDate = Calendar.getInstance()
+        newEndDate.add(Calendar.HOUR, 1)
+
+        _uiState.update {
+            it.copy(
+                endDate = newEndDate
+            )
+        }
+    }
 
     fun setSelectedClub(club: ClubDto?) {
 
@@ -44,7 +57,6 @@ class CreateEventViewModel: ViewModel() {
     fun setEndDate(y: Int, m: Int, d: Int) {
         setDate(2, y, m, d)
     }
-
 
     private fun setTime(i: Int, hr: Int, min: Int) {
 
@@ -106,6 +118,24 @@ class CreateEventViewModel: ViewModel() {
             }
         }
 
+    }
+
+    fun isValidDate(): Boolean {
+        return _uiState.value.startDate.timeInMillis < _uiState.value.endDate.timeInMillis
+    }
+
+    private fun isValidTitle(): Boolean {
+        return _uiState.value.eventTitle.trim().isNotEmpty()
+    }
+
+    fun canPost(): Boolean {
+        return isValidDate() && isValidTitle()
+    }
+
+    fun post() {
+        if (canPost()) {
+            // TODO: Hook up to Supabase
+        }
     }
 }
 
