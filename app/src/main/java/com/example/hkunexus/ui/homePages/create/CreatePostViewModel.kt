@@ -128,9 +128,10 @@ class CreatePostViewModel: ViewModel() {
     }
 
     fun createPost(): Boolean {
-        if (uiState.value.isPostValid) { val postIdArg = uiState.value.selectedEvent?.id!!
+        if (uiState.value.isPostValid) {
+            val postIdArg = UUID.randomUUID().toString()
             val result = SupabaseSingleton.insertOrUpdatePost(
-                UUID.randomUUID().toString(),
+                postIdArg,
                 UserSingleton.userID,
                 uiState.value.selectedClub!!.clubId!!,
                 uiState.value.postTitle,
@@ -138,7 +139,7 @@ class CreatePostViewModel: ViewModel() {
                 ""
             )
             Log.d("POST", result.toString())
-            if (!uiState.value.isEventPost){
+            if (uiState.value.isEventPost){
                 val eventIdArg = uiState.value.selectedEvent!!.id!!
                 val result2 = SupabaseSingleton.insertEventToPost(
                     eventIdArg,
