@@ -1,12 +1,15 @@
 package com.example.hkunexus.ui.homePages.create
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
+import com.example.hkunexus.data.SupabaseSingleton.insertOrUpdateEvent
 import com.example.hkunexus.data.model.dto.ClubDto
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import java.util.Calendar
+import java.util.UUID
 
 class CreateEventViewModel: ViewModel() {
 
@@ -23,14 +26,17 @@ class CreateEventViewModel: ViewModel() {
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
 
     init {
-        val newEndDate = Calendar.getInstance()
-        newEndDate.add(Calendar.HOUR, 1)
-
         _uiState.update {
             it.copy(
-                endDate = newEndDate
+                endDate = getOneHourLater()
             )
         }
+    }
+
+    private fun getOneHourLater(): Calendar {
+        val newEndDate = Calendar.getInstance()
+        newEndDate.add(Calendar.HOUR, 1)
+        return newEndDate
     }
 
     fun setSelectedClub(club: ClubDto?) {
@@ -159,9 +165,34 @@ class CreateEventViewModel: ViewModel() {
                 && isValidTitle()
     }
 
-    fun post() {
+    fun post(): Boolean {
         if (canPost()) {
-            // TODO: Hook up to Supabase
+            val idArg = UUID.randomUUID().toString()
+            val clubIdArg = _uiState.value.selectedClub!!.clubId!!
+            val titleArg = _uiState.value.eventTitle
+            val bodyArg = _uiState.value.eventDesc
+            val timeStartArg = _uiState.value.startDate
+            val durationArg = (_uiState.value.endDate.timeInMillis - _uiState.value.startDate.timeInMillis) / 1000
+            val locationArg = _uiState.value.eventLocation
+            val result = insertOrUpdateEvent(
+                idArg, clubIdArg, titleArg, bodyArg, timeStartArg, durationArg, locationArg
+            )
+            Log.d("POST", result.toString())
+            return true
+        }
+        return false
+    }
+
+    fun reset() {
+        _uiState.update {
+            it.copy(
+                selectedClub = null,
+                startDate = Calendar.getInstance(),
+                endDate = getOneHourLater(),
+                eventTitle = "",
+                eventDesc = "",
+                eventLocation = "",
+            )
         }
     }
 }

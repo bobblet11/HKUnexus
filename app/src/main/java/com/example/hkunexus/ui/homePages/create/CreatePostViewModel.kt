@@ -127,11 +127,13 @@ class CreatePostViewModel: ViewModel() {
         }
     }
 
-    public fun createPost(){
+    fun createPost() {
         if (!uiState.value.isEventPost){
             val result = SupabaseSingleton.insertOrUpdatePost(UUID.randomUUID().toString(), UserSingleton.userID, uiState.value.selectedClub!!.clubId!!, uiState.value.postTitle,
                 uiState.value.postBody, "")
             Log.d("POST", result.toString())
+        } else {
+            // TODO : Add event post
         }
     }
 }

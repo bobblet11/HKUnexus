@@ -37,6 +37,7 @@ import kotlinx.serialization.json.encodeToJsonElement
 import kotlinx.serialization.json.put
 import java.io.ByteArrayOutputStream
 import java.io.File
+import java.text.SimpleDateFormat
 import java.time.Duration
 import java.time.Instant
 import java.time.LocalDate
@@ -45,6 +46,7 @@ import java.time.OffsetDateTime
 import java.time.Period
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
+import java.util.Calendar
 import kotlin.system.exitProcess
 
 
@@ -808,11 +810,12 @@ object SupabaseSingleton {
         clubIdArg: String,
         titleArg: String,
         bodyArg: String,
-        timeStartArg: String,
-        durationArg: Int,
+        timeStartArg: Calendar,
+        durationArg: Long,
         locationArg: String,
     ): EventDto? {
-        val firstApiFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssXXX")
+        val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm")
+        val timeStartStr = formatter.format(timeStartArg.time)
         val currentDateTime = OffsetDateTime.now(ZoneOffset.UTC)
         return runBlocking {
             val funcName = "insert_or_update_event"
@@ -821,7 +824,7 @@ object SupabaseSingleton {
                 put("club_id_arg", clubIdArg)
                 put("created_at_arg", currentDateTime.toString())
                 put("id_arg", idArg)
-                put("time_start_arg", timeStartArg)
+                put("time_start_arg", timeStartStr)
                 put("title_arg", titleArg)
                 put("duration_arg", durationArg)
                 put("location_arg", locationArg)

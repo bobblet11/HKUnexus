@@ -17,6 +17,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.DatePicker
 import android.widget.TimePicker
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
@@ -91,13 +92,17 @@ class CreateEventFragment : Fragment() {
             }
 
             viewModel.setSelectedClub(club)
+            updateSelectedClubName()
+        }
+    }
 
-            val clubText = binding.selectedClub
-            if (club == null) {
-                clubText.text = "Selected club: ---"
-            } else {
-                clubText.text = "Selected club: " + club.clubName
-            }
+    private fun updateSelectedClubName() {
+        val club = viewModel.uiState.value.selectedClub
+        val clubText = binding.selectedClub
+        if (club == null) {
+            clubText.text = "Selected club: ---"
+        } else {
+            clubText.text = "Selected club: " + club.clubName
         }
     }
 
@@ -120,6 +125,7 @@ class CreateEventFragment : Fragment() {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun afterTextChanged(s: Editable) {
                 viewModel.setTitle(s.toString())
+                updateCreateButton()
             }
         })
 
@@ -128,6 +134,7 @@ class CreateEventFragment : Fragment() {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun afterTextChanged(s: Editable) {
                 viewModel.setDesc(s.toString())
+                updateCreateButton()
             }
         })
 
@@ -136,11 +143,17 @@ class CreateEventFragment : Fragment() {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun afterTextChanged(s: Editable) {
                 viewModel.setLocation(s.toString())
+                updateCreateButton()
             }
         })
 
         binding.createEventButton.setOnClickListener {
-            viewModel.post()
+            val success = viewModel.post()
+            if (success) {
+                viewModel.reset()
+                updateAllFromViewModel()
+                Toast.makeText(context, "Event created!", Toast.LENGTH_SHORT).show()
+            }
         }
 
         updateCreateButton()
@@ -241,6 +254,15 @@ class CreateEventFragment : Fragment() {
                 el.setTextColor(Color.RED)
             }
         }
+    }
+
+    private fun updateAllFromViewModel() {
+        updateDateTime()
+        updateSelectedClubName()
+        binding.Entertitle.setText("")
+        binding.content.setText("")
+        binding.location.setText("")
+        updateCreateButton()
     }
 
     override fun onDestroyView() {
