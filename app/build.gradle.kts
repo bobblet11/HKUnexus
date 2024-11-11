@@ -66,6 +66,9 @@ dependencies {
     implementation("com.google.code.gson:gson:2.8.9")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     implementation(libs.play.services.maps) // Check for the latest version
+    implementation(libs.glide)
+    annotationProcessor(libs.compiler) // For Java
+    
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
