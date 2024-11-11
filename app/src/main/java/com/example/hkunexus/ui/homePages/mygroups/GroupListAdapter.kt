@@ -47,7 +47,7 @@ class GroupListAdapter(private val dataSet: List<ClubDto>) :
         val club = dataSet[position]
         viewHolder.clubName.text = club.clubName
         viewHolder.clubDescription.text = club.clubDesc
-
+        /*
         // Load image asynchronously
         club.clubId?.let { clubId ->
             CoroutineScope(Dispatchers.Main).launch {
@@ -101,7 +101,7 @@ class GroupListAdapter(private val dataSet: List<ClubDto>) :
             viewHolder.clubImageContainer.visibility = View.GONE
             Log.d("Glide", "clubId is null, hiding image container")
         }
-
+        */
         viewHolder.cardView.setOnClickListener {
             goToPostPage(position)
         }

@@ -39,7 +39,7 @@ class ExploreListAdapter(private val dataSet: ArrayList<ClubDto>) :
         viewHolder.clubName.text = club.clubName
         viewHolder.clubDescription.text = club.clubDesc
         val placeholderImage = R.drawable.placeholder_view_vector
-
+        /*
         // Load image asynchronously
         club.clubId?.let { clubId ->
             CoroutineScope(Dispatchers.Main).launch {
@@ -92,7 +92,7 @@ class ExploreListAdapter(private val dataSet: ArrayList<ClubDto>) :
             viewHolder.clubImageContainer.visibility = View.GONE
             Log.d("Glide", "clubId is null, hiding image container")
         }
-
+        */
         viewHolder.cardView.setOnClickListener {
             goToLandingPage(club.clubId.toString())
         }
