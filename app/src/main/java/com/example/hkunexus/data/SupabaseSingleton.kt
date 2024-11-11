@@ -647,7 +647,7 @@ object SupabaseSingleton {
     }
 
 //
-//    fun getEventsFromClub(clubID: String): List<EventDto> {
+//    fun getEventsFromClubOldCode(clubID: String): List<EventDto> {
 //
 //        return runBlocking {
 //            val funcName = "get_all_posts_and_events_from_a_club"
@@ -725,7 +725,7 @@ object SupabaseSingleton {
 
     fun getPostsFromHome(): List<PostDto> {
 
-        Log.d("getPOSTfromHOme", UserSingleton.userID)
+        Log.d("getPOSTfromHome", UserSingleton.userID)
 
         return runBlocking {
             val funcName = "get_all_posts_and_unjoined_events_from_all_joined_clubs"

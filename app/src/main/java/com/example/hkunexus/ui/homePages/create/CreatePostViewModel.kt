@@ -127,14 +127,28 @@ class CreatePostViewModel: ViewModel() {
         }
     }
 
-    fun createPost() {
-        if (!uiState.value.isEventPost){
-            val result = SupabaseSingleton.insertOrUpdatePost(UUID.randomUUID().toString(), UserSingleton.userID, uiState.value.selectedClub!!.clubId!!, uiState.value.postTitle,
-                uiState.value.postBody, "")
+    fun createPost(): Boolean {
+        if (uiState.value.isPostValid) { val postIdArg = uiState.value.selectedEvent?.id!!
+            val result = SupabaseSingleton.insertOrUpdatePost(
+                UUID.randomUUID().toString(),
+                UserSingleton.userID,
+                uiState.value.selectedClub!!.clubId!!,
+                uiState.value.postTitle,
+                uiState.value.postBody,
+                ""
+            )
             Log.d("POST", result.toString())
-        } else {
-            // TODO : Add event post
+            if (!uiState.value.isEventPost){
+                val eventIdArg = uiState.value.selectedEvent!!.id!!
+                val result2 = SupabaseSingleton.insertEventToPost(
+                    eventIdArg,
+                    postIdArg,
+                )
+                Log.d("POST", result2.toString())
+            }
+            return true
         }
+        return false
     }
 }
 
