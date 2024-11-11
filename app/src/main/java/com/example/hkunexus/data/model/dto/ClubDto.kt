@@ -19,7 +19,7 @@ data class ClubDto(
     var clubDesc: String? = "default",
 
     @SerialName("image")
-    var image: String? = "",
+    var clubImage: String? = "",
 
     var joined: Boolean = false,
     val tags: Array<String> = arrayOf(),

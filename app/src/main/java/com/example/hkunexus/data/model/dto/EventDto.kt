@@ -30,9 +30,12 @@ data class EventDto(
     @SerialName("created_at")
     var createdAt: String?,
 
+    @SerialName("coordinates")
+    var coordinates: String?,
+
 ) : java.io.Serializable
 
 public fun fromPostToEvent(post: PostDto) : EventDto{
-    val e = EventDto(id=post.eventId, clubId = post.clubId, title = post.eventTitle, body = post.eventBody, timeStart = post.eventTimeStart, duration = post.eventDuration, location = post.eventLocation, createdAt = post.eventCreatedAt)
+    val e = EventDto(id=post.eventId, clubId = post.clubId, title = post.eventTitle, body = post.eventBody, timeStart = post.eventTimeStart, duration = post.eventDuration, location = post.eventLocation, createdAt = post.eventCreatedAt, coordinates = null)
     return e
 }
