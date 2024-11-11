@@ -1,10 +1,10 @@
 package com.example.hkunexus.data.model
 
+import com.example.hkunexus.data.model.dto.ClubDto
+
 data class Club (
-    var clubID: Int,
-    var name: String,
-    var description: String,
+    var data : ClubDto,
     var joined: Boolean = false,
-    var tags: Array<String> = arrayOf(),
+    val tags: Array<String> = arrayOf(),
     var numberOfMembers: Int = 0,
 )
