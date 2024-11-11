@@ -18,6 +18,9 @@ data class ClubDto(
     @SerialName("description")
     var clubDesc: String? = "default",
 
+    @SerialName("image")
+    var image: String? = "",
+
     var joined: Boolean = false,
     val tags: Array<String> = arrayOf(),
     var numberOfMembers: Int = 0,
