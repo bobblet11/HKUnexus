@@ -88,9 +88,9 @@ class CreateEventFragment : Fragment() {
 
             val clubText = binding.selectedClub
             if (club == null) {
-                clubText.text = "Current: ---"
+                clubText.text = "Selected club: ---"
             } else {
-                clubText.text = "Current: " + club.clubName
+                clubText.text = "Selected club: " + club.clubName
             }
         }
     }

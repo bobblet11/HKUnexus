@@ -20,6 +20,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
                 android:text="Select a club"
                 android:textSize="24dp" />
 
@@ -34,7 +35,7 @@
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    android:text="Current: ---" />
+                    android:text="Selected club: ---" />
 
                 <Button
                     android:id="@+id/select_club_button"
@@ -49,7 +50,7 @@
                 android:id="@+id/Entertitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Title"
+                android:hint="Event Title"
                 android:minHeight="60dp"
                 android:textSize="24sp"/>
 
