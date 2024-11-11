@@ -95,11 +95,11 @@
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
-                    <com.google.android.gms.maps.MapView
+                    <org.osmdroid.views.MapView
                         android:id="@+id/map_view"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:contentDescription="location of event"/>
+                        android:layout_height="100dp"
+                        android:contentDescription="location of event" />
 
                 </androidx.cardview.widget.CardView>
 

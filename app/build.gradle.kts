@@ -68,7 +68,9 @@ dependencies {
     implementation(libs.play.services.maps) // Check for the latest version
     implementation(libs.glide)
     annotationProcessor(libs.compiler) // For Java
-    
+    implementation(libs.osmdroid.android) // Check for the latest version
+
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
