@@ -615,29 +615,25 @@ object SupabaseSingleton {
     fun getEventsFromClub(clubID: String): List<EventDto> {
 
         return runBlocking {
-            val funcName = "get_all_posts_and_events_from_a_club"
+            val funcName = "get_event_by_club_id"
             val funcParam = buildJsonObject {
-                put("given_club_id", clubID)
+                put("club_id_arg", clubID)
             }
 
             try {
                 val result = client!!.postgrest.rpc(funcName, funcParam)
                 Log.d("SupabaseSingleton", "$funcName rpc, $result")
-                val temp: List<PostDto> = result.decodeList<PostDto>()
+                val temp: List<EventDto> = result.decodeList<EventDto>()
                 val output: ArrayList<EventDto> = arrayListOf()
 
                 val firstApiFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssXXX")
                 val currentDateTime = OffsetDateTime.now(ZoneOffset.UTC)
 
-                for (P in temp) {
-                    if (P.eventId != null) {
-                        val eventDateTime = OffsetDateTime.parse(P.eventTimeStart, firstApiFormat)
-                        val durationE = Duration.between(currentDateTime, eventDateTime)
-                        P.eventTimeStart = getLargestDenominationFuture(durationE)
-                        var e = fromPostToEvent(P)
-                        output.add(e)
-                    }
-
+                for (events in temp) {
+                    val eventDateTime = OffsetDateTime.parse(events.timeStart, firstApiFormat)
+                    val durationE = Duration.between(currentDateTime, eventDateTime)
+                    events.timeStart = getLargestDenominationFuture(durationE)
+                    output.add(events)
                 }
 
                 Log.d("SupabaseSingleton", "$funcName rpc output, $output")
@@ -649,6 +645,45 @@ object SupabaseSingleton {
             }
         }
     }
+
+//
+//    fun getEventsFromClub(clubID: String): List<EventDto> {
+//
+//        return runBlocking {
+//            val funcName = "get_all_posts_and_events_from_a_club"
+//            val funcParam = buildJsonObject {
+//                put("given_club_id", clubID)
+//            }
+//
+//            try {
+//                val result = client!!.postgrest.rpc(funcName, funcParam)
+//                Log.d("SupabaseSingleton", "$funcName rpc, $result")
+//                val temp: List<PostDto> = result.decodeList<PostDto>()
+//                val output: ArrayList<EventDto> = arrayListOf()
+//
+//                val firstApiFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssXXX")
+//                val currentDateTime = OffsetDateTime.now(ZoneOffset.UTC)
+//
+//                for (P in temp) {
+//                    if (P.eventId != null) {
+//                        val eventDateTime = OffsetDateTime.parse(P.eventTimeStart, firstApiFormat)
+//                        val durationE = Duration.between(currentDateTime, eventDateTime)
+//                        P.eventTimeStart = getLargestDenominationFuture(durationE)
+//                        var e = fromPostToEvent(P)
+//                        output.add(e)
+//                    }
+//
+//                }
+//
+//                Log.d("SupabaseSingleton", "$funcName rpc output, $output")
+//
+//                return@runBlocking output
+//            } catch (e: Exception) {
+//                Log.d("SupabaseSingleton", "Failure, $e")
+//                return@runBlocking listOf()
+//            }
+//        }
+//    }
 
     fun getAllJoinedEvents(): List<EventDto> {
         return runBlocking {

@@ -37,7 +37,7 @@ class CreateSelectEventViewModel : ViewModel() {
 
     }
 
-    public fun setSelectedClubId(id: String?){
+    fun setSelectedClubId(id: String?){
         _uiState.update {
             it.copy(
                 selectedClub = id

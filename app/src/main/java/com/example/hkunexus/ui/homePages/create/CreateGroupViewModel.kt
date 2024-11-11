@@ -18,14 +18,14 @@ import java.util.UUID
 class CreateGroupViewModel: ViewModel() {
 
     data class MyGroupsUiState(
-        val postTitle: String = "",
-        val postBody: String = "",
+        val groupName: String = "",
+        val groupDesc: String = "",
     )
 
     private val _uiState = MutableStateFlow(MyGroupsUiState())
     val uiState: StateFlow<MyGroupsUiState> = _uiState.asStateFlow()
 
-    fun createPost(){
+    fun createGroup(){
 
     }
 }
