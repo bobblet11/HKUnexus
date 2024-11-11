@@ -28,7 +28,6 @@
             android:layout_weight="1"
             android:gravity="center_vertical"
             android:text="Bens Ballistic Tennis Group"
-            android:textColor="@android:color/black"
             android:textSize="24sp"
             tools:ignore="HardcodedText" />
     </LinearLayout>

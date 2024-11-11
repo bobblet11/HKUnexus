@@ -33,7 +33,7 @@ class HomeViewModel : ViewModel() {
         }
     }
 
-    public fun fetchPosts() {
+    fun fetchPosts() {
         val tempList: Array<PostDto> = SupabaseSingleton.getPostsFromHome().toTypedArray()
         Log.d("homeViewModel", tempList.toString())
         updateHomePosts(tempList)

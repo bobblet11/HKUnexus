@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
-    app:cardBackgroundColor="@color/white"
     app:cardCornerRadius="20dp"
     app:cardElevation="10dp"
     tools:ignore="MissingClass">
@@ -41,7 +40,6 @@
             android:layout_marginBottom="10sp"
             android:maxLines="2"
             android:text="Wow. This is such a cool logo!"
-            android:textColor="@android:color/black"
             android:textSize="16sp"
             tools:ignore="HardcodedText" />
 
@@ -49,7 +47,7 @@
             android:id="@+id/eventTime"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:text="Event Time" />
 
         <TextView
             android:id="@+id/eventLocation"
@@ -57,7 +55,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10sp"
             android:layout_marginBottom="10sp"
-            android:text="TextView" />
+            android:text="Event Location" />
 
         <Button
             android:id="@+id/joinEventButton"
