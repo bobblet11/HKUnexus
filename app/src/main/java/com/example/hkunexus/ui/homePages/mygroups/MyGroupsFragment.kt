@@ -1,6 +1,7 @@
 package com.example.hkunexus.ui.homePages.mygroups
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,9 @@ import androidx.navigation.fragment.findNavController
 import com.example.hkunexus.R
 import com.example.hkunexus.databinding.FragmentMyGroupsBinding
 import com.example.hkunexus.ui.homePages.myevents.MyGroupsViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class MyGroupsFragment : Fragment() {
 
@@ -26,7 +30,7 @@ class MyGroupsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentMyGroupsBinding.inflate(inflater, container, false)
-        val groupListAdapter = GroupListAdapter(viewModel.uiState.value.listOfGroupsToDisplay)
+        val groupListAdapter = GroupListAdapter(arrayListOf())
         groupListAdapter.setPostPageCallBack ({ clubId: String ->
             val b = Bundle()
             b.putString("clubID", clubId)
@@ -53,6 +57,12 @@ class MyGroupsFragment : Fragment() {
             swipeRefreshLayout.isRefreshing = false
         }
 
+        CoroutineScope(Dispatchers.Main).launch {
+            viewModel.uiState.collect { state ->
+                Log.d("CHANGE", state.listOfGroupsToDisplay.toCollection(ArrayList()).toString())
+                groupListAdapter.updateDataSet(state.listOfGroupsToDisplay.toCollection(ArrayList()))
+            }
+        }
 
         return binding.root
 

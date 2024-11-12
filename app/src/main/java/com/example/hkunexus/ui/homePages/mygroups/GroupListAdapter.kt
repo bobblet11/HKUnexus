@@ -1,4 +1,5 @@
 package com.example.hkunexus.ui.homePages.mygroups
+import android.annotation.SuppressLint
 import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.LayoutInflater
@@ -17,12 +18,13 @@ import com.bumptech.glide.request.target.Target
 import com.example.hkunexus.R
 import com.example.hkunexus.data.SupabaseSingleton
 import com.example.hkunexus.data.model.dto.ClubDto
+import com.example.hkunexus.data.model.dto.EventDto
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import android.view.ViewGroup as ViewGroup
 
-class GroupListAdapter(private val dataSet: List<ClubDto>) :
+class GroupListAdapter(private val dataSet: ArrayList<ClubDto>) :
     RecyclerView.Adapter<GroupListAdapter.ViewHolder>() {
 
     private var goToPostPage: (String) -> Unit = { clubID: String -> }
@@ -105,6 +107,15 @@ class GroupListAdapter(private val dataSet: List<ClubDto>) :
         viewHolder.cardView.setOnClickListener {
             goToPostPage(dataSet[position].clubId!!)
         }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateDataSet(newData:  ArrayList<ClubDto>) {
+        //call when the data changes.
+        this.dataSet.clear()
+        Log.d("DWAD", newData.toString())
+        this.dataSet.addAll(newData)
+        notifyDataSetChanged()
     }
 
     override fun getItemCount() = dataSet.size

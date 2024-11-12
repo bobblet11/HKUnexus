@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
 data class MyGroupsUiState(
-    val listOfGroupsToDisplay: List<ClubDto> = getAllJoinedClubs(),
+    val listOfGroupsToDisplay: List<ClubDto> = arrayListOf(),
 )
 
 class MyGroupsViewModel: ViewModel() {
@@ -33,4 +33,6 @@ class MyGroupsViewModel: ViewModel() {
             }
         }
     }
+
+
 }
