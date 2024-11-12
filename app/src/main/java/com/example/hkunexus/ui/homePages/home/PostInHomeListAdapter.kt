@@ -11,7 +11,8 @@ import com.example.hkunexus.data.model.dto.PostDto
 
 class PostInHomeListAdapter(private val dataSet: ArrayList<PostDto>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    private var goToPostPage: (Int) -> Unit = { postID: Int -> }
+
+    private var goToPostPage: (String) -> Unit = { postID: String -> }
 
     override fun getItemViewType(position: Int): Int {
         // Just as an example, return 0 or 2 depending on position
@@ -65,7 +66,7 @@ class PostInHomeListAdapter(private val dataSet: ArrayList<PostDto>) :
                 viewHolder.joinButton.visibility = View.VISIBLE
                 viewHolder.leaveButton.visibility = View.INVISIBLE
                 viewHolder.cardView.setOnClickListener {
-                    goToPostPage(position)
+                    goToPostPage(dataSet[position].id)
                 }
             }
             //NORMAL POST
@@ -79,7 +80,7 @@ class PostInHomeListAdapter(private val dataSet: ArrayList<PostDto>) :
                 viewHolder.postTitle.text = dataSet[position].title
                 viewHolder.clubName.text = SupabaseSingleton.getClubName(dataSet[position].clubId)
                 viewHolder.cardView.setOnClickListener {
-                    goToPostPage(position)
+                    goToPostPage(dataSet[position].id)
                 }
             }
             //DEFAULT IS NORMAL POST
@@ -92,7 +93,7 @@ class PostInHomeListAdapter(private val dataSet: ArrayList<PostDto>) :
                 viewHolder.postTitle.text = dataSet[position].title
                 viewHolder.clubName.text = SupabaseSingleton.getClubName(dataSet[position].clubId)
                 viewHolder.cardView.setOnClickListener {
-                    goToPostPage(position)
+                    goToPostPage(dataSet[position].id)
                 }
             }
         }
@@ -100,7 +101,7 @@ class PostInHomeListAdapter(private val dataSet: ArrayList<PostDto>) :
 
     override fun getItemCount() = dataSet.size
 
-    fun setPostPageCallBack(callback: (Int) -> Unit) {
+    fun setPostPageCallBack(callback: (String) -> Unit) {
         goToPostPage = callback
     }
 

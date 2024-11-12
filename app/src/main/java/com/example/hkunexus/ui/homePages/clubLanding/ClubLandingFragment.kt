@@ -87,6 +87,7 @@ class ClubLandingFragment : Fragment() {
             // If "true" it implicitly refreshes forever
             swipeRefreshLayout.isRefreshing = false
         }
+
         return binding.root
     }
 

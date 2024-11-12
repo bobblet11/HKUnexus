@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import com.example.hkunexus.R
 import com.example.hkunexus.databinding.FragmentMyGroupsBinding
 import com.example.hkunexus.ui.homePages.myevents.MyGroupsViewModel
 
@@ -25,12 +27,14 @@ class MyGroupsFragment : Fragment() {
     ): View {
         _binding = FragmentMyGroupsBinding.inflate(inflater, container, false)
         val groupListAdapter = GroupListAdapter(viewModel.uiState.value.listOfGroupsToDisplay)
-        groupListAdapter.setPostPageCallBack {
-                position: Int ->
-            Toast.makeText(context, "Should go to post page $position", Toast.LENGTH_SHORT).show()
-        }
-        binding.myGroupsClubsRecycler.adapter = groupListAdapter
+        groupListAdapter.setPostPageCallBack ({ clubId: String ->
+            val b = Bundle()
+            b.putString("clubID", clubId)
 
+            findNavController().navigate(R.id.navigation_group_landing, b)
+
+        })
+        binding.myGroupsClubsRecycler.adapter = groupListAdapter
 
 
         val swipeRefreshLayout = binding.refreshLayout

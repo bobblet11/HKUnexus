@@ -25,7 +25,7 @@ import android.view.ViewGroup as ViewGroup
 class GroupListAdapter(private val dataSet: List<ClubDto>) :
     RecyclerView.Adapter<GroupListAdapter.ViewHolder>() {
 
-    private var goToPostPage: (Int) -> Unit = { postID: Int -> }
+    private var goToPostPage: (String) -> Unit = { clubID: String -> }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var clubBannerImage: ImageView = view.findViewById<ImageView>(R.id.club_banner_image)
@@ -103,13 +103,13 @@ class GroupListAdapter(private val dataSet: List<ClubDto>) :
         }
         */
         viewHolder.cardView.setOnClickListener {
-            goToPostPage(position)
+            goToPostPage(dataSet[position].clubId!!)
         }
     }
 
     override fun getItemCount() = dataSet.size
 
-    fun setPostPageCallBack(callback: (Int) -> Unit) {
+    fun setPostPageCallBack(callback: (String) -> Unit) {
         goToPostPage = callback
     }
 }

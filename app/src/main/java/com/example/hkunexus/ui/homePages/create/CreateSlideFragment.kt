@@ -67,7 +67,7 @@ class MyPagerAdapter2(fragmentActivity: FragmentActivity) : FragmentStateAdapter
         return when (position) {
             0 -> CreatePostFragment()
             1 -> CreateEventFragment()
-            2 -> MyGroupsFragment()
+            2 -> CreateGroupFragment()
             else -> throw IllegalStateException("Unexpected position $position")
         }
     }

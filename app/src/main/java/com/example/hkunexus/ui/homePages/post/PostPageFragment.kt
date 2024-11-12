@@ -1,6 +1,7 @@
-package com.example.hkunexus.ui.homePages.home
+package com.example.hkunexus.ui.homePages.post
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,15 +10,15 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.hkunexus.R
 import com.example.hkunexus.databinding.FragmentHomeBinding
-import com.example.hkunexus.ui.homePages.mygroups.GroupListAdapter
+import com.example.hkunexus.databinding.FragmentPostPageBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class HomeFragment : Fragment() {
+class PostPageFragment : Fragment() {
 
-    private val viewModel: HomeViewModel by viewModels()
-    private var _binding: FragmentHomeBinding? = null
+    private val viewModel: PostViewModel by viewModels()
+    private var _binding: FragmentPostPageBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -26,26 +27,10 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        _binding = FragmentPostPageBinding.inflate(inflater, container, false)
+        Log.d("postPageFrag", arguments?.getString("postID").toString())
 
-        val homePostsRecycler = binding.homeRecycler
-
-        val postListAdapter = PostInHomeListAdapter(arrayListOf())
-
-        postListAdapter.setPostPageCallBack ({ postId: String ->
-            val b = Bundle()
-            b.putString("postID", postId)
-
-            findNavController().navigate(R.id.navigation_post_page, b)
-
-        })
-
-        homePostsRecycler.adapter = postListAdapter
-        CoroutineScope(Dispatchers.Main).launch {
-            viewModel.uiStatePosts.collect { state ->
-                postListAdapter.updateDataSet(state.posts.toCollection(ArrayList()))
-            }
-        }
+        viewModel.setPostID(arguments?.getString("postID"))
 
         val swipeRefreshLayout = binding.refreshLayout
 

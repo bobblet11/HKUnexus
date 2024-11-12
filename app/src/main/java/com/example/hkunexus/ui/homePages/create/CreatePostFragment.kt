@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.CompoundButton
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -41,13 +42,17 @@ class CreatePostFragment : Fragment() {
             viewModel.setIsClubSelected(true)
             viewModel.setSelectedClub(club)
 
-            val clubText = binding.selectedClub
-            if (club == null) {
-                clubText.text = "Selected Club: ---"
-            } else {
-                clubText.text = "Selected Club: " + club.clubName
-            }
+            updateSelectedClubName()
+        }
+    }
 
+    private fun updateSelectedClubName() {
+        val club = viewModel.uiState.value.selectedClub
+        val clubText = binding.selectedClub
+        if (club == null) {
+            clubText.text = "Selected club: ---"
+        } else {
+            clubText.text = "Selected club: " + club.clubName
         }
     }
 
@@ -65,13 +70,17 @@ class CreatePostFragment : Fragment() {
             viewModel.setIsEventSelected(true)
             viewModel.setSelectedEvent(event)
 
-            val eventText = binding.selectedEvent
-            if (event == null) {
-                eventText.text = "Selected Event: ---"
-            } else {
-                eventText.text = "Selected Event: " + event.title
-            }
+            updateSelectedEventName()
+        }
+    }
 
+    private fun updateSelectedEventName() {
+        val event = viewModel.uiState.value.selectedEvent
+        val eventText = binding.selectedEvent
+        if (event == null) {
+            eventText.text = "Selected Event: ---"
+        } else {
+            eventText.text = "Selected Event: " + event.title
         }
     }
 
@@ -89,34 +98,32 @@ class CreatePostFragment : Fragment() {
         }
 
         val eventSwitch = binding.switch1
-        val eventSelectText = binding.selectedEvent
         val eventSelectButton = binding.selectEventButton
         val postButton = binding.createPostButton
 
-        eventSwitch.setClickable(false);
+        eventSwitch.setClickable(false)
         eventSwitch.setAlpha(0.5f)
         eventSelectButton.setEnabled(false)
 
         eventSelectButton.setOnClickListener {
-            val intent: Intent = Intent(activity, CreateSelectEventActivity::class.java)
+            val intent = Intent(activity, CreateSelectEventActivity::class.java)
             intent.putExtra("selectedClub", viewModel.uiState.value.selectedClub?.clubId)
             Log.d("event intent", viewModel.uiState.value.selectedClub?.clubId.toString())
             requestSelectedEventLauncher.launch(intent)
         }
 
-        eventSwitch.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
+        eventSwitch.setOnCheckedChangeListener( { buttonView, isChecked ->
             // do something, the isChecked will be
             // true if the switch is in the On position
             if (isChecked){
                 viewModel.setIsEventPost(true)
-            }else{
+            } else {
                 viewModel.setIsEventPost(false)
                 viewModel.setIsEventSelected(false)
                 viewModel.setSelectedEvent(null)
 
                 val eventText = binding.selectedEvent
                 eventText.text = "Selected Event: ---"
-
             }
         })
 
@@ -124,56 +131,54 @@ class CreatePostFragment : Fragment() {
         val postBody = binding.content
 
         postTitle.addTextChangedListener(object : TextWatcher {
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                // TODO Auto-generated method stub
-            }
-
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-                // TODO Auto-generated method stub
-            }
-
-            override fun afterTextChanged(s: Editable) {
-                // TODO Auto-generated method stub
-                viewModel.setPostTitle(s.toString())
-            }
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+            override fun afterTextChanged(s: Editable) { viewModel.setPostTitle(s.toString()) }
         })
 
         postBody.addTextChangedListener(object : TextWatcher {
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                // TODO Auto-generated method stub
-            }
-
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-                // TODO Auto-generated method stub
-            }
-
-            override fun afterTextChanged(s: Editable) {
-                // TODO Auto-generated method stub
-                viewModel.setPostBody(s.toString())
-            }
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+            override fun afterTextChanged(s: Editable) { viewModel.setPostBody(s.toString()) }
         })
 
         postButton.setOnClickListener{
-            viewModel.createPost()
+            val success = viewModel.createPost()
+            if (success) {
+                viewModel.reset()
+                updateAllFromViewModel()
+                Toast.makeText(context, "Post created!", Toast.LENGTH_SHORT).show()
+            }
         }
-
-
-
 
         CoroutineScope(Dispatchers.Main).launch {
             viewModel.uiState.collect { state ->
-                eventSwitch.setClickable(state.isClubSelected)
-                eventSwitch.setAlpha(if (state.isClubSelected) 1.0f else 0.5f)
-                eventSelectButton.setEnabled(state.isClubSelected && state.isEventPost)
-                postButton.setEnabled(state.isPostValid && state.isClubSelected && (if (state.isEventPost) state.isEventSelected else true))
+                updateSwitchAndButtonStates(state)
             }
         }
 
         return binding.root
-
     }
 
+    private fun updateSwitchAndButtonStates(state: CreatePostViewModel. MyGroupsUiState) {
+        val eventSwitch = binding.switch1
+        val eventSelectButton = binding.selectEventButton
+        val postButton = binding.createPostButton
 
+        eventSwitch.isChecked = state.isEventPost
+        eventSwitch.setClickable(state.isClubSelected)
+        eventSwitch.setAlpha(if (state.isClubSelected) 1.0f else 0.5f)
+        eventSelectButton.setEnabled(state.isClubSelected && state.isEventPost)
+        postButton.setEnabled(state.isPostValid && state.isClubSelected && (if (state.isEventPost) state.isEventSelected else true))
+    }
+
+    private fun updateAllFromViewModel() {
+        updateSelectedClubName()
+        updateSelectedEventName()
+        binding.Entertitle.setText("")
+        binding.content.setText("")
+        updateSwitchAndButtonStates(viewModel.uiState.value)
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()

@@ -13,6 +13,10 @@
         <action
             android:id="@+id/action_navigation_home_to_loginActivity"
             app:destination="@id/loginActivity" />
+
+        <action
+            android:id="@+id/action_navigation_post_page"
+            app:destination="@id/navigation_post_page" />
     </fragment>
 
     <fragment
@@ -52,6 +56,12 @@
         android:name="com.example.hkunexus.ui.homePages.mygroups.MyGroupsFragment"
         android:label="@string/title_my_groups"
         tools:layout="@layout/fragment_my_groups" />
+
+    <fragment
+        android:id="@+id/navigation_post_page"
+        android:name="com.example.hkunexus.ui.homePages.post.PostPageFragment"
+        android:label="@layout/fragment_post_page"
+        tools:layout="@layout/fragment_post_page" />
 
     <fragment
         android:id="@+id/navigation_create"
