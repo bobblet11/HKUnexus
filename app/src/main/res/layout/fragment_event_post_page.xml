@@ -30,7 +30,7 @@
                 android:orientation="vertical"
                 android:padding="16dp">
 
-                <include layout="@layout/post_profile_section" />
+                <include layout="@layout/post_profile_section_home" />
 
                 <TextView
                     android:id="@+id/postEventTitle"
@@ -62,7 +62,8 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/event_widget_parent"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:visibility="gone">
 
                     <include
                         android:id="@+id/event_widget"

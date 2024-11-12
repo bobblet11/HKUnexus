@@ -923,7 +923,7 @@ object SupabaseSingleton {
         idArg: String,
     ): PostDto? {
         return runBlocking {
-            val funcName = "get_post_by_id"
+            val funcName = "get_post_or_event_post_by_id"
             val funcParam = buildJsonObject {
                 put("id_arg", idArg)
             }
@@ -931,6 +931,18 @@ object SupabaseSingleton {
                 val result = client!!.postgrest.rpc(funcName, funcParam)
                 Log.d("SupabaseSingleton", "$funcName rpc, $result")
                 val output = result.decodeSingle<PostDto>()
+
+                val firstApiFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssXXX")
+                val currentDateTime = OffsetDateTime.now(ZoneOffset.UTC)
+                val postDateTime = OffsetDateTime.parse(output.createdAt, firstApiFormat)
+                val duration = Duration.between(postDateTime, currentDateTime)
+                output.createdAt = getLargestDenominationPast(duration)
+                if (output.eventId != null) {
+                    val eventDateTime = OffsetDateTime.parse(output.eventTimeStart, firstApiFormat)
+                    val durationE = Duration.between(currentDateTime, eventDateTime)
+                    output.eventTimeStart = getLargestDenominationFuture(durationE)
+                }
+
                 Log.d("SupabaseSingleton", "$funcName rpc output, $output")
                 return@runBlocking output
             } catch (e: Exception) {

@@ -15,6 +15,8 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import com.example.hkunexus.R
 import com.example.hkunexus.data.model.dto.ClubDto
 import com.example.hkunexus.data.model.dto.EventDto
 import com.example.hkunexus.databinding.FragmentCreatePostBinding
@@ -148,6 +150,7 @@ class CreatePostFragment : Fragment() {
                 viewModel.reset()
                 updateAllFromViewModel()
                 Toast.makeText(context, "Post created!", Toast.LENGTH_SHORT).show()
+                findNavController().navigate(R.id.navigation_home)
             }
         }
 
