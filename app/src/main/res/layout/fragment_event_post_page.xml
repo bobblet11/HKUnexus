@@ -10,49 +10,70 @@
     app:cardCornerRadius="20dp"
     app:cardElevation="10dp"
     tools:ignore="MissingClass">
-
-    <LinearLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:layout_weight="0"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <include layout="@layout/post_profile_section" />
-
-        <TextView
-            android:id="@+id/postEventTitle"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Post Title (event post)"
-            android:textSize="34sp" />
+            android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/eventBannerImage"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_marginTop="10sp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/hku_nexus_logo"
-            tools:ignore="ContentDescription" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
 
-        <TextView
-            android:id="@+id/eventPostDescription"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:maxLines="2"
-            android:text="Wow. This is such a cool logo!"
-            android:textColor="@android:color/black"
-            android:textSize="16sp"
-            tools:ignore="HardcodedText" />
+                <include layout="@layout/post_profile_section" />
 
-        <include
-            layout="@layout/fragment_event_widget"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40sp"
-            android:layout_marginBottom="40sp" />
+                <TextView
+                    android:id="@+id/postEventTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Post Title (event post)"
+                    android:textSize="34sp" />
 
-        <!-- Action Buttons -->
-    </LinearLayout>
+                <ImageView
+                    android:id="@+id/eventBannerImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_marginTop="10sp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/hku_nexus_logo"
+                    tools:ignore="ContentDescription" />
+
+                <TextView
+                    android:id="@+id/eventPostDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:maxLines="2"
+                    android:text="Wow. This is such a cool logo!"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp"
+                    tools:ignore="HardcodedText" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/event_widget_parent"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <include
+                        android:id="@+id/event_widget"
+                        layout="@layout/fragment_event_widget"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <!-- Action Buttons -->
+            </LinearLayout>
+        </ScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 </androidx.cardview.widget.CardView>
