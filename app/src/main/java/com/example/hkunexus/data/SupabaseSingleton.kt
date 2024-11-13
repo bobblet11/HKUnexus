@@ -1060,4 +1060,43 @@ object SupabaseSingleton {
             }
         }
     }
+
+    fun queryEvents(
+        limitRow : Int,
+        offsetRow : Int,
+        orderByTimeStart : Int,
+        orderByTitle : Int,
+        byTitle : Boolean,
+        titleArg : String,
+        byClub : Boolean,
+        clubIdArg : String,
+        byUserToEvent : Boolean,
+        userIdArg : String
+    ): List<EventDto>? {
+        return runBlocking {
+            val funcName = "query_events"
+            val funcParam = buildJsonObject {
+                put("limit_row", limitRow)
+                put("offset_row", offsetRow)
+                put("order_by_time_start", orderByTimeStart)
+                put("order_by_title", orderByTitle)
+                put("by_title", byTitle)
+                put("title_arg", titleArg)
+                put("by_club", byClub)
+                put("club_id_arg", clubIdArg)
+                put("by_user_to_event", byUserToEvent)
+                put("user_id_arg", userIdArg)
+            }
+            try {
+                val result = client!!.postgrest.rpc(funcName, funcParam)
+                Log.d("SupabaseSingleton", "$funcName rpc, $result")
+                val output = result.decodeList<EventDto>()
+                Log.d("SupabaseSingleton", "$funcName rpc output, $output")
+                return@runBlocking output
+            } catch (e: Exception) {
+                Log.d("SupabaseSingleton", "Failure, $e")
+                return@runBlocking null
+            }
+        }
+    }
 }
