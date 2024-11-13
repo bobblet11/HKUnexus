@@ -20,9 +20,7 @@ class MyEventsViewModel : ViewModel() {
         fetchMyEvents()
     }
 
-    public fun fetchMyEvents() {
-        //FETCH USING SUPABASE
-        //USE USER ID HERE FROM SINGLETON
+    fun fetchMyEvents() {
 
         val tempList = SupabaseSingleton.getAllJoinedEvents()
 
@@ -34,5 +32,6 @@ class MyEventsViewModel : ViewModel() {
                 )
             }
         }
+
     }
 }

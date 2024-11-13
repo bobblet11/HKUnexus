@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.hkunexus.R
 import com.example.hkunexus.data.SupabaseSingleton
 import com.example.hkunexus.data.model.dto.PostDto
+import com.example.hkunexus.data.EventInterface
 
 class PostInHomeListAdapter(private val dataSet: ArrayList<PostDto>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -55,16 +56,45 @@ class PostInHomeListAdapter(private val dataSet: ArrayList<PostDto>) :
             0 -> {
                 val viewHolder: EventPostInHomeViewHolder = holder as EventPostInHomeViewHolder
 //                viewHolder.postersUsername.text = SupabaseSingleton.getDisplayName(dataSet[position].userId)
+
+                val postDto = dataSet[position]
+
                 viewHolder.postersUsername.text =
-                    "posted by " + SupabaseSingleton.getDisplayName(dataSet[position].userId)
-                viewHolder.description.text = dataSet[position].body
-                viewHolder.timeSincePosted.text = dataSet[position].createdAt
-                viewHolder.eventLocation.text = dataSet[position].eventLocation
-                viewHolder.eventTime.text = dataSet[position].eventTimeStart
-                viewHolder.postTitle.text = dataSet[position].title
-                viewHolder.clubName.text = SupabaseSingleton.getClubName(dataSet[position].clubId)
-                viewHolder.joinButton.visibility = View.VISIBLE
-                viewHolder.leaveButton.visibility = View.INVISIBLE
+                    "posted by " + SupabaseSingleton.getDisplayName(postDto.userId)
+                viewHolder.description.text = postDto.body
+                viewHolder.timeSincePosted.text = postDto.createdAt
+                viewHolder.eventLocation.text = postDto.eventLocation
+                viewHolder.eventTime.text = postDto.eventTimeStart
+                viewHolder.postTitle.text = postDto.title
+                viewHolder.clubName.text = SupabaseSingleton.getClubName(postDto.clubId)
+
+                val eventId = postDto.eventId!!
+
+                fun updateButtonVisibility() {
+                    val joined = EventInterface.hasJoinedEvent(eventId)
+
+                    if (joined) {
+                        viewHolder.joinButton.visibility = View.GONE
+                        viewHolder.leaveButton.visibility = View.VISIBLE
+                    } else {
+                        viewHolder.joinButton.visibility = View.VISIBLE
+                        viewHolder.leaveButton.visibility = View.GONE
+                    }
+                }
+
+                viewHolder.setJoinCallback {
+                    EventInterface.joinEvent(eventId)
+                    updateButtonVisibility()
+
+                }
+
+                viewHolder.setLeaveCallback {
+                    EventInterface.leaveEvent(eventId)
+                    updateButtonVisibility()
+                }
+
+                updateButtonVisibility()
+
                 viewHolder.cardView.setOnClickListener {
                     goToPostPage(dataSet[position].id)
                 }

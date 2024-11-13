@@ -4,25 +4,24 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hkunexus.R
 import com.example.hkunexus.data.SupabaseSingleton
 import com.example.hkunexus.data.model.dto.PostDto
+import com.example.hkunexus.data.EventInterface
 
 public final class PostInClubListAdapter(private val dataSet: ArrayList<PostDto>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var goToPostPage: (Int) -> Unit = { postID: Int -> }
 
-    override public fun getItemViewType(position: Int): Int {
+    override fun getItemViewType(position: Int): Int {
         // Just as an example, return 0 or 2 depending on position
         // Note that unlike in ListView adapters, types don't have to be contiguous
 
         return if (dataSet[position].eventId == null) 1 else 0
     }
 
-    override public fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         //creates the PostInCLubViewHolder i.e. a post card/event post card.
         when(viewType){
             //EVENT POST
@@ -44,22 +43,49 @@ public final class PostInClubListAdapter(private val dataSet: ArrayList<PostDto>
 
     }
 
-    override public fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
-        when(holder.itemViewType){
+        when(holder.itemViewType) {
             //EVENT POST
             0 -> {
                 val viewHolder: EventPostInClubViewHolder = holder as EventPostInClubViewHolder
 //                viewHolder.postersUsername.text = SupabaseSingleton.getDisplayName(dataSet[position].userId)
-                viewHolder.postersUsername.text = SupabaseSingleton.getDisplayName(dataSet[position].userId)
-                viewHolder.description.text = dataSet[position].body
-                viewHolder.timeSincePosted.text = dataSet[position].createdAt
-                viewHolder.eventLocation.text=dataSet[position].eventLocation
-                viewHolder.eventTime.text=dataSet[position].eventTimeStart
-                viewHolder.postTitle.text=dataSet[position].title
+                val postDto = dataSet[position]
+                viewHolder.postersUsername.text = SupabaseSingleton.getDisplayName(postDto.userId)
+                viewHolder.description.text = postDto.body
+                viewHolder.timeSincePosted.text = postDto.createdAt
+                viewHolder.eventLocation.text = postDto.eventLocation
+                viewHolder.eventTime.text = postDto.eventTimeStart
+                viewHolder.postTitle.text = postDto.title
 
-                viewHolder.joinButton.visibility = View.VISIBLE
-                viewHolder.leaveButton.visibility = View.INVISIBLE
+                val eventId = postDto.eventId!!
+
+                fun updateButtonVisibility() {
+                    val joined = EventInterface.hasJoinedEvent(eventId)
+
+                    if (joined) {
+                        viewHolder.joinButton.visibility = View.GONE
+                        viewHolder.leaveButton.visibility = View.VISIBLE
+                    } else {
+                        viewHolder.joinButton.visibility = View.VISIBLE
+                        viewHolder.leaveButton.visibility = View.GONE
+                    }
+                }
+
+                viewHolder.setJoinCallback {
+                    EventInterface.joinEvent(eventId)
+                    updateButtonVisibility()
+
+                }
+
+                viewHolder.setLeaveCallback {
+                    EventInterface.leaveEvent(eventId)
+                    updateButtonVisibility()
+                }
+
+                updateButtonVisibility()
+
+
                 viewHolder.cardView.setOnClickListener {
                     goToPostPage(position)
                 }

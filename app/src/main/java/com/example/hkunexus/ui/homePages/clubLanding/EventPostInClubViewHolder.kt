@@ -6,8 +6,9 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hkunexus.R
+import com.example.hkunexus.ui.JoinableEventPostViewHolder
 
-public class EventPostInClubViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+class EventPostInClubViewHolder(view: View) : JoinableEventPostViewHolder(view) {
     val cardView: CardView = view.findViewById(R.id.compactEventPostCard)
     var postTitle = view.findViewById<TextView>(R.id.postTitle)
     var postersUsername = view.findViewById<TextView>(R.id.postersUsername)
@@ -16,7 +17,4 @@ public class EventPostInClubViewHolder(view: View) : RecyclerView.ViewHolder(vie
 
     var eventLocation = view.findViewById<TextView>(R.id.eventLocation)
     var eventTime = view.findViewById<TextView>(R.id.eventTime)
-    val joinButton = view.findViewById<Button>(R.id.joinEventButton)
-    val leaveButton = view.findViewById<Button>(R.id.leaveEventButton)
-
 }

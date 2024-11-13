@@ -61,7 +61,7 @@ class EventListAdapter(private val dataSet: ArrayList<EventDto>) :
 
     @SuppressLint("NotifyDataSetChanged")
     fun updateDataSet(newData:  ArrayList<EventDto>) {
-        //call when the data changes.
+        // Call when the data changes.
         this.dataSet.clear()
         this.dataSet.addAll(newData)
         notifyDataSetChanged()
