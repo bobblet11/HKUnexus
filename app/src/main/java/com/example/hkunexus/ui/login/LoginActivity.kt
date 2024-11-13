@@ -3,6 +3,7 @@ package com.example.hkunexus.ui.login
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import androidx.activity.viewModels
@@ -50,14 +51,20 @@ class LoginActivity : AppCompatActivity() {
             val emailInput = email.text.toString()
             val passwordInput = password.text.toString()
 
-            if (viewModel.attemptLogin(emailInput, passwordInput)){
-                val editor = sharedPreference.edit()
-                editor.putString("email", emailInput)
-                editor.putString("password", passwordInput)
-                editor.apply()
+            viewModel.attemptLogin(emailInput, passwordInput){ isSuccess ->
+                if (isSuccess) {
+                    // Handle successful login
+                    val editor = sharedPreference.edit()
+                    editor.putString("email", emailInput)
+                    editor.putString("password", passwordInput)
+                    editor.apply()
 
-                val goToMain = Intent(this, MainActivity::class.java);
-                startActivity(goToMain);
+                    val goToMain = Intent(this, MainActivity::class.java);
+                    startActivity(goToMain);
+                } else {
+                    // Handle login failure
+                    Log.d("LoginActivity", "Login failed")
+                }
             }
 
         }

@@ -15,6 +15,7 @@ class EventPostInHomeViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     var description = view.findViewById<TextView>(R.id.postDescription)
     var timeSincePosted = view.findViewById<TextView>(R.id.timeSincePosted)
 
+
     var eventLocation = view.findViewById<TextView>(R.id.eventLocation)
     var eventTime = view.findViewById<TextView>(R.id.eventTime)
     val joinButton = view.findViewById<Button>(R.id.joinEventButton)

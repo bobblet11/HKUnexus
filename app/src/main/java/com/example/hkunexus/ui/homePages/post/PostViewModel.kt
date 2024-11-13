@@ -11,8 +11,8 @@ import kotlinx.coroutines.flow.update
 
 
 data class PostInfoState(
-    val postId: String = "",
-    val postTitle: String = "",
+    val postId: String? = null,
+    val post: PostDto? = null,
 )
 
 
@@ -22,16 +22,16 @@ class PostViewModel : ViewModel() {
     private val _uiStatePosts = MutableStateFlow(PostInfoState())
     val uiStatePosts: StateFlow<PostInfoState> = _uiStatePosts.asStateFlow()
 
-    private fun updatePostInfo(newPosts: PostDto) {
+    private fun updatePostInfo(newPost: PostDto) {
         _uiStatePosts.update {
             it.copy(
-                postTitle = newPosts.title
+                post = newPost
             )
         }
     }
 
     public fun fetchPosts() {
-        val post: PostDto? = SupabaseSingleton.getPostById(uiStatePosts.value.postId)
+        val post: PostDto? = SupabaseSingleton.getPostById(uiStatePosts.value.postId!!)
         Log.d("homeViewModel", post.toString())
         updatePostInfo(post!!)
     }
