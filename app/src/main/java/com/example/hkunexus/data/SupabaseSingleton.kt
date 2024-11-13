@@ -1099,4 +1099,55 @@ object SupabaseSingleton {
             }
         }
     }
+
+    fun insertOrUpdateClub(
+        idArg: String,
+        nameArg: String,
+        descriptionArg: String,
+        imageArg: String
+    ): ClubDto? {
+        return runBlocking {
+            val currentDateTime = OffsetDateTime.now(ZoneOffset.UTC)
+
+            val funcName = "insert_or_update_club"
+            val funcParam = buildJsonObject {
+                put("id_arg", idArg)
+                put("name_arg", nameArg)
+                put("created_at_arg", currentDateTime.toString())
+                put("description_arg", descriptionArg)
+                put("image_arg", imageArg)
+            }
+            try {
+                val result = client!!.postgrest.rpc(funcName, funcParam)
+                Log.d("SupabaseSingleton", "$funcName rpc, $result")
+                val output = result.decodeSingle<ClubDto>()
+                Log.d("SupabaseSingleton", "$funcName rpc output, $output")
+                return@runBlocking output
+            } catch (e: Exception) {
+                Log.d("SupabaseSingleton", "Failure, $e")
+                return@runBlocking null
+            }
+        }
+    }
+
+    fun removeClub(
+        idArg: String,
+    ): EventDto? {
+        return runBlocking {
+            val funcName = "remove_club"
+            val funcParam = buildJsonObject {
+                put("id_arg", idArg)
+            }
+            try {
+                val result = client!!.postgrest.rpc(funcName, funcParam)
+                Log.d("SupabaseSingleton", "$funcName rpc, $result")
+                val output = result.decodeSingle<EventDto>()
+                Log.d("SupabaseSingleton", "$funcName rpc output, $output")
+                return@runBlocking output
+            } catch (e: Exception) {
+                Log.d("SupabaseSingleton", "Failure, $e")
+                return@runBlocking null
+            }
+        }
+    }
 }
