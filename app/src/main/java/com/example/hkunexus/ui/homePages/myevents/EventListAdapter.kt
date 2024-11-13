@@ -7,12 +7,13 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hkunexus.R
+import com.example.hkunexus.data.model.dto.ClubDto
 import com.example.hkunexus.data.model.dto.EventDto
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import android.view.ViewGroup as ViewGroup
 
-class EventListAdapter(private val dataSet: List<EventDto>) :
+class EventListAdapter(private val dataSet: ArrayList<EventDto>) :
     RecyclerView.Adapter<EventListAdapter.ViewHolder>() {
 
     private var goToPostPage: (Int) -> Unit = { postID: Int -> }
@@ -55,5 +56,14 @@ class EventListAdapter(private val dataSet: List<EventDto>) :
 
     fun setPostPageCallBack(callback: (Int) -> Unit) {
         goToPostPage = callback
+    }
+
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateDataSet(newData:  ArrayList<EventDto>) {
+        //call when the data changes.
+        this.dataSet.clear()
+        this.dataSet.addAll(newData)
+        notifyDataSetChanged()
     }
 }

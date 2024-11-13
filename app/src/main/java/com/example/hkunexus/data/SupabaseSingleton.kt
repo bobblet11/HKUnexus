@@ -78,7 +78,7 @@ object SupabaseSingleton {
             ) {
                 install(Postgrest)
                 install(Auth)
-                install(Storage)
+//                install(Storage)
             }
         } catch (e: Exception) {
             Log.e("SupabaseSingleton", "could not create supabase client\nClosing app", e)
@@ -87,36 +87,34 @@ object SupabaseSingleton {
         Log.e("SupabaseSingleton", "successfully connected with supabase")
     }
 
-    fun login(email: String, password: String): Boolean {
+    suspend fun login(email: String, password: String): Boolean {
+        try {
+            val result = client!!.auth.signInWith(Email) {
+                this.email = email
+                this.password = password
+            }
 
-        return runBlocking {
-            try {
-                val result = client!!.auth.signInWith(Email) {
-                    this.email = email
-                    this.password = password
-                }
+            currentUser = client!!.auth.retrieveUserForCurrentSession(updateSession = true)
+            session = client!!.auth.currentSessionOrNull()
+            accessToken = session!!.accessToken
 
-                currentUser = client!!.auth.retrieveUserForCurrentSession(updateSession = true)
-                session = client!!.auth.currentSessionOrNull()
-                accessToken = session!!.accessToken
-
-                Log.d("SupabaseSingleton", "Sign-in successful: $result")
-                UserSingleton.userID = currentUser!!.id!!
-                UserSingleton.email = currentUser!!.email!!
-                UserSingleton.display_name = getDisplayName(currentUser!!.id)
+            Log.d("SupabaseSingleton", "Sign-in successful: $result")
+            UserSingleton.userID = currentUser!!.id!!
+            UserSingleton.email = currentUser!!.email!!
+            UserSingleton.display_name = getDisplayName(currentUser!!.id)
 //                UserSingleton.userProfile = getUserProfile(userID = currentUser!!.id)
 
 
-                return@runBlocking true
+            return true
 
-            } catch (e: Exception) {
-                Log.d("SupabaseSingleton", "Sign-in failed: $e")
-                currentUser = null
-                session = null
-                accessToken = null
-                return@runBlocking false
-            }
+        } catch (e: Exception) {
+            Log.d("SupabaseSingleton", "Sign-in failed: $e")
+            currentUser = null
+            session = null
+            accessToken = null
+            return false
         }
+
     }
 
     fun logout(): Boolean {
@@ -923,7 +921,7 @@ object SupabaseSingleton {
         idArg: String,
     ): PostDto? {
         return runBlocking {
-            val funcName = "get_post_by_id"
+            val funcName = "get_post_or_event_post_by_id"
             val funcParam = buildJsonObject {
                 put("id_arg", idArg)
             }
@@ -931,6 +929,18 @@ object SupabaseSingleton {
                 val result = client!!.postgrest.rpc(funcName, funcParam)
                 Log.d("SupabaseSingleton", "$funcName rpc, $result")
                 val output = result.decodeSingle<PostDto>()
+
+                val firstApiFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssXXX")
+                val currentDateTime = OffsetDateTime.now(ZoneOffset.UTC)
+                val postDateTime = OffsetDateTime.parse(output.createdAt, firstApiFormat)
+                val duration = Duration.between(postDateTime, currentDateTime)
+                output.createdAt = getLargestDenominationPast(duration)
+                if (output.eventId != null) {
+                    val eventDateTime = OffsetDateTime.parse(output.eventTimeStart, firstApiFormat)
+                    val durationE = Duration.between(currentDateTime, eventDateTime)
+                    output.eventTimeStart = getLargestDenominationFuture(durationE)
+                }
+
                 Log.d("SupabaseSingleton", "$funcName rpc output, $output")
                 return@runBlocking output
             } catch (e: Exception) {

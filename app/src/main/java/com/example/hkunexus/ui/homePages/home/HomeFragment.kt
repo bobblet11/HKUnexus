@@ -39,10 +39,18 @@ class HomeFragment : Fragment() {
             findNavController().navigate(R.id.navigation_post_page, b)
 
         })
-
+        val nothingToSee = binding.nothingToSeeHere
         homePostsRecycler.adapter = postListAdapter
         CoroutineScope(Dispatchers.Main).launch {
             viewModel.uiStatePosts.collect { state ->
+
+                if (state.posts.isEmpty()){
+                    nothingToSee.visibility = View.VISIBLE
+                    homePostsRecycler.visibility = View.GONE
+                }else{
+                    nothingToSee.visibility = View.GONE
+                    homePostsRecycler.visibility = View.VISIBLE
+                }
                 postListAdapter.updateDataSet(state.posts.toCollection(ArrayList()))
             }
         }

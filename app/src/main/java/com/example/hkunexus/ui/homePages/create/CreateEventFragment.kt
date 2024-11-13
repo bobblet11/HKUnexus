@@ -22,6 +22,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import com.example.hkunexus.R
 import com.example.hkunexus.data.model.dto.ClubDto
 import com.example.hkunexus.databinding.FragmentCreateEventBinding
 import kotlinx.coroutines.CoroutineScope
@@ -154,6 +156,7 @@ class CreateEventFragment : Fragment() {
                 viewModel.reset()
                 updateAllFromViewModel()
                 Toast.makeText(context, "Event created!", Toast.LENGTH_SHORT).show()
+                findNavController().navigate(R.id.navigation_home)
             }
         }
 

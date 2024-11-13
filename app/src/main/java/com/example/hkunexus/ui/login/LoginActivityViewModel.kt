@@ -2,11 +2,13 @@ package com.example.hkunexus.ui.login
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.hkunexus.data.SupabaseSingleton
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import java.util.regex.Pattern
 
 data class LoginUiState(
@@ -22,15 +24,11 @@ class LoginActivityViewModel() : ViewModel() {
     val uiState: StateFlow<LoginUiState> = _uiState.asStateFlow()
 
 
-    fun attemptLogin(emailInput: String, passwordInput: String): Boolean{
-//        if (!validateLogin(emailInput, passwordInput)){
-//            Log.d("LoginActivityViewModel", "login_register validation failed $emailInput, $passwordInput")
-//            return false
-//        }
-
-        if (!authenticateLogin("$emailInput@connect.hku.hk", passwordInput)){
-            Log.d("LoginActivityViewModel", "login_register authentication failed")
-            return false
+    fun attemptLogin(emailInput: String, passwordInput: String, callback: (Boolean)->Unit): Boolean{
+        viewModelScope.launch {
+            //val isSuccess = validateLogin(emailInput, passwordInput) && SupabaseSingleton.login("$emailInput@connect.hku.hk", passwordInput)
+            val isSuccess = SupabaseSingleton.login("$emailInput@connect.hku.hk", passwordInput)
+            callback(isSuccess)
         }
         Log.d("LoginActivityViewModel", "login_register success")
         return true
@@ -41,10 +39,6 @@ class LoginActivityViewModel() : ViewModel() {
             it.copy(isEmailValid = isEmailValid,
                 isPasswordValid = isPasswordValid)
         }
-    }
-
-    private fun authenticateLogin(emailInput: String, passwordInput: String): Boolean{
-        return SupabaseSingleton.login(emailInput, passwordInput)
     }
 
     private fun validateLogin(emailInput: String, passwordInput: String): Boolean {
