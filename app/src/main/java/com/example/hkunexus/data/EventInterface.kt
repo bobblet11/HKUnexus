@@ -7,7 +7,7 @@ class EventInterface {
     companion object {
         fun joinEvent(eventId: String) {
             // TODO: Supabase
-//        SupabaseSingleton.joinEvent(eventId)\
+//        SupabaseSingleton.joinEvent(eventId)
             Log.d("eventInterface", "join " + eventId)
         }
 
@@ -17,6 +17,7 @@ class EventInterface {
         }
 
         fun hasJoinedEvent(eventId: String): Boolean {
+//        SupabaseSingleton.hasJoinedEvent(eventId)
             Log.d("eventInterface", "check " + eventId)
             return false
         }
