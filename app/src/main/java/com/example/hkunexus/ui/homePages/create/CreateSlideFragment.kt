@@ -48,7 +48,7 @@ class CreateSlideFragment : Fragment() {
             tab.text = when (position) {
                 0 -> "Create Post"
                 1 -> "Create Event"
-                2 -> "Create Group"
+                2 -> "Create Club"
                 else -> null
             }
         }.attach()

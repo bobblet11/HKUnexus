@@ -13,20 +13,54 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import java.util.Calendar
 import java.util.UUID
 
 class CreateGroupViewModel: ViewModel() {
 
     data class MyGroupsUiState(
-        val groupName: String = "",
-        val groupDesc: String = "",
+        val clubName: String = "",
+        val clubDesc: String = "",
     )
 
     private val _uiState = MutableStateFlow(MyGroupsUiState())
     val uiState: StateFlow<MyGroupsUiState> = _uiState.asStateFlow()
 
-    fun createGroup(){
+    fun setClubName(str: String) {
+        _uiState.update {
+            it.copy(
+                clubName = str
+            )
+        }
+    }
 
+    fun setClubDesc(str: String) {
+        _uiState.update {
+            it.copy(
+                clubDesc = str
+            )
+        }
+    }
+
+    fun canCreate(): Boolean {
+        return uiState.value.clubName.trim().isNotEmpty()
+    }
+
+    fun create(): Boolean {
+        if (canCreate()) {
+            // TODO: OwO
+            return true
+        }
+        return false
+    }
+
+    fun reset() {
+        _uiState.update {
+            it.copy(
+                clubName = "",
+                clubDesc = ""
+            )
+        }
     }
 }
 

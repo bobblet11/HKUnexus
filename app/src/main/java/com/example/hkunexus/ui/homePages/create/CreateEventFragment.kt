@@ -93,6 +93,7 @@ class CreateEventFragment : Fragment() {
 
             viewModel.setSelectedClub(club)
             updateSelectedClubName()
+            updateCreateButton()
         }
     }
 
@@ -259,9 +260,9 @@ class CreateEventFragment : Fragment() {
     private fun updateAllFromViewModel() {
         updateDateTime()
         updateSelectedClubName()
-        binding.Entertitle.setText("")
-        binding.content.setText("")
-        binding.location.setText("")
+        binding.Entertitle.setText(viewModel.uiState.value.eventTitle)
+        binding.content.setText(viewModel.uiState.value.eventDesc)
+        binding.location.setText(viewModel.uiState.value.eventLocation)
         updateCreateButton()
     }
 
