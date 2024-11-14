@@ -16,9 +16,8 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.example.hkunexus.R
-import com.example.hkunexus.data.SupabaseSingleton
 import com.example.hkunexus.data.model.dto.ClubDto
-import com.example.hkunexus.data.model.dto.EventDto
+
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -49,13 +48,14 @@ class GroupListAdapter(private val dataSet: ArrayList<ClubDto>) :
         val club = dataSet[position]
         viewHolder.clubName.text = club.clubName
         viewHolder.clubDescription.text = club.clubDesc
-        /*
-        // Load image asynchronously
-        club.clubId?.let { clubId ->
+        if (club.clubImage == null){
+            viewHolder.clubImageContainer.visibility = View.GONE // Hide if no image URL
+            Log.d("Glide", "Image URL is null")
+        } else
+        {
             CoroutineScope(Dispatchers.Main).launch {
-                val imageURL = SupabaseSingleton.getImageUrl(clubId, "club_images").await()
+                val imageURL = club.clubImage
                 Log.d("ImageURL", "Fetched URL: $imageURL") // Log the fetched URL
-
                 if (imageURL != null) {
                     val placeholderImage = R.drawable.placeholder_view_vector
                     // Load image using Glide with RequestListener
@@ -78,7 +78,6 @@ class GroupListAdapter(private val dataSet: ArrayList<ClubDto>) :
                                 Log.d("Glide", "Image load failed: ${e?.message}")
                                 return false // Allow Glide to handle the error placeholder
                             }
-
                             override fun onResourceReady(
                                 resource: Drawable?,
                                 model: Any?,
@@ -98,12 +97,9 @@ class GroupListAdapter(private val dataSet: ArrayList<ClubDto>) :
                     Log.d("Glide", "Image URL is null")
                 }
             }
-        } ?: run {
-            // If clubId is null, hide the image container
-            viewHolder.clubImageContainer.visibility = View.GONE
-            Log.d("Glide", "clubId is null, hiding image container")
         }
-        */
+
+
         viewHolder.cardView.setOnClickListener {
             goToPostPage(dataSet[position].clubId!!)
         }
