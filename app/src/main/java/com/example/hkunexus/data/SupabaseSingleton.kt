@@ -1243,6 +1243,42 @@ object SupabaseSingleton {
         }
     }
 
+    suspend fun getPostByIdAsync(
+        idArg: String,
+    ): PostDto? {
+        return withContext(Dispatchers.IO) {
+            val funcName = "get_post_or_event_post_by_id"
+            val funcParam = buildJsonObject {
+                put("id_arg", idArg)
+            }
+            try {
+                val result = client!!.postgrest.rpc(funcName, funcParam)
+                Log.d("SupabaseSingleton", "$funcName rpc, $result")
+                val output = result.decodeSingle<PostDto>()
+
+                val firstApiFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssXXX")
+                val currentDateTime = OffsetDateTime.now(ZoneOffset.UTC)
+                val postDateTime = OffsetDateTime.parse(output.createdAt, firstApiFormat)
+                val duration = Duration.between(postDateTime, currentDateTime)
+                output.createdAt = getLargestDenominationPast(duration)
+                if (output.eventId != null) {
+                    val eventDateTime = OffsetDateTime.parse(output.eventTimeStart, firstApiFormat)
+                    val durationE = Duration.between(currentDateTime, eventDateTime)
+                    output.eventTimeStart = getLargestDenominationFuture(durationE)
+                }
+
+                output.displayName = getDisplayNameAsync(output.userId)
+                output.clubName = getClubNameAsync(output.clubId)
+
+                Log.d("SupabaseSingleton", "$funcName rpc output, $output")
+                output
+            } catch (e: Exception) {
+                Log.d("SupabaseSingleton", "Failure, $e")
+                null
+            }
+        }
+    }
+
     fun getEventById(
         idArg: String,
     ): EventDto? {

@@ -41,11 +41,18 @@ class ClubLandingFragment : Fragment() {
 
         val postListAdapter = PostInClubListAdapter(arrayListOf())
         //set the clubID and fetch required data using clubID
-        Log.d("clubLandingFrag", arguments?.getString("clubID").toString())
 
         viewModel.setClubID(arguments?.getString("clubID"), context)
 
         groupLandingPostsRecycler.adapter = postListAdapter
+
+        postListAdapter.setPostPageCallBack ({ postId: String ->
+            val b = Bundle()
+            b.putString("postID", postId)
+
+            findNavController().navigate(R.id.navigation_post_page, b)
+        })
+
 
         lifecycleScope.launch {
             viewModel.uiState.collect { state ->

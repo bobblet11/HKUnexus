@@ -111,8 +111,7 @@ class PostInHomeListAdapter(private val dataSet: ArrayList<PostDto>) :
             //DEFAULT IS NORMAL POST
             else -> {
                 val viewHolder: PostInHomeViewHolder = holder as PostInHomeViewHolder
-                viewHolder.postersUsername.text =
-                    "posted by " + SupabaseSingleton.getDisplayName(dataSet[position].userId)
+                viewHolder.postersUsername.text = "posted by " + dataSet[position].displayName
                 viewHolder.description.text = dataSet[position].body
                 viewHolder.timeSincePosted.text = dataSet[position].createdAt
                 viewHolder.postTitle.text = dataSet[position].title

@@ -46,10 +46,10 @@ class PostPageFragment : Fragment() {
         val postersGroup= binding.root.findViewById<TextView>(R.id.clubNamePost)
         val postersUsername = binding.root.findViewById<TextView>(R.id.postersUsername)
 
-        var eventName: TextView = binding.root.findViewById<TextView>(R.id.eventName)
-        var eventDate: TextView = binding.root.findViewById<TextView>(R.id.eventName3)
-        var eventTime: TextView = binding.root.findViewById<TextView>(R.id.eventName5)
-        var eventLocation: TextView = binding.root.findViewById<TextView>(R.id.eventName6)
+        val eventName: TextView = binding.root.findViewById<TextView>(R.id.eventName)
+        val eventDate: TextView = binding.root.findViewById<TextView>(R.id.eventName3)
+        val eventTime: TextView = binding.root.findViewById<TextView>(R.id.eventName5)
+        val eventLocation: TextView = binding.root.findViewById<TextView>(R.id.eventName6)
         val groupPfp: ImageView = binding.root.findViewById(R.id.groupProfileImage)
 
         CoroutineScope(Dispatchers.Main).launch {
@@ -57,21 +57,21 @@ class PostPageFragment : Fragment() {
                 title.text = state.post?.title
                 description.text = state.post?.body
                 timeSincePosted.text = state.post?.createdAt
-                postersUsername.text = "posted by" + SupabaseSingleton.getDisplayName(state.post!!.userId)
-                postersGroup.text = SupabaseSingleton.getClubName(state.post.clubId)
+                postersUsername.text = "posted by" + state.post?.displayName
+                postersGroup.text = state.post?.clubName
 
                 val b = Bundle()
-                b.putString("clubID", state.post.clubId)
+                b.putString("clubID", state.post?.clubId)
                 groupPfp.setOnClickListener{
                     findNavController().navigate(R.id.navigation_group_landing, b)
                 }
 
-                eventName.text = state.post.eventTitle
-                eventDate.text = state.post.createdAt
-                eventTime.text = state.post.eventTimeStart
-                eventLocation.text = state.post.eventLocation
+                eventName.text = state.post?.eventTitle
+                eventDate.text = state.post?.createdAt
+                eventTime.text = state.post?.eventTimeStart
+                eventLocation.text = state.post?.eventLocation
                 Log.d("tes", state.post.toString())
-                eventParent.visibility = if (state.post.eventId != null) View.VISIBLE else View.GONE
+                eventParent.visibility = if (state.post?.eventId != null) View.VISIBLE else View.GONE
             }
         }
 

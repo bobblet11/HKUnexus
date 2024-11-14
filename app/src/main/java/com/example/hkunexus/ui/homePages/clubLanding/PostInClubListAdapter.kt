@@ -12,7 +12,7 @@ import com.example.hkunexus.data.EventInterface
 
 public final class PostInClubListAdapter(private val dataSet: ArrayList<PostDto>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    private var goToPostPage: (Int) -> Unit = { postID: Int -> }
+    private var goToPostPage: (String) -> Unit = { postID: String -> }
 
     override fun getItemViewType(position: Int): Int {
         // Just as an example, return 0 or 2 depending on position
@@ -87,7 +87,7 @@ public final class PostInClubListAdapter(private val dataSet: ArrayList<PostDto>
 
 
                 viewHolder.cardView.setOnClickListener {
-                    goToPostPage(position)
+                    goToPostPage(dataSet[position].id)
                 }
             }
             //NORMAL POST
@@ -99,7 +99,7 @@ public final class PostInClubListAdapter(private val dataSet: ArrayList<PostDto>
                 viewHolder.timeSincePosted.text = dataSet[position].createdAt
                 viewHolder.postTitle.text=dataSet[position].title
                 viewHolder.cardView.setOnClickListener {
-                    goToPostPage(position)
+                    goToPostPage(dataSet[position].id)
                 }
             }
             //DEFAULT IS NORMAL POST
@@ -110,7 +110,7 @@ public final class PostInClubListAdapter(private val dataSet: ArrayList<PostDto>
                 viewHolder.timeSincePosted.text = dataSet[position].createdAt
                 viewHolder.postTitle.text=dataSet[position].title
                 viewHolder.cardView.setOnClickListener {
-                    goToPostPage(position)
+                    goToPostPage(dataSet[position].id)
                 }
             }
         }
@@ -118,7 +118,7 @@ public final class PostInClubListAdapter(private val dataSet: ArrayList<PostDto>
 
     override fun getItemCount() = dataSet.size
 
-    fun setPostPageCallBack(callback: (Int) -> Unit) {
+    fun setPostPageCallBack(callback: (String) -> Unit) {
         goToPostPage = callback
     }
 
