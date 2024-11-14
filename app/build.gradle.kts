@@ -69,6 +69,7 @@ dependencies {
     implementation(libs.glide)
     annotationProcessor(libs.compiler) // For Java
     implementation(libs.osmdroid.android) // Check for the latest version
+    implementation("androidx.activity:activity:1.7.0")
 
 
     testImplementation(libs.junit)

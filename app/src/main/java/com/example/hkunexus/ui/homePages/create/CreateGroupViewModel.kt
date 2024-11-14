@@ -1,5 +1,6 @@
 package com.example.hkunexus.ui.homePages.create
 
+import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -21,6 +22,7 @@ class CreateGroupViewModel: ViewModel() {
     data class MyGroupsUiState(
         val clubName: String = "",
         val clubDesc: String = "",
+        val image: Uri? = null
     )
 
     private val _uiState = MutableStateFlow(MyGroupsUiState())
@@ -42,6 +44,18 @@ class CreateGroupViewModel: ViewModel() {
         }
     }
 
+    fun setBannerImage(uri: Uri?) {
+        _uiState.update {
+            it.copy(
+                image = uri
+            )
+        }
+    }
+
+    fun hasBannerImage(): Boolean {
+        return uiState.value.image != null
+    }
+
     fun canCreate(): Boolean {
         return uiState.value.clubName.trim().isNotEmpty()
     }
@@ -58,7 +72,8 @@ class CreateGroupViewModel: ViewModel() {
         _uiState.update {
             it.copy(
                 clubName = "",
-                clubDesc = ""
+                clubDesc = "",
+                image = null,
             )
         }
     }
