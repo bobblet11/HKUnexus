@@ -301,7 +301,7 @@ object SupabaseSingleton {
             try {
                 val result = client!!.postgrest.rpc(
                     "get_club_by_id",
-                    buildJsonObject { put("club_uuid", clubUUID) })
+                    buildJsonObject { put("id_arg", clubUUID) })
                 Log.d("SupabaseSingleton", "get_club_by_id_rpc, $result")
                 val output = result.decodeSingle<ClubDto>()
                 Log.d("SupabaseSingleton", "get_club_by_id_rpc_output, $output")
