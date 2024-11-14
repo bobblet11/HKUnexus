@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="5dp"
-    app:cardBackgroundColor="@color/white"
     app:cardCornerRadius="20dp"
     app:cardElevation="10dp"
     tools:ignore="MissingClass">
@@ -52,7 +51,6 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="40sp"
                 android:text="Wow. This is such a cool logo!"
-                android:textColor="@android:color/black"
                 android:textSize="16sp"
                 tools:ignore="HardcodedText" />
 

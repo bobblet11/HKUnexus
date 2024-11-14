@@ -59,7 +59,7 @@ class CreateGroupFragment : Fragment() {
         })
 
         binding.createClubButton.setOnClickListener {
-            val success = viewModel.create()
+            val success = viewModel.create(context)
             if (success) {
                 viewModel.reset()
                 updateAllFromViewModel()
@@ -82,20 +82,9 @@ class CreateGroupFragment : Fragment() {
         return binding.root
     }
 
-    private fun updateCreateButton() {
-        binding.createClubButton.isEnabled = viewModel.canCreate()
-    }
-
-    private fun updateAllFromViewModel() {
-        binding.clubName.setText(viewModel.uiState.value.clubName)
-        binding.clubDesc.setText(viewModel.uiState.value.clubDesc)
-        updateBannerPhoto()
-        updateCreateButton()
-    }
-
     private fun updateBannerPhoto() {
         binding.bannerImage.setImageURI(
-            viewModel.uiState.value.image
+            viewModel.uiState.value.bannerImage
         )
 
         if (viewModel.hasBannerImage()) {
@@ -105,6 +94,17 @@ class CreateGroupFragment : Fragment() {
             binding.bannerImage.visibility = View.GONE
             binding.removeBannerImage.visibility = View.GONE
         }
+    }
+
+    private fun updateCreateButton() {
+        binding.createClubButton.isEnabled = viewModel.canCreate()
+    }
+
+    private fun updateAllFromViewModel() {
+        binding.clubName.setText(viewModel.uiState.value.clubName)
+        binding.clubDesc.setText(viewModel.uiState.value.clubDesc)
+        updateBannerPhoto()
+        updateCreateButton()
     }
 
     override fun onDestroyView() {

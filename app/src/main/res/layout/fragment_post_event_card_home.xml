@@ -58,18 +58,6 @@
             android:layout_marginBottom="10sp"
             android:text="Event Location" />
 
-        <Button
-            android:id="@+id/joinEventButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Sign Up!" />
-
-        <Button
-            android:id="@+id/leaveEventButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Cancel" />
-
-        <!-- Action Buttons -->
+        <include layout="@layout/event_joining_button"/>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

@@ -1,28 +1,20 @@
 package com.example.hkunexus.ui.homePages.create
 
+import android.content.Context
 import android.net.Uri
-import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.hkunexus.data.SupabaseSingleton
-import com.example.hkunexus.data.SupabaseSingleton.getAllJoinedClubs
-import com.example.hkunexus.data.UserSingleton
-import com.example.hkunexus.data.model.dto.ClubDto
-import com.example.hkunexus.data.model.dto.EventDto
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import java.util.Calendar
-import java.util.UUID
+import java.io.File
 
 class CreateGroupViewModel: ViewModel() {
 
     data class MyGroupsUiState(
         val clubName: String = "",
         val clubDesc: String = "",
-        val image: Uri? = null
+        val bannerImage: Uri? = null
     )
 
     private val _uiState = MutableStateFlow(MyGroupsUiState())
@@ -47,21 +39,28 @@ class CreateGroupViewModel: ViewModel() {
     fun setBannerImage(uri: Uri?) {
         _uiState.update {
             it.copy(
-                image = uri
+                bannerImage = uri
             )
         }
     }
 
     fun hasBannerImage(): Boolean {
-        return uiState.value.image != null
+        return uiState.value.bannerImage != null
     }
 
     fun canCreate(): Boolean {
         return uiState.value.clubName.trim().isNotEmpty()
     }
 
-    fun create(): Boolean {
+    fun create(context: Context?): Boolean {
         if (canCreate()) {
+            val bannerImage = uiState.value.bannerImage
+            if (bannerImage != null) {
+                val inputStream = context!!.contentResolver.openInputStream(bannerImage)
+
+                inputStream?.close()
+            }
+
             // TODO: OwO
             return true
         }
@@ -73,7 +72,7 @@ class CreateGroupViewModel: ViewModel() {
             it.copy(
                 clubName = "",
                 clubDesc = "",
-                image = null,
+                bannerImage = null,
             )
         }
     }

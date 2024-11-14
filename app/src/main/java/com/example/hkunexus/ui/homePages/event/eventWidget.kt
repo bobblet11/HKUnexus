@@ -16,7 +16,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 
-class eventWidget : Fragment(){
+class eventWidget : Fragment() {
 
     private lateinit var googleModel: GoogleMap
 
