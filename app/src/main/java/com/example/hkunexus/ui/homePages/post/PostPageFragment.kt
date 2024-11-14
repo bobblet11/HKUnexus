@@ -55,17 +55,19 @@ class PostPageFragment : Fragment() {
 
         var eventButtonUpdater: (() -> Unit)? = null
 
-        if (viewModel.uiStatePosts.value.post != null) {
-            // Call this updater function if you want to update the states of buttons
-            eventButtonUpdater = EventInterface.attachListenersAndUpdatersToEventJoiningButtons(
-                binding.root.findViewById(R.id.event_action_buttons),
-                viewModel.uiStatePosts.value.post!!.eventId
-            )
-        }
-
 
         CoroutineScope(Dispatchers.Main).launch {
             viewModel.uiStatePosts.collect { state ->
+
+                if (viewModel.uiStatePosts.value.post != null) {
+                    // Call this updater function if you want to update the states of buttons
+                    eventButtonUpdater = EventInterface.attachListenersAndUpdatersToEventJoiningButtons(
+                        binding.root.findViewById(R.id.event_action_buttons),
+                        viewModel.uiStatePosts.value.post!!.eventId
+                    )
+                }
+
+
                 title.text = state.post?.title
                 description.text = state.post?.body
                 timeSincePosted.text = state.post?.createdAt
@@ -83,9 +85,9 @@ class PostPageFragment : Fragment() {
                 eventTime.text = state.post?.eventTimeStart
                 eventLocation.text = state.post?.eventLocation
 
-                if (eventButtonUpdater != null) {
-                    eventButtonUpdater()
-                }
+//                if (eventButtonUpdater != null) {
+//                    eventButtonUpdater()
+//                }
 
                 Log.d("tes", state.post.toString())
                 eventParent.visibility = if (state.post?.eventId != null) View.VISIBLE else View.GONE

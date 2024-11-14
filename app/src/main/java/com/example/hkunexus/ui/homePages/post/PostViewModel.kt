@@ -32,7 +32,7 @@ class PostViewModel : ViewModel() {
         }
     }
 
-    public fun fetchPosts() {
+    fun fetchPosts() {
         viewModelScope.launch {
             val post: PostDto? = SupabaseSingleton.getPostByIdAsync(uiStatePosts.value.postId!!)
             Log.d("homeViewModel", post.toString())
