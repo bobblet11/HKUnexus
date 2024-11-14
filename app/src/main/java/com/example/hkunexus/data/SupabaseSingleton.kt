@@ -10,6 +10,7 @@ import com.example.hkunexus.data.model.dto.EventToPost
 import com.example.hkunexus.data.model.dto.PostDto
 import com.example.hkunexus.data.model.dto.Tag
 import com.example.hkunexus.data.model.dto.UserToClubDto
+import com.example.hkunexus.data.model.dto.UserToEventDto
 import com.example.hkunexus.data.model.dto.fromPostToEvent
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.auth.Auth
@@ -1150,4 +1151,82 @@ object SupabaseSingleton {
             }
         }
     }
+
+    fun insertOrUpdateUserToEvent(
+        userIdArg : String,
+        eventIdArg : String,
+    ): UserToEventDto? {
+        return runBlocking {
+
+            val funcName = "insert_or_update_user_to_event"
+            val funcParam = buildJsonObject {
+                put("user_id_arg", userIdArg)
+                put("event_id_arg", eventIdArg)
+            }
+            try {
+                val result = client!!.postgrest.rpc(funcName, funcParam)
+                Log.d("SupabaseSingleton", "$funcName rpc, $result")
+                val output = result.decodeSingle<UserToEventDto>()
+                Log.d("SupabaseSingleton", "$funcName rpc output, $output")
+                return@runBlocking output
+            } catch (e: Exception) {
+                Log.d("SupabaseSingleton", "Failure, $e")
+                return@runBlocking null
+            }
+        }
+    }
+
+    fun removeUserToEvent(
+        userIdArg : String,
+        eventIdArg : String,
+    ): UserToEventDto? {
+        return runBlocking {
+
+            val funcName = "remove_user_to_event"
+            val funcParam = buildJsonObject {
+                put("user_id_arg", userIdArg)
+                put("event_id_arg", eventIdArg)
+            }
+            try {
+                val result = client!!.postgrest.rpc(funcName, funcParam)
+                Log.d("SupabaseSingleton", "$funcName rpc, $result")
+                val output = result.decodeSingle<UserToEventDto>()
+                Log.d("SupabaseSingleton", "$funcName rpc output, $output")
+                return@runBlocking output
+            } catch (e: Exception) {
+                Log.d("SupabaseSingleton", "Failure, $e")
+                return@runBlocking null
+            }
+        }
+    }
+
+    fun getUserToEventByIds( // This is a plural function and return list of Dto despite the function is singularly named
+        byUserId : Boolean,
+        userIdArg : String,
+        byEventId : Boolean,
+        eventIdArg : String,
+    ): List<UserToEventDto>? {
+        return runBlocking {
+
+            val funcName = "get_user_to_event_by_ids"
+            val funcParam = buildJsonObject {
+                put("by_user_id", byUserId)
+                put("user_id_arg", userIdArg)
+                put("by_event_id", byEventId)
+                put("event_id_arg", eventIdArg)
+            }
+            try {
+                val result = client!!.postgrest.rpc(funcName, funcParam)
+                Log.d("SupabaseSingleton", "$funcName rpc, $result")
+                val output = result.decodeList<UserToEventDto>()
+                Log.d("SupabaseSingleton", "$funcName rpc output, $output")
+                return@runBlocking output
+            } catch (e: Exception) {
+                Log.d("SupabaseSingleton", "Failure, $e")
+                return@runBlocking null
+            }
+        }
+    }
+
+
 }
