@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.CompoundButton
 import android.widget.Toast
+import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -29,6 +30,16 @@ class CreatePostFragment : Fragment() {
     private var _binding: FragmentCreatePostBinding? = null
     private val viewModel: CreatePostViewModel by viewModels()
     private val binding get() = _binding!!
+
+    private val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+        if (uri != null) {
+            Log.d("PhotoPicker", "Selected URI: $uri")
+            viewModel.setPostImage(uri)
+            updateBannerPhoto()
+        } else {
+            Log.d("PhotoPicker", "No media selected")
+        }
+    }
 
     private val requestSelectedClubLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -144,6 +155,15 @@ class CreatePostFragment : Fragment() {
             override fun afterTextChanged(s: Editable) { viewModel.setPostBody(s.toString()) }
         })
 
+        binding.uploadPostImage.setOnClickListener {
+            pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+        }
+
+        binding.removePostImage.setOnClickListener {
+            viewModel.setPostImage(null)
+            updateBannerPhoto()
+        }
+
         postButton.setOnClickListener{
             val success = viewModel.createPost()
             if (success) {
@@ -160,7 +180,23 @@ class CreatePostFragment : Fragment() {
             }
         }
 
+        updateBannerPhoto()
+
         return binding.root
+    }
+
+    private fun updateBannerPhoto() {
+        binding.postImage.setImageURI(
+            viewModel.uiState.value.postImage
+        )
+
+        if (viewModel.hasPostImage()) {
+            binding.postImage.visibility = View.VISIBLE
+            binding.removePostImage.visibility = View.VISIBLE
+        } else {
+            binding.postImage.visibility = View.GONE
+            binding.removePostImage.visibility = View.GONE
+        }
     }
 
     private fun updateSwitchAndButtonStates(state: CreatePostViewModel. MyGroupsUiState) {
@@ -180,8 +216,10 @@ class CreatePostFragment : Fragment() {
         updateSelectedEventName()
         binding.Entertitle.setText("")
         binding.content.setText("")
+        updateBannerPhoto()
         updateSwitchAndButtonStates(viewModel.uiState.value)
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

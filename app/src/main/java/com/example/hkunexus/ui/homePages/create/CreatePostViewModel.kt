@@ -1,11 +1,9 @@
 package com.example.hkunexus.ui.homePages.create
 
+import android.net.Uri
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.hkunexus.data.SupabaseSingleton
-import com.example.hkunexus.data.SupabaseSingleton.getAllJoinedClubs
 import com.example.hkunexus.data.UserSingleton
 import com.example.hkunexus.data.model.dto.ClubDto
 import com.example.hkunexus.data.model.dto.EventDto
@@ -13,7 +11,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import java.util.Calendar
 import java.util.UUID
 
 val MIN_TITLE_LENGTH = 10
@@ -32,8 +29,8 @@ class CreatePostViewModel: ViewModel() {
         val isPostValid: Boolean = false,
         val postTitle: String = "",
         val postBody: String = "",
-
-        )
+        val postImage: Uri? = null
+    )
 
     private val _uiState = MutableStateFlow(MyGroupsUiState())
     val uiState: StateFlow<MyGroupsUiState> = _uiState.asStateFlow()
@@ -128,8 +125,23 @@ class CreatePostViewModel: ViewModel() {
         }
     }
 
+
+    fun setPostImage(uri: Uri?) {
+        _uiState.update {
+            it.copy(
+                postImage = uri
+            )
+        }
+    }
+
+    fun hasPostImage(): Boolean {
+        return uiState.value.postImage != null
+    }
+
+
     fun createPost(): Boolean {
         if (uiState.value.isPostValid) {
+            // TODO: Do something with image upload
             val postIdArg = UUID.randomUUID().toString()
             val result = SupabaseSingleton.insertOrUpdatePost(
                 postIdArg,
@@ -164,6 +176,7 @@ class CreatePostViewModel: ViewModel() {
                 isPostValid = false,
                 postTitle = "",
                 postBody = "",
+                postImage = null
             )
         }
     }
