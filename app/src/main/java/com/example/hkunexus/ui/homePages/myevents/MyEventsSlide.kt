@@ -62,12 +62,12 @@ class MyEventsSlide : Fragment() {
             // Your code goes here
             // In this code, we are just changing the text in the
             // textbox
-
+            swipeRefreshLayout.isRefreshing = false
             myEventsListViewModel.fetchMyEvents()
 
             // This line is important as it explicitly refreshes only once
             // If "true" it implicitly refreshes forever
-            swipeRefreshLayout.isRefreshing = false
+
         }
 
         return binding.root
