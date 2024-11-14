@@ -366,6 +366,23 @@ object SupabaseSingleton {
         }
     }
 
+    suspend fun getClubByIdAsync(clubUUID: String): ClubDto? {
+        return withContext(Dispatchers.IO) {
+            try {
+                val result = client!!.postgrest.rpc(
+                    "get_club_by_id",
+                    buildJsonObject { put("id_arg", clubUUID) })
+                Log.d("SupabaseSingleton", "get_club_by_id_rpc, $result")
+                val output = result.decodeSingle<ClubDto>()
+                Log.d("SupabaseSingleton", "get_club_by_id_rpc_output, $output")
+                output
+            } catch (e: Exception) {
+                Log.d("SupabaseSingleton", "Failure, $e")
+                null
+            }
+        }
+    }
+
     fun getNoOfMembersOfClub(clubUUID: String): Int {
         return runBlocking {
             val funcName = "get_no_of_members_of_club"
@@ -381,6 +398,26 @@ object SupabaseSingleton {
             } catch (e: Exception) {
                 Log.d("SupabaseSingleton", "Failure, $e")
                 return@runBlocking 0
+            }
+        }
+
+    }
+
+    suspend fun getNoOfMembersOfClubAsync(clubUUID: String): Int {
+        return  withContext(Dispatchers.IO) {
+            val funcName = "get_no_of_members_of_club"
+            val funcParam = buildJsonObject {
+                put("club_uuid", clubUUID)
+            }
+            try {
+                val result = client!!.postgrest.rpc(funcName, funcParam)
+                Log.d("SupabaseSingleton", "$funcName rpc, $result")
+                val output = result.data.toInt()
+                Log.d("SupabaseSingleton", "$funcName rpc output, $output")
+                output
+            } catch (e: Exception) {
+                Log.d("SupabaseSingleton", "Failure, $e")
+                0
             }
         }
 
@@ -660,6 +697,27 @@ object SupabaseSingleton {
         }
     }
 
+    suspend fun checkIsJoinedAsync(clubID: String, userID: String): Boolean {
+        return withContext(Dispatchers.IO) {
+            val funcName = "check_is_user_joined_to_club"
+            val funcParam = buildJsonObject {
+                put("clubid", clubID)
+                put("userid", userID)
+            }
+
+            try {
+                val result = client!!.postgrest.rpc(funcName, funcParam)
+                Log.d("SupabaseSingleton", "$funcName rpc, $result")
+                val output: Boolean = result.data.toBoolean()
+                Log.d("SupabaseSingleton", "$funcName rpc output, $output")
+                output
+            } catch (e: Exception) {
+                Log.d("SupabaseSingleton", "Failure, $e")
+                false
+            }
+        }
+    }
+
     fun getLargestDenominationPast(duration: Duration): String {
         return when {
             duration.toDays() > 60 -> "${duration.toDays() / 30} months ago"
@@ -722,6 +780,46 @@ object SupabaseSingleton {
             } catch (e: Exception) {
                 Log.d("SupabaseSingleton", "Failure, $e")
                 return@runBlocking listOf()
+            }
+        }
+    }
+
+   suspend fun getPostsFromClubAsync(clubID: String): List<PostDto> {
+
+        return withContext(Dispatchers.IO)  {
+            val funcName = "get_all_posts_and_events_from_a_club"
+            val funcParam = buildJsonObject {
+                put("given_club_id", clubID)
+            }
+
+            try {
+                val result = client!!.postgrest.rpc(funcName, funcParam)
+                Log.d("SupabaseSingleton", "$funcName rpc, $result")
+                val output: List<PostDto> = result.decodeList<PostDto>()
+
+                val firstApiFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssXXX")
+                val currentDateTime = OffsetDateTime.now(ZoneOffset.UTC)
+                for (P in output) {
+                    val postDateTime = OffsetDateTime.parse(P.createdAt, firstApiFormat)
+                    val duration = Duration.between(postDateTime, currentDateTime)
+                    Log.d("test", getLargestDenominationPast(duration))
+                    P.createdAt = getLargestDenominationPast(duration)
+
+                    if (P.eventId != null) {
+                        val eventDateTime = OffsetDateTime.parse(P.eventTimeStart, firstApiFormat)
+                        val durationE = Duration.between(currentDateTime, eventDateTime)
+                        P.eventTimeStart = getLargestDenominationFuture(durationE)
+                    }
+
+                }
+
+
+                Log.d("SupabaseSingleton", "$funcName rpc output, $output")
+
+                output
+            } catch (e: Exception) {
+                Log.d("SupabaseSingleton", "Failure, $e")
+                listOf()
             }
         }
     }
@@ -854,6 +952,26 @@ object SupabaseSingleton {
             } catch (e: Exception) {
                 Log.d("SupabaseSingleton", "Failure, $e")
                 return@runBlocking emptyList()
+            }
+        }
+    }
+
+
+    suspend fun getAllJoinedClubsAsync(): List<ClubDto> {
+        return withContext(Dispatchers.IO) {
+            val userId = currentUser?.id ?: throw Error()
+            val funcName = "get_all_joined_clubs"
+            try {
+                val result = client!!.postgrest.rpc(funcName, buildJsonObject {
+                    put("given_user_id", Json.encodeToJsonElement(userId))
+                })
+                Log.d("SupabaseSingleton", "$funcName rpc, $result")
+                val output = result.decodeList<ClubDto>()
+                Log.d("SupabaseSingleton", "$funcName rpc output, $output")
+                output
+            } catch (e: Exception) {
+                Log.d("SupabaseSingleton", "Failure, $e")
+                emptyList()
             }
         }
     }

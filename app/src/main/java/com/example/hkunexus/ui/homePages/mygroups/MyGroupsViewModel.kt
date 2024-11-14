@@ -1,6 +1,7 @@
 package com.example.hkunexus.ui.homePages.myevents
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.hkunexus.data.SupabaseSingleton
 import com.example.hkunexus.data.SupabaseSingleton.getAllJoinedClubs
 import com.example.hkunexus.data.model.dto.ClubDto
@@ -8,6 +9,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 data class MyGroupsUiState(
     val listOfGroupsToDisplay: List<ClubDto> = arrayListOf(),
@@ -22,9 +24,8 @@ class MyGroupsViewModel: ViewModel() {
     }
 
     public fun fetchMyGroups() {
-        val tempList = SupabaseSingleton.getAllJoinedClubs()
-
-        for (item: ClubDto in tempList) {
+        viewModelScope.launch {
+            val tempList = SupabaseSingleton.getAllJoinedClubsAsync()
 
             _uiState.update {
                 it.copy(
@@ -32,6 +33,7 @@ class MyGroupsViewModel: ViewModel() {
                 )
             }
         }
+
     }
 
 
