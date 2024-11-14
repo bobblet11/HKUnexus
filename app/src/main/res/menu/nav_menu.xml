@@ -17,6 +17,7 @@
             android:icon="@drawable/nav_about"
             android:title="About Us"/>
     </group>
+
     <item
         android:title="">
 

@@ -1,77 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
+    <navigation xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/mobile_navigation"
+        app:startDestination="@+id/navigation_home">
 
-    <fragment
-        android:id="@+id/navigation_home"
-        android:name="com.example.hkunexus.ui.homePages.home.HomeFragment"
-        android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" >
-        <action
-            android:id="@+id/action_navigation_home_to_loginActivity"
-            app:destination="@id/loginActivity" />
+        <fragment
+            android:id="@+id/navigation_home"
+            android:name="com.example.hkunexus.ui.homePages.home.HomeFragment"
+            android:label="@string/title_home"
+            tools:layout="@layout/fragment_home" />
 
-        <action
-            android:id="@+id/action_navigation_post_page"
-            app:destination="@id/navigation_post_page" />
-    </fragment>
+        <fragment
+            android:id="@+id/navigation_explore"
+            android:name="com.example.hkunexus.ui.homePages.explore.ExploreFragment"
+            android:label="@string/title_explore"
+            tools:layout="@layout/fragment_explore" />
 
-    <fragment
-        android:id="@+id/navigation_explore"
-        android:name="com.example.hkunexus.ui.homePages.explore.ExploreFragment"
-        android:label="@string/title_explore"
-        tools:layout="@layout/fragment_explore" >
-        <action
-            android:id="@+id/action_view_club_landing"
-            app:destination="@id/navigation_group_landing" />
-    </fragment>
+        <fragment
+            android:id="@+id/navigation_group_landing"
+            android:name="com.example.hkunexus.ui.homePages.clubLanding.ClubLandingFragment"
+            android:label="@string/title_group_landing"
+            tools:layout="@layout/fragment_group_landing" >
+            <argument
+                android:name="clubId"
+                app:argType="integer"
+                android:defaultValue="0" />
+        </fragment>
 
-    <fragment
-        android:id="@+id/navigation_group_landing"
-        android:name="com.example.hkunexus.ui.homePages.clubLanding.ClubLandingFragment"
-        android:label="@string/title_group_landing"
-        tools:layout="@layout/fragment_group_landing" >
-        <argument
-            android:name="clubId"
-            app:argType="integer"
-            android:defaultValue="0" />
-    </fragment>
+        <fragment
+            android:id="@+id/navigation_my_events"
+            android:name="MyEventsSlide"
+            android:label="@string/title_my_events" />
 
-    <fragment
-        android:id="@+id/navigation_my_events"
-        android:name="MyEventsSlide"
-        android:label="@string/title_my_events" />
+        <fragment
+            android:id="@+id/navigation_notifications"
+            android:name="com.example.hkunexus.ui.homePages.notifications.NotificationsFragment"
+            android:label="@string/title_notifications"
+            tools:layout="@layout/fragment_notifications" />
 
-    <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="com.example.hkunexus.ui.homePages.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        <fragment
+            android:id="@+id/navigation_my_groups"
+            android:name="com.example.hkunexus.ui.homePages.mygroups.MyGroupsFragment"
+            android:label="@string/title_my_groups"
+            tools:layout="@layout/fragment_my_groups" />
 
-    <fragment
-        android:id="@+id/navigation_my_groups"
-        android:name="com.example.hkunexus.ui.homePages.mygroups.MyGroupsFragment"
-        android:label="@string/title_my_groups"
-        tools:layout="@layout/fragment_my_groups" />
+        <fragment
+            android:id="@+id/navigation_post_page"
+            android:name="com.example.hkunexus.ui.homePages.post.PostPageFragment"
+            tools:layout="@layout/fragment_post_page" />
 
-    <fragment
-        android:id="@+id/navigation_post_page"
-        android:name="com.example.hkunexus.ui.homePages.post.PostPageFragment"
-        android:label="@layout/fragment_post_page"
-        tools:layout="@layout/fragment_post_page" />
+        <fragment
+            android:id="@+id/navigation_create"
+            android:name="com.example.hkunexus.ui.homePages.create.CreateSlideFragment"
+            android:label="@string/title_create"
+            tools:layout="@layout/fragment_create_post" />
 
-    <fragment
-        android:id="@+id/navigation_create"
-        android:name="com.example.hkunexus.ui.homePages.create.CreateSlideFragment"
-        android:label="@string/title_create"
-        tools:layout="@layout/fragment_create_post" />
-
-    <activity
-        android:id="@+id/loginActivity"
-        android:name="com.example.hkunexus.ui.login.LoginActivity"
-        android:label="activity_login"
-        tools:layout="@layout/activity_login" />
-</navigation>
+        <activity
+            android:id="@+id/loginActivity"
+            android:name="com.example.hkunexus.ui.login.LoginActivity"
+            android:label="login"
+            tools:layout="@layout/activity_login" />
+    </navigation>
