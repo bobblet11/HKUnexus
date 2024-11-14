@@ -1504,7 +1504,11 @@ object SupabaseSingleton {
         }
     }
 
-    fun removeUserToEvent(
+    fun insertOrUpdateCurrentUserToEvent(eventIdArg : String): UserToEventDto? {
+        return insertOrUpdateUserToEvent(currentUser!!.id, eventIdArg)
+    }
+
+    fun removeUserFromEvent(
         userIdArg : String,
         eventIdArg : String,
     ): UserToEventDto? {
@@ -1527,6 +1531,11 @@ object SupabaseSingleton {
             }
         }
     }
+
+    fun removeCurrentUserFromEvent(eventIdArg : String): UserToEventDto? {
+        return removeUserFromEvent(currentUser!!.id, eventIdArg)
+    }
+
 
     fun getUserToEventByIds( // This is a plural function and return list of Dto despite the function is singularly named
         byUserId : Boolean,
@@ -1554,6 +1563,10 @@ object SupabaseSingleton {
                 return@runBlocking null
             }
         }
+    }
+
+    fun getCurrentUserToEventByIds(eventIdArg : String): List<UserToEventDto>? {
+        return getUserToEventByIds(true, currentUser!!.id, true, eventIdArg)
     }
 
 

@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.hkunexus.R
+import com.example.hkunexus.data.EventInterface
 import com.example.hkunexus.data.SupabaseSingleton
 import com.example.hkunexus.databinding.FragmentEventPostPageBinding
 import com.example.hkunexus.databinding.FragmentHomeBinding
@@ -52,6 +53,17 @@ class PostPageFragment : Fragment() {
         val eventLocation: TextView = binding.root.findViewById<TextView>(R.id.eventName6)
         val groupPfp: ImageView = binding.root.findViewById(R.id.groupProfileImage)
 
+        var eventButtonUpdater: (() -> Unit)? = null
+
+        if (viewModel.uiStatePosts.value.post != null) {
+            // Call this updater function if you want to update the states of buttons
+            eventButtonUpdater = EventInterface.attachListenersAndUpdatersToEventJoiningButtons(
+                binding.root.findViewById(R.id.event_action_buttons),
+                viewModel.uiStatePosts.value.post!!.eventId
+            )
+        }
+
+
         CoroutineScope(Dispatchers.Main).launch {
             viewModel.uiStatePosts.collect { state ->
                 title.text = state.post?.title
@@ -70,6 +82,11 @@ class PostPageFragment : Fragment() {
                 eventDate.text = state.post?.createdAt
                 eventTime.text = state.post?.eventTimeStart
                 eventLocation.text = state.post?.eventLocation
+
+                if (eventButtonUpdater != null) {
+                    eventButtonUpdater()
+                }
+
                 Log.d("tes", state.post.toString())
                 eventParent.visibility = if (state.post?.eventId != null) View.VISIBLE else View.GONE
             }

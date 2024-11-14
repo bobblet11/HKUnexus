@@ -2,7 +2,6 @@ package com.example.hkunexus.ui.homePages.clubLanding
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hkunexus.R
@@ -58,33 +57,12 @@ public final class PostInClubListAdapter(private val dataSet: ArrayList<PostDto>
                 viewHolder.eventTime.text = postDto.eventTimeStart
                 viewHolder.postTitle.text = postDto.title
 
-                val eventId = postDto.eventId!!
+                val eventId = postDto.eventId
 
-                fun updateButtonVisibility() {
-                    val joined = EventInterface.hasJoinedEvent(eventId)
-
-                    if (joined) {
-                        viewHolder.joinButton.visibility = View.GONE
-                        viewHolder.leaveButton.visibility = View.VISIBLE
-                    } else {
-                        viewHolder.joinButton.visibility = View.VISIBLE
-                        viewHolder.leaveButton.visibility = View.GONE
-                    }
-                }
-
-                viewHolder.setJoinCallback {
-                    EventInterface.joinEvent(eventId)
-                    updateButtonVisibility()
-
-                }
-
-                viewHolder.setLeaveCallback {
-                    EventInterface.leaveEvent(eventId)
-                    updateButtonVisibility()
-                }
-
-                updateButtonVisibility()
-
+                // Call this updater function if you want to update the states of buttons
+                val updater = EventInterface.attachListenersAndUpdatersToEventJoiningButtons(
+                    viewHolder.eventButtonsView, eventId
+                )
 
                 viewHolder.cardView.setOnClickListener {
                     goToPostPage(dataSet[position].id)

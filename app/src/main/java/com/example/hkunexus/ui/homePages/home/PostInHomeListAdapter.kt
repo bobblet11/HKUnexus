@@ -2,11 +2,9 @@ package com.example.hkunexus.ui.homePages.home
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hkunexus.R
-import com.example.hkunexus.data.SupabaseSingleton
 import com.example.hkunexus.data.model.dto.PostDto
 import com.example.hkunexus.data.EventInterface
 
@@ -64,32 +62,12 @@ class PostInHomeListAdapter(private val dataSet: ArrayList<PostDto>) :
                 viewHolder.postTitle.text = dataSet[position].title
                 viewHolder.clubName.text = dataSet[position].clubName
 
-                val eventId = dataSet[position].eventId!!
+                val eventId = dataSet[position].eventId
 
-                fun updateButtonVisibility() {
-                    val joined = EventInterface.hasJoinedEvent(eventId)
-
-                    if (joined) {
-                        viewHolder.joinButton.visibility = View.GONE
-                        viewHolder.leaveButton.visibility = View.VISIBLE
-                    } else {
-                        viewHolder.joinButton.visibility = View.VISIBLE
-                        viewHolder.leaveButton.visibility = View.GONE
-                    }
-                }
-
-                viewHolder.setJoinCallback {
-                    EventInterface.joinEvent(eventId)
-                    updateButtonVisibility()
-
-                }
-
-                viewHolder.setLeaveCallback {
-                    EventInterface.leaveEvent(eventId)
-                    updateButtonVisibility()
-                }
-
-                updateButtonVisibility()
+                // Call this updater function if you want to update the states of buttons
+                val updater = EventInterface.attachListenersAndUpdatersToEventJoiningButtons(
+                    viewHolder.eventButtonsView, eventId
+                )
 
                 viewHolder.cardView.setOnClickListener {
                     goToPostPage(dataSet[position].id)
