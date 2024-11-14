@@ -18,7 +18,6 @@ class PostInHomeListAdapter(private val dataSet: ArrayList<PostDto>) :
     override fun getItemViewType(position: Int): Int {
         // Just as an example, return 0 or 2 depending on position
         // Note that unlike in ListView adapters, types don't have to be contiguous
-
         return if (dataSet[position].eventId == null) 1 else 0
     }
 
@@ -57,18 +56,15 @@ class PostInHomeListAdapter(private val dataSet: ArrayList<PostDto>) :
                 val viewHolder: EventPostInHomeViewHolder = holder as EventPostInHomeViewHolder
 //                viewHolder.postersUsername.text = SupabaseSingleton.getDisplayName(dataSet[position].userId)
 
-                val postDto = dataSet[position]
+                viewHolder.postersUsername.text = "posted by " + dataSet[position].displayName
+                viewHolder.description.text = dataSet[position].body
+                viewHolder.timeSincePosted.text = dataSet[position].createdAt
+                viewHolder.eventLocation.text = dataSet[position].eventLocation
+                viewHolder.eventTime.text = dataSet[position].eventTimeStart
+                viewHolder.postTitle.text = dataSet[position].title
+                viewHolder.clubName.text = dataSet[position].clubName
 
-                viewHolder.postersUsername.text =
-                    "posted by " + SupabaseSingleton.getDisplayName(postDto.userId)
-                viewHolder.description.text = postDto.body
-                viewHolder.timeSincePosted.text = postDto.createdAt
-                viewHolder.eventLocation.text = postDto.eventLocation
-                viewHolder.eventTime.text = postDto.eventTimeStart
-                viewHolder.postTitle.text = postDto.title
-                viewHolder.clubName.text = SupabaseSingleton.getClubName(postDto.clubId)
-
-                val eventId = postDto.eventId!!
+                val eventId = dataSet[position].eventId!!
 
                 fun updateButtonVisibility() {
                     val joined = EventInterface.hasJoinedEvent(eventId)
@@ -103,12 +99,11 @@ class PostInHomeListAdapter(private val dataSet: ArrayList<PostDto>) :
             1 -> {
                 val viewHolder: PostInHomeViewHolder = holder as PostInHomeViewHolder
 //                viewHolder.postersUsername.text =  SupabaseSingleton.getDisplayName(dataSet[position].userId)
-                viewHolder.postersUsername.text =
-                    "posted by " + SupabaseSingleton.getDisplayName(dataSet[position].userId)
+                viewHolder.postersUsername.text = "posted by " + dataSet[position].displayName
                 viewHolder.description.text = dataSet[position].body
                 viewHolder.timeSincePosted.text = dataSet[position].createdAt
                 viewHolder.postTitle.text = dataSet[position].title
-                viewHolder.clubName.text = SupabaseSingleton.getClubName(dataSet[position].clubId)
+                viewHolder.clubName.text = dataSet[position].clubName
                 viewHolder.cardView.setOnClickListener {
                     goToPostPage(dataSet[position].id)
                 }
@@ -121,7 +116,8 @@ class PostInHomeListAdapter(private val dataSet: ArrayList<PostDto>) :
                 viewHolder.description.text = dataSet[position].body
                 viewHolder.timeSincePosted.text = dataSet[position].createdAt
                 viewHolder.postTitle.text = dataSet[position].title
-                viewHolder.clubName.text = SupabaseSingleton.getClubName(dataSet[position].clubId)
+                viewHolder.clubName.text = dataSet[position].clubName
+
                 viewHolder.cardView.setOnClickListener {
                     goToPostPage(dataSet[position].id)
                 }

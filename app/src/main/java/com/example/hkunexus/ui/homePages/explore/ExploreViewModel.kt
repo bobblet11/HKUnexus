@@ -1,15 +1,18 @@
 package com.example.hkunexus.ui.homePages.explore
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hkunexus.data.SupabaseSingleton
 import com.example.hkunexus.data.TempData
 import com.example.hkunexus.data.model.dto.ClubDto
+import com.example.hkunexus.data.model.dto.PostDto
 import com.example.hkunexus.data.model.dto.Tag
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 
 data class ExploreUiState(
@@ -62,45 +65,31 @@ class ExploreViewModel : ViewModel() {
 
     public fun fetchClubs(){
         val query = keyword.trim().lowercase()
-        var tempList: Array<ClubDto>?
+        var tempList: Array<ClubDto>? = arrayOf()
         val id = selectedTagID
 
-        tempList = if (id == null) {
-            SupabaseSingleton.searchClubsByLikeName(query)?.toTypedArray()
-        } else {
-            SupabaseSingleton.searchClubs(arrayOf(id), "")?.toTypedArray()
-        }
-
-        if (tempList == null){
-            tempList = TempData.clubs
-        }
-
-        for (item: ClubDto in tempList) {
-            if (item.clubName!!.length >= MAX_NUM_CHAR_IN_CLUB_TITLE){
-                val newName = item.clubName!!.substring(0,MAX_NUM_CHAR_IN_CLUB_TITLE-4) + "..."
-                item.clubName = newName
+        viewModelScope.launch {
+            tempList = if (id == null) {
+                SupabaseSingleton.searchClubsByLikeNameAsync(query)?.toTypedArray()
+            } else {
+                SupabaseSingleton.searchClubsAsync(arrayOf(id), "")?.toTypedArray()
             }
 
-            if (item.clubDesc!!.length >= MAX_NUM_CHAR_IN_CLUB_DESCRIPTION){
-                val newDescription = item.clubDesc!!.substring(0,MAX_NUM_CHAR_IN_CLUB_DESCRIPTION-4) + "..."
-                item.clubDesc = newDescription
-            }
+            updateClubList(tempList!!)
         }
-
-        updateClubList(tempList)
     }
 
     public fun fetchTags() {
-        var tempList: Array<Tag>? = SupabaseSingleton.searchTags("")?.toTypedArray()
+        viewModelScope.launch {
+            var tempList: Array<Tag>? = SupabaseSingleton.searchTagsAsync("")?.toTypedArray()
+            if (tempList == null){
+                tempList = TempData.tags
+            }
+            val tags: MutableList<Tag> = tempList.toMutableList()
+            tags.add(0, Tag(null, "Any"))
 
-        if (tempList == null){
-            tempList = TempData.tags
+            updateTagList(tags.toTypedArray())
         }
-
-        val tags: MutableList<Tag> = tempList.toMutableList()
-        tags.add(0, Tag(null, "Any"))
-
-        updateTagList(tags.toTypedArray())
     }
 
 }

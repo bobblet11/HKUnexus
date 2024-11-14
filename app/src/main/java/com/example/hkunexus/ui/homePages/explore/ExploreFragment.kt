@@ -52,23 +52,18 @@ class ExploreFragment : Fragment()  {
 
         binding.exploreClubsRecycler.adapter = exploreListAdapter
 
-        configureSearchBar()
-        constructClubTagAdaptor()
-
-        lifecycleScope.launch {
-            viewModel.uiState.collect { state ->
-                // Update UI based on the new state
-                tags.clear()
-                tags.addAll(state.listOfTags.map{t: Tag -> t.tagName})
-            }
-        }
         CoroutineScope(Dispatchers.Main).launch {
             viewModel.uiState.collect { state ->
                 exploreListAdapter.updateDataSet(
                     state.listOfClubsToDisplay.toCollection(ArrayList())
                 )
+                tags.clear()
+                tags.addAll(state.listOfTags.map{t: Tag -> t.tagName})
             }
         }
+
+        configureSearchBar()
+        constructClubTagAdaptor()
 
         val swipeRefreshLayout = binding.refreshLayout
 

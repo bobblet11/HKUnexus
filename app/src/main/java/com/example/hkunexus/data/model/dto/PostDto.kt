@@ -10,7 +10,7 @@ data class PostDto(
     val id : String,
 
     @SerialName("user_id")
-    val userId : String,
+    var userId : String,
 
     @SerialName("club_id")
     val clubId : String,
@@ -47,4 +47,8 @@ data class PostDto(
 
     @SerialName("event_created_at")
     val eventCreatedAt: String? = null,
+
+    var clubName: String = "" ,
+    var displayName: String = ""
     )
+
