@@ -54,6 +54,15 @@
                 android:textSize="16sp"
                 tools:ignore="HardcodedText" />
 
+            <Button
+                android:id="@+id/deletePostButton"
+                style="@style/Widget.MaterialComponents.Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#F44336"
+                android:backgroundTintMode="add"
+                android:text="Delete Post" />
+
             <!-- Action Buttons -->
         </LinearLayout>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
