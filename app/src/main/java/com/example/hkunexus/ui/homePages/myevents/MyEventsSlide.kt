@@ -54,21 +54,7 @@ class MyEventsSlide : Fragment() {
         }.attach()
 
 
-        val swipeRefreshLayout = binding.refreshLayout
 
-        // Refresh function for the layout
-        swipeRefreshLayout.setOnRefreshListener{
-
-            // Your code goes here
-            // In this code, we are just changing the text in the
-            // textbox
-            swipeRefreshLayout.isRefreshing = false
-            myEventsListViewModel.fetchMyEvents()
-
-            // This line is important as it explicitly refreshes only once
-            // If "true" it implicitly refreshes forever
-
-        }
 
         return binding.root
     }

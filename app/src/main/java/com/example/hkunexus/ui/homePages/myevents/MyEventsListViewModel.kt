@@ -1,5 +1,6 @@
 package com.example.hkunexus.ui.homePages.myevents
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.hkunexus.data.SupabaseSingleton
@@ -11,7 +12,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 data class MyEventsUiState(
-    val listOfEventsToDisplay: List<EventDto> = listOf(),
+    val listOfEventsToDisplay: ArrayList<EventDto> = arrayListOf(),
     )
 
 class MyEventsViewModel : ViewModel() {
@@ -25,12 +26,15 @@ class MyEventsViewModel : ViewModel() {
     fun fetchMyEvents() {
 
         viewModelScope.launch {
-            val tempList = SupabaseSingleton.getAllJoinedEventsAsync()
+            val tempList: List<EventDto> = SupabaseSingleton.getAllJoinedEventsAsync()
+            Log.d("new list", tempList.toString())
             _uiState.update {
                 it.copy(
-                    listOfEventsToDisplay = tempList
+                    listOfEventsToDisplay = tempList.toCollection(ArrayList())
                 )
             }
+
+
         }
 
     }

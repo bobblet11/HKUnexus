@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.content.Intent
 import android.util.Log
+import android.window.OnBackInvokedDispatcher
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -85,12 +87,30 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_create,
                 R.id.navigation_my_events,
                 R.id.navigation_my_groups
-            ),
-            drawerLayout
+            )
         )
+
         setupActionBarWithNavController(navController, appBarConfiguration)
         val bottomNavView: BottomNavigationView = binding.bottomNavView
         bottomNavView.setupWithNavController(navController)
+
+//        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+//            override fun handleOnBackPressed() {
+//
+//                Log.d("PRESSEdd", "BBACK")
+//
+//                if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+//                    drawerLayout.closeDrawer(GravityCompat.START)
+//                } else {
+//                    if (!navController.navigateUp(appBarConfiguration)) {
+//                        finish()
+//                    }
+//                }
+//            }
+//        })
+
+
+
 
     }
 
@@ -101,21 +121,11 @@ class MainActivity : AppCompatActivity() {
             super.onOptionsItemSelected(item)
         }
     }
+
     override fun onSupportNavigateUp(): Boolean {
-        val navController = findNavController(R.id.nav_host_fragment_activity_main)
+        Log.d("MainActivity", "Navigate up pressed")
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
-    override fun onBackPressed() {
-
-        super.onBackPressed()
-
-
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START)
-        } else {
-            super.onBackPressed()
-        }
-    }
 
 }

@@ -27,16 +27,27 @@ class MyEventsListFragment : Fragment() {
     ): View {
         _binding = FragmentMyEventsListBinding.inflate(inflater, container, false)
         val eventListAdapter = EventListAdapter(arrayListOf())
-        eventListAdapter.setPostPageCallBack {
-                position: Int ->
-            Toast.makeText(context, "Should go to post page $position", Toast.LENGTH_SHORT).show()
-        }
         binding.myEventsClubsRecycler.adapter = eventListAdapter
 
         CoroutineScope(Dispatchers.Main).launch {
             viewModel.uiState.collect { state ->
                 eventListAdapter.updateDataSet(state.listOfEventsToDisplay.toCollection(ArrayList()))
             }
+        }
+
+
+        val swipeRefreshLayout = binding.refreshLayout
+        // Refresh function for the layout
+        swipeRefreshLayout.setOnRefreshListener{
+
+            // Your code goes here
+            // In this code, we are just changing the text in the
+            // textbox
+            viewModel.fetchMyEvents()
+            swipeRefreshLayout.isRefreshing = false
+            // This line is important as it explicitly refreshes only once
+            // If "true" it implicitly refreshes forever
+
         }
 
         return binding.root

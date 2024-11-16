@@ -1,6 +1,7 @@
 package com.example.hkunexus.ui.homePages.myevents
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
@@ -16,8 +17,6 @@ import android.view.ViewGroup as ViewGroup
 
 class EventListAdapter(private val dataSet: ArrayList<EventDto>) :
     RecyclerView.Adapter<EventListAdapter.ViewHolder>() {
-
-    private var goToPostPage: (Int) -> Unit = { postID: Int -> }
 
     class ViewHolder(view: View) : JoinableEventPostViewHolder(view) {
         var eventName: TextView = view.findViewById<TextView>(R.id.eventName)
@@ -52,23 +51,14 @@ class EventListAdapter(private val dataSet: ArrayList<EventDto>) :
             viewHolder.eventButtonsView,
             event.id
         )
-
-
-        viewHolder.cardView.setOnClickListener {
-            goToPostPage(position)
-        }
     }
 
     override fun getItemCount() = dataSet.size
 
-    fun setPostPageCallBack(callback: (Int) -> Unit) {
-        goToPostPage = callback
-    }
-
-
     @SuppressLint("NotifyDataSetChanged")
     fun updateDataSet(newData:  ArrayList<EventDto>) {
         // Call when the data changes.
+        Log.d("CLEARING","CLEARING")
         this.dataSet.clear()
         this.dataSet.addAll(newData)
         notifyDataSetChanged()
