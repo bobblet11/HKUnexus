@@ -42,41 +42,8 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Set up the Toolbar as ActionBar
         val toolbar: Toolbar = binding.toolbar
         setSupportActionBar(toolbar)
-
-
-        // Initialize DrawerLayout and ActionBarDrawerToggle
-        drawerLayout = binding.drawerLayout
-        actionBarDrawerToggle = ActionBarDrawerToggle(
-            this,
-            drawerLayout,
-            toolbar,
-            R.string.nav_open,
-            R.string.nav_close
-        )
-
-        drawerLayout.addDrawerListener(actionBarDrawerToggle)
-        actionBarDrawerToggle.syncState()
-
-        // Handle the click on the toggle icon
-        toolbar.setNavigationOnClickListener {
-            drawerLayout.openDrawer(GravityCompat.START) // Open the drawer when the icon is clicked
-        }
-
-        // Handle navigation item clicks
-        val navigationView: NavigationView = binding.navView
-        navigationView.setNavigationItemSelectedListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.nav_logout -> {
-                    Log.d("wdwad", "OUT")
-                }
-            }
-            // Close the drawer after an item is selected
-            drawerLayout.closeDrawers()
-            true
-        }
 
         // Setup the toolbar and bottom navigation
         navController = findNavController(R.id.nav_host_fragment_activity_main)
@@ -94,38 +61,10 @@ class MainActivity : AppCompatActivity() {
         val bottomNavView: BottomNavigationView = binding.bottomNavView
         bottomNavView.setupWithNavController(navController)
 
-//        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
-//            override fun handleOnBackPressed() {
-//
-//                Log.d("PRESSEdd", "BBACK")
-//
-//                if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-//                    drawerLayout.closeDrawer(GravityCompat.START)
-//                } else {
-//                    if (!navController.navigateUp(appBarConfiguration)) {
-//                        finish()
-//                    }
-//                }
-//            }
-//        })
-
-
-
-
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
-            true
-        } else {
-            super.onOptionsItemSelected(item)
-        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
         Log.d("MainActivity", "Navigate up pressed")
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
-
-
 }

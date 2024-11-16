@@ -39,18 +39,7 @@
                 app:destination="@id/navigation_post_page" />
         </fragment>
 
-        <fragment
-            android:id="@+id/navigation_my_events"
-            android:name="MyEventsSlide"
-            android:label="@string/title_my_events" />
-
-        <fragment
-            android:id="@+id/navigation_notifications"
-            android:name="com.example.hkunexus.ui.homePages.notifications.NotificationsFragment"
-            android:label="@string/title_notifications"
-            tools:layout="@layout/fragment_notifications" />
-
-        <fragment
+    <fragment
             android:id="@+id/navigation_my_groups"
             android:name="com.example.hkunexus.ui.homePages.mygroups.MyGroupsFragment"
             android:label="@string/title_my_groups"
@@ -63,7 +52,11 @@
         <fragment
             android:id="@+id/navigation_post_page"
             android:name="com.example.hkunexus.ui.homePages.post.PostPageFragment"
-            tools:layout="@layout/fragment_post_page" />
+            tools:layout="@layout/fragment_post_page" >
+            <action
+                android:id="@+id/action_navigation_post_page_to_navigation_group_landing"
+                app:destination="@id/navigation_group_landing" />
+        </fragment>
 
         <fragment
             android:id="@+id/navigation_create"
@@ -80,4 +73,8 @@
             android:name="com.example.hkunexus.ui.login.LoginActivity"
             android:label="login"
             tools:layout="@layout/activity_login" />
-    </navigation>
+    <fragment
+        android:id="@+id/navigation_my_events"
+        android:name="MyEventsSlide"
+        android:label="MyEventsSlide" />
+</navigation>
