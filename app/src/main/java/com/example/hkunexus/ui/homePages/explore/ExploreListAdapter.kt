@@ -1,11 +1,14 @@
 package com.example.hkunexus.ui.homePages.explore
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
@@ -20,9 +23,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
-class ExploreListAdapter(private val dataSet: ArrayList<ClubDto>) :
+class ExploreListAdapter(private val dataSet: ArrayList<ClubDto>, private val context: Context) :
     RecyclerView.Adapter<ClubInExploreListViewHolder>() {
-
+    private var lastPosition = -1
     private var goToLandingPage: (String) -> Unit = {
         clubId: String -> Log.d("exploreListAdapter", clubId)
     }
@@ -38,14 +41,16 @@ class ExploreListAdapter(private val dataSet: ArrayList<ClubDto>) :
         viewHolder.clubName.text = club.clubName
         viewHolder.clubDescription.text = club.clubDesc
         val placeholderImage = R.drawable.placeholder_view_vector
+
+
         if (club.clubImage == null){
             viewHolder.clubImageContainer.visibility = View.GONE // Hide if no image URL
             Log.d("Glide", "Image URL is null")
         } else {
 
             // Load image asynchronously
-
                 CoroutineScope(Dispatchers.Main).launch {
+
                     val imageURL = club.clubImage
                     Log.d("ImageURL", "Fetched URL: $imageURL") // Log the fetched URL
 
@@ -95,9 +100,20 @@ class ExploreListAdapter(private val dataSet: ArrayList<ClubDto>) :
         viewHolder.cardView.setOnClickListener {
             goToLandingPage(club.clubId.toString())
         }
+        setAnimation(viewHolder.itemView, position);
     }
     override fun getItemCount() = dataSet.size
 
+    private fun setAnimation(viewToAnimate: View, position: Int) {
+        // If the bound view wasn't previously displayed on screen, it's animated
+
+        if (position > lastPosition) {
+            val animation: Animation =
+                AnimationUtils.loadAnimation(context, R.anim.fade)
+            viewToAnimate.startAnimation(animation)
+            lastPosition = position
+        }
+    }
     @SuppressLint("NotifyDataSetChanged")
     fun updateDataSet(newData:  ArrayList<ClubDto>) {
         //call when the data changes.

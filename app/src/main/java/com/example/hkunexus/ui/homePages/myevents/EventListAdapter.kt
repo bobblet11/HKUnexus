@@ -1,9 +1,12 @@
 package com.example.hkunexus.ui.homePages.myevents
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
@@ -15,9 +18,9 @@ import java.time.ZoneId
 import java.time.ZonedDateTime
 import android.view.ViewGroup as ViewGroup
 
-class EventListAdapter(private val dataSet: ArrayList<EventDto>) :
+class EventListAdapter(private val dataSet: ArrayList<EventDto>, private val context: Context) :
     RecyclerView.Adapter<EventListAdapter.ViewHolder>() {
-
+    private var lastPosition = -1
     class ViewHolder(view: View) : JoinableEventPostViewHolder(view) {
         var eventName: TextView = view.findViewById<TextView>(R.id.eventName)
         var eventDate: TextView = view.findViewById<TextView>(R.id.eventName3)
@@ -51,6 +54,18 @@ class EventListAdapter(private val dataSet: ArrayList<EventDto>) :
             viewHolder.eventButtonsView,
             event.id
         )
+        setAnimation(viewHolder.itemView, position);
+    }
+
+    private fun setAnimation(viewToAnimate: View, position: Int) {
+        // If the bound view wasn't previously displayed on screen, it's animated
+
+        if (position > lastPosition) {
+            val animation: Animation =
+                AnimationUtils.loadAnimation(context, R.anim.fade)
+            viewToAnimate.startAnimation(animation)
+            lastPosition = position
+        }
     }
 
     override fun getItemCount() = dataSet.size

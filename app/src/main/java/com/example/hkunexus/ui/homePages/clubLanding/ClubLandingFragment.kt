@@ -39,7 +39,7 @@ class ClubLandingFragment : Fragment() {
         val leaveButton = binding.clubLeaveButton
         val numberOfMembers = binding.clubMemberCount
 
-        val postListAdapter = PostInClubListAdapter(arrayListOf())
+        val postListAdapter = PostInClubListAdapter(arrayListOf(), requireContext())
         //set the clubID and fetch required data using clubID
 
         viewModel.setClubID(arguments?.getString("clubID"), context)

@@ -1,18 +1,22 @@
 package com.example.hkunexus.ui.homePages.clubLanding
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hkunexus.R
 import com.example.hkunexus.data.SupabaseSingleton
 import com.example.hkunexus.data.model.dto.PostDto
 import com.example.hkunexus.data.EventInterface
 
-public final class PostInClubListAdapter(private val dataSet: ArrayList<PostDto>) :
+public final class PostInClubListAdapter(private val dataSet: ArrayList<PostDto>, private val context: Context) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var goToPostPage: (String) -> Unit = { postID: String -> }
-
+    private var lastPosition = -1
     override fun getItemViewType(position: Int): Int {
         // Just as an example, return 0 or 2 depending on position
         // Note that unlike in ListView adapters, types don't have to be contiguous
@@ -67,6 +71,8 @@ public final class PostInClubListAdapter(private val dataSet: ArrayList<PostDto>
                 viewHolder.cardView.setOnClickListener {
                     goToPostPage(dataSet[position].id)
                 }
+
+                setAnimation(viewHolder.itemView, position);
             }
             //NORMAL POST
             1 -> {
@@ -79,6 +85,7 @@ public final class PostInClubListAdapter(private val dataSet: ArrayList<PostDto>
                 viewHolder.cardView.setOnClickListener {
                     goToPostPage(dataSet[position].id)
                 }
+                setAnimation(viewHolder.itemView, position);
             }
             //DEFAULT IS NORMAL POST
             else ->{
@@ -90,7 +97,19 @@ public final class PostInClubListAdapter(private val dataSet: ArrayList<PostDto>
                 viewHolder.cardView.setOnClickListener {
                     goToPostPage(dataSet[position].id)
                 }
+                setAnimation(viewHolder.itemView, position);
             }
+        }
+    }
+
+    private fun setAnimation(viewToAnimate: View, position: Int) {
+        // If the bound view wasn't previously displayed on screen, it's animated
+
+        if (position > lastPosition) {
+            val animation: Animation =
+                AnimationUtils.loadAnimation(context, R.anim.fade)
+            viewToAnimate.startAnimation(animation)
+            lastPosition = position
         }
     }
 

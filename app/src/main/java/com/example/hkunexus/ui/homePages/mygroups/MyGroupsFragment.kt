@@ -30,7 +30,7 @@ class MyGroupsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentMyGroupsBinding.inflate(inflater, container, false)
-        val groupListAdapter = GroupListAdapter(arrayListOf())
+        val groupListAdapter = GroupListAdapter(arrayListOf(),requireContext())
         groupListAdapter.setPostPageCallBack ({ clubId: String ->
             val b = Bundle()
             b.putString("clubID", clubId)

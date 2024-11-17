@@ -1,9 +1,12 @@
 package com.example.hkunexus.ui.homePages.mygroups
 import android.annotation.SuppressLint
+import android.content.Context
 import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
@@ -23,11 +26,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import android.view.ViewGroup as ViewGroup
 
-class GroupListAdapter(private val dataSet: ArrayList<ClubDto>) :
+class GroupListAdapter(private val dataSet: ArrayList<ClubDto>, private val context: Context) :
     RecyclerView.Adapter<GroupListAdapter.ViewHolder>() {
 
     private var goToPostPage: (String) -> Unit = { clubID: String -> }
-
+    private var lastPosition = -1
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var clubBannerImage: ImageView = view.findViewById<ImageView>(R.id.club_banner_image)
         var clubName: TextView = view.findViewById<TextView>(R.id.club_name)
@@ -48,6 +51,7 @@ class GroupListAdapter(private val dataSet: ArrayList<ClubDto>) :
         val club = dataSet[position]
         viewHolder.clubName.text = club.clubName
         viewHolder.clubDescription.text = club.clubDesc
+        setAnimation(viewHolder.itemView, position);
         if (club.clubImage == null){
             viewHolder.clubImageContainer.visibility = View.GONE // Hide if no image URL
             Log.d("Glide", "Image URL is null")
@@ -102,6 +106,17 @@ class GroupListAdapter(private val dataSet: ArrayList<ClubDto>) :
 
         viewHolder.cardView.setOnClickListener {
             goToPostPage(dataSet[position].clubId!!)
+        }
+    }
+
+    private fun setAnimation(viewToAnimate: View, position: Int) {
+        // If the bound view wasn't previously displayed on screen, it's animated
+
+        if (position > lastPosition) {
+            val animation: Animation =
+                AnimationUtils.loadAnimation(context, R.anim.fade)
+            viewToAnimate.startAnimation(animation)
+            lastPosition = position
         }
     }
 

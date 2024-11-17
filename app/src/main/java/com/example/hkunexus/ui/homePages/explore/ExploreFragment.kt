@@ -32,7 +32,6 @@ class ExploreFragment : Fragment()  {
     private var _binding: FragmentExploreBinding? = null
     private val binding get() = _binding!!
     private val tags = arrayListOf("")
-    private val exploreListAdapter = ExploreListAdapter(arrayListOf())
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,6 +40,7 @@ class ExploreFragment : Fragment()  {
     ): View {
 
         _binding = FragmentExploreBinding.inflate(inflater, container, false)
+        val exploreListAdapter = ExploreListAdapter(arrayListOf(), requireContext())
 
         exploreListAdapter.setLandingCallback ({ clubId: String ->
             val b = Bundle()

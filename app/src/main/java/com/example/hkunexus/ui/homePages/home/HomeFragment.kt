@@ -31,7 +31,7 @@ class HomeFragment : Fragment() {
 
         val homePostsRecycler = binding.homeRecycler
 
-        val postListAdapter = PostInHomeListAdapter(arrayListOf())
+        val postListAdapter = PostInHomeListAdapter(arrayListOf(), requireContext())
 
         postListAdapter.setPostPageCallBack ({ postId: String ->
             Log.d("PostListAdapter", "Navigating to post with ID: $postId")

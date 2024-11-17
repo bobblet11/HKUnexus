@@ -26,7 +26,7 @@ class MyEventsListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentMyEventsListBinding.inflate(inflater, container, false)
-        val eventListAdapter = EventListAdapter(arrayListOf())
+        val eventListAdapter = EventListAdapter(arrayListOf(),requireContext())
         binding.myEventsClubsRecycler.adapter = eventListAdapter
 
         CoroutineScope(Dispatchers.Main).launch {
