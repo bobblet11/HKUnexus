@@ -24,7 +24,7 @@ class RegisterOtpActivity : AppCompatActivity() {
 
         submitOTP.setOnClickListener {
 
-            if(viewModel.attemptOTPAuthentication(OTPcode.toString())){
+            if(viewModel.attemptOTPAuthentication(OTPcode.text.toString())){
                 val goToLogin = Intent(this, LoginActivity::class.java)
                 startActivity(goToLogin)
             }

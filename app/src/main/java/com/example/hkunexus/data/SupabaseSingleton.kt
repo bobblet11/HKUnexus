@@ -108,6 +108,10 @@ object SupabaseSingleton {
             UserSingleton.display_name = getDisplayName(currentUser!!.id)
 //                UserSingleton.userProfile = getUserProfile(userID = currentUser!!.id)
 
+
+
+
+
             return true
 
         } catch (e: Exception) {
@@ -289,21 +293,13 @@ object SupabaseSingleton {
                 val user = client!!.auth.signUpWith(Email) {
                     this.email = email
                     this.password = password
-                    data = buildJsonObject {
-                        put("first_name", firstName)
-                        put("last_name", lastName)
-                        put("display_name", username)
-                        put("profile_picture", "")
-                        put("joined_at", "")
-                    }
                 }
 
-                Log.d("SupabaseSingleton", "Sign-up successful: $user")
-
+                Log.d("SupabaseSingleton", "Sign-up successful: ${user.toString()}")
                 return@runBlocking true
 
             } catch (e: Exception) {
-                Log.d("SupabaseSingleton", "Sign-in failed: $e")
+                Log.d("SupabaseSingleton", "Sign-up failed: $e")
                 currentUser = null
                 session = null
                 accessToken = null
@@ -313,26 +309,13 @@ object SupabaseSingleton {
         }
     }
 
-    fun getAccessToken(): String {
-        try {
-            if (this.accessToken!!.isNotEmpty()) {
-                Log.d("SupabaseSingleton", "retrieved access token")
-                return this.accessToken!!
-            }
-        } catch (e: Exception) {
-            Log.d("SupabaseSingleton", "no access token available, sign-in again")
-        }
-        return ""
-    }
-
-
     fun authenticateOtp(otpInput: String): Boolean {
         return runBlocking {
             try {
                 client!!.auth.verifyEmailOtp(
                     type = OtpType.Email.SIGNUP,
                     email = "u3596276@connect.hku.hk",
-                    token = otpInput
+                    token = otpInput.toString()
                 )
 
                 Log.d("SupabaseSingleton", "verified OTP $otpInput")

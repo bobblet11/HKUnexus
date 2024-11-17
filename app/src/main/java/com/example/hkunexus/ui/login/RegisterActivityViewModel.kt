@@ -23,13 +23,6 @@ class RegisterActivityViewModel() : ViewModel() {
     private val _uiState = MutableStateFlow(RegisterUiState())
     val uiState: StateFlow<RegisterUiState> = _uiState.asStateFlow()
 
-    public fun testRPC(){
-        SupabaseSingleton.getTagById("18c2ccbe-1764-4db6-acf2-a3c32097a4ed");
-        SupabaseSingleton.getClubById("bfc05438-ec7d-4f51-b6a0-1b5169140781")
-        SupabaseSingleton.searchClubsByTags(arrayOf("18c2ccbe-1764-4db6-acf2-a3c32097a4ed"))
-        SupabaseSingleton.searchClubsByTags(arrayOf("18c2ccbe-1764-4db6-acf2-a3c32097a4ed", "1c535529-98bf-49e0-b3e5-dcdb16cb4ec3"))
-    }
-
     private fun setValidationResult(isFirstNameValid: Boolean, isLastNameValid: Boolean, isEmailValid: Boolean, isPasswordValid : Boolean,isPasswordVerified: Boolean, isUsernameTaken : Boolean){
         _uiState.update {
             it.copy(
