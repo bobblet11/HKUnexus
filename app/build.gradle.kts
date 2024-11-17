@@ -59,13 +59,22 @@ dependencies {
     implementation(libs.postgrest.kt)
     implementation(libs.auth.kt)
     implementation(libs.realtime.kt)
+    implementation("io.github.jan-tennert.supabase:storage-kt")
     implementation(libs.ktor.client.android)
     implementation(libs.androidx.legacy.support.v4)
     implementation(libs.androidx.fragment.ktx)
     implementation("com.google.code.gson:gson:2.8.9")
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     implementation(libs.play.services.maps) // Check for the latest version
+    implementation(libs.glide)
+    annotationProcessor(libs.compiler) // For Java
+    implementation(libs.osmdroid.android) // Check for the latest version
+    implementation("androidx.activity:activity:1.7.0")
+
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
 
 }

@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.example.hkunexus.R
 import com.example.hkunexus.databinding.FragmentGroupLandingBinding
 import kotlinx.coroutines.CoroutineScope
@@ -40,15 +41,18 @@ class ClubLandingFragment : Fragment() {
 
         val postListAdapter = PostInClubListAdapter(arrayListOf())
         //set the clubID and fetch required data using clubID
-        Log.d("clubLandingFrag", arguments?.getString("clubID").toString())
 
         viewModel.setClubID(arguments?.getString("clubID"), context)
 
-        postListAdapter.setPostPageCallBack {
-            position: Int ->
-            Toast.makeText(context, "Should go to post page $position", Toast.LENGTH_SHORT).show()
-        }
         groupLandingPostsRecycler.adapter = postListAdapter
+
+        postListAdapter.setPostPageCallBack ({ postId: String ->
+            val b = Bundle()
+            b.putString("postID", postId)
+
+            findNavController().navigate(R.id.navigation_post_page, b)
+        })
+
 
         lifecycleScope.launch {
             viewModel.uiState.collect { state ->
@@ -74,6 +78,23 @@ class ClubLandingFragment : Fragment() {
                 postListAdapter.updateDataSet(state.posts.toCollection(ArrayList()))
             }
         }
+
+        val swipeRefreshLayout = binding.refreshLayout
+
+        // Refresh function for the layout
+        swipeRefreshLayout.setOnRefreshListener{
+
+            // Your code goes here
+            // In this code, we are just changing the text in the
+            // textbox
+
+            viewModel.fetchClubData()
+            viewModel.fetchPosts()
+            // This line is important as it explicitly refreshes only once
+            // If "true" it implicitly refreshes forever
+            swipeRefreshLayout.isRefreshing = false
+        }
+
         return binding.root
     }
 

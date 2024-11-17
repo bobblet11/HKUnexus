@@ -7,15 +7,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Spinner
 import android.widget.SearchView
+import android.widget.Spinner
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.example.hkunexus.R
 import com.example.hkunexus.data.model.dto.Tag
 import com.example.hkunexus.databinding.FragmentExploreBinding
+import com.example.hkunexus.databinding.FragmentGroupLandingBinding
+import com.example.hkunexus.ui.homePages.clubLanding.ClubLandingFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -26,7 +31,7 @@ class ExploreFragment : Fragment()  {
     private val viewModel: ExploreViewModel by viewModels()
     private var _binding: FragmentExploreBinding? = null
     private val binding get() = _binding!!
-    val tags = arrayListOf("")
+    private val tags = arrayListOf("")
     private val exploreListAdapter = ExploreListAdapter(arrayListOf())
 
     override fun onCreateView(
@@ -40,27 +45,41 @@ class ExploreFragment : Fragment()  {
         exploreListAdapter.setLandingCallback ({ clubId: String ->
             val b = Bundle()
             b.putString("clubID", clubId)
+
             findNavController().navigate(R.id.navigation_group_landing, b)
+
         })
 
         binding.exploreClubsRecycler.adapter = exploreListAdapter
 
-        configureSearchBar()
-        constructClubTagAdaptor()
-
-        lifecycleScope.launch {
-            viewModel.uiState.collect { state ->
-                // Update UI based on the new state
-                tags.clear()
-                tags.addAll(state.listOfTags.map{t: Tag -> t.tagName})
-            }
-        }
         CoroutineScope(Dispatchers.Main).launch {
             viewModel.uiState.collect { state ->
                 exploreListAdapter.updateDataSet(
                     state.listOfClubsToDisplay.toCollection(ArrayList())
                 )
+                tags.clear()
+                tags.addAll(state.listOfTags.map{t: Tag -> t.tagName})
             }
+        }
+
+        configureSearchBar()
+        constructClubTagAdaptor()
+
+        val swipeRefreshLayout = binding.refreshLayout
+
+        // Refresh function for the layout
+        swipeRefreshLayout.setOnRefreshListener{
+
+            // Your code goes here
+            // In this code, we are just changing the text in the
+            // textbox
+
+            viewModel.fetchClubs()
+            viewModel.fetchTags()
+
+            // This line is important as it explicitly refreshes only once
+            // If "true" it implicitly refreshes forever
+            swipeRefreshLayout.isRefreshing = false
         }
 
         return binding.root

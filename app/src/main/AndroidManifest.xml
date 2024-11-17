@@ -15,6 +15,20 @@
         android:theme="@style/Theme.HKUnexus"
         tools:targetApi="31">
 
+        <!--suppress AndroidDomInspection -->
+        <service android:name="com.google.android.gms.metadata.ModuleDependencies"
+            android:enabled="false"
+            android:exported="false"
+            tools:ignore="MissingClass">
+            <intent-filter>
+                <action android:name="com.google.android.gms.metadata.MODULE_DEPENDENCIES" />
+            </intent-filter>
+            <meta-data android:name="photopicker_activity:0:required" android:value="" />
+        </service>
+
+        <activity
+            android:name=".ui.homePages.create.CreateSelectClubActivity"
+            android:exported="false" />
         <!--
              TODO: Before you run your application, you need a Google Maps API key.
 
@@ -52,6 +66,12 @@
             android:name=".ui.login.RegisterOtpActivity"
             android:exported="true"
             android:label="@string/title_activity_register_otp" />
+
+        <activity
+            android:name=".ui.homePages.create.CreateSelectEventActivity"
+            android:exported="true" />
+
     </application>
 
 </manifest>
+

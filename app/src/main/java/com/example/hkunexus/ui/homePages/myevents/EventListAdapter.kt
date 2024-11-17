@@ -7,17 +7,19 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hkunexus.R
+import com.example.hkunexus.data.EventInterface
 import com.example.hkunexus.data.model.dto.EventDto
+import com.example.hkunexus.ui.JoinableEventPostViewHolder
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import android.view.ViewGroup as ViewGroup
 
-class EventListAdapter(private val dataSet: List<EventDto>) :
+class EventListAdapter(private val dataSet: ArrayList<EventDto>) :
     RecyclerView.Adapter<EventListAdapter.ViewHolder>() {
 
     private var goToPostPage: (Int) -> Unit = { postID: Int -> }
 
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    class ViewHolder(view: View) : JoinableEventPostViewHolder(view) {
         var eventName: TextView = view.findViewById<TextView>(R.id.eventName)
         var eventDate: TextView = view.findViewById<TextView>(R.id.eventName3)
         var eventTime: TextView = view.findViewById<TextView>(R.id.eventName5)
@@ -46,6 +48,12 @@ class EventListAdapter(private val dataSet: List<EventDto>) :
         viewHolder.eventTime.text = "Time:  $localTime" // Use the local time part
         viewHolder.eventLocation.text = "Location:  " + event.location
 
+        EventInterface.attachListenersAndUpdatersToEventJoiningButtons(
+            viewHolder.eventButtonsView,
+            event.id
+        )
+
+
         viewHolder.cardView.setOnClickListener {
             goToPostPage(position)
         }
@@ -55,5 +63,14 @@ class EventListAdapter(private val dataSet: List<EventDto>) :
 
     fun setPostPageCallBack(callback: (Int) -> Unit) {
         goToPostPage = callback
+    }
+
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateDataSet(newData:  ArrayList<EventDto>) {
+        // Call when the data changes.
+        this.dataSet.clear()
+        this.dataSet.addAll(newData)
+        notifyDataSetChanged()
     }
 }

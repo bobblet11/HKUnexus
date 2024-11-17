@@ -1,17 +1,14 @@
 package com.example.hkunexus.ui.homePages.myevents
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.hkunexus.data.SupabaseSingleton
-import com.example.hkunexus.data.TempData
-import com.example.hkunexus.data.model.EventPost
-import com.example.hkunexus.data.model.UserProfile
 import com.example.hkunexus.data.model.dto.EventDto
-import io.github.jan.supabase.auth.user.UserInfo
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 data class MyEventsUiState(
     val listOfEventsToDisplay: List<EventDto> = listOf(),
@@ -25,19 +22,16 @@ class MyEventsViewModel : ViewModel() {
         fetchMyEvents()
     }
 
-    private fun fetchMyEvents() {
-        //FETCH USING SUPABASE
-        //USE USER ID HERE FROM SINGLETON
+    fun fetchMyEvents() {
 
-        val tempList = SupabaseSingleton.getAllJoinedEvents()
-
-        for (item: EventDto in tempList) {
-
+        viewModelScope.launch {
+            val tempList = SupabaseSingleton.getAllJoinedEventsAsync()
             _uiState.update {
                 it.copy(
                     listOfEventsToDisplay = tempList
                 )
             }
         }
+
     }
 }

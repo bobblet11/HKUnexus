@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.hkunexus.R
-import com.example.hkunexus.databinding.FragmentMyEventsBinding
 import com.example.hkunexus.ui.homePages.myevents.MyEventsViewModel
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -17,7 +16,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 
-class eventWidget : Fragment(){
+class eventWidget : Fragment() {
 
     private lateinit var googleModel: GoogleMap
 

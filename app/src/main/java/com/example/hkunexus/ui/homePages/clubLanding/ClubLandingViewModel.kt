@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.hkunexus.data.SupabaseSingleton
 import com.example.hkunexus.data.TempData
 import com.example.hkunexus.data.UserSingleton
@@ -13,6 +14,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 data class ClubLandingUiState(
     val name: String = "Club Name",
@@ -59,36 +61,47 @@ class ClubLandingViewModel : ViewModel() {
     }
 
     public fun joinClub(){
-        _uiState.update {
-            it.copy(
-                joined = true
-            )
+
+        viewModelScope.launch {
+
+            try{
+                val result = SupabaseSingleton.insertOrUpdateCurrentUserToClub(clubID, "Member")
+                Log.d("clubLandingViewModel", "Club joining success, $result")
+
+            }catch(e : Exception){
+                Log.e("clubLandingViewModel", "Club joining failed , $e")
+            }
+
+            val numOfMembers = SupabaseSingleton.getNoOfMembersOfClubAsync(clubID)
+
+            _uiState.update {
+                it.copy(
+                    joined = true,
+                    numberOfMembers = numOfMembers
+                )
+            }
         }
 
-        try{
-
-            val result = SupabaseSingleton.insertOrUpdateCurrentUserToClub(clubID, "Member")
-            Log.d("clubLandingViewModel", "Club joining success, $result")
-
-        }catch(e : Exception){
-            Log.e("clubLandingViewModel", "Club joining failed , $e")
-        }
     }
 
     public fun leaveClub(){
-        _uiState.update {
-            it.copy(
-                joined = false
-            )
-        }
 
-        try{
+        viewModelScope.launch {
+            try{
+                val result = SupabaseSingleton.removeCurrentUserToClub(clubID)
+                Log.d("clubLandingViewModel", "Club leaving success, $result")
+            }catch(e : Exception){
+                Log.e("clubLandingViewModel", "Club leaving failed , $e")
+            }
 
-            val result = SupabaseSingleton.removeCurrentUserToClub(clubID)
-            Log.d("clubLandingViewModel", "Club leaving success, $result")
+            val numOfMembers = SupabaseSingleton.getNoOfMembersOfClubAsync(clubID)
 
-        }catch(e : Exception){
-            Log.e("clubLandingViewModel", "Club leaving failed , $e")
+            _uiState.update {
+                it.copy(
+                    joined = false,
+                    numberOfMembers = numOfMembers
+                )
+            }
         }
     }
 
@@ -112,25 +125,20 @@ class ClubLandingViewModel : ViewModel() {
         }
     }
 
-    private fun fetchClubData() {
-        // TODO: Fetch using Supabase using clubID
-        Log.d("clubLandingViewModel", clubID)
-        var tempClub: ClubDto = SupabaseSingleton.getClubById(clubID)!!
-
-        val numOfMembers = SupabaseSingleton.getNoOfMembersOfClub(clubID)
-        tempClub.numberOfMembers =numOfMembers
-
-        val joined = SupabaseSingleton.checkIsJoined(clubID, UserSingleton.userID)
-        Log.d("clubLandingViewModel", tempClub.toString())
-        tempClub.joined =joined
-        updateClubInfo(tempClub)
+    fun fetchClubData() {
+        viewModelScope.launch {
+            Log.d("clubLandingViewModel", clubID)
+            val tempClub: ClubDto = SupabaseSingleton.getClubByIdAsync(clubID)!!
+            tempClub.numberOfMembers =SupabaseSingleton.getNoOfMembersOfClubAsync(clubID)
+            tempClub.joined =SupabaseSingleton.checkIsJoinedAsync(clubID, UserSingleton.userID)
+            updateClubInfo(tempClub)
+        }
     }
 
-    private fun fetchPosts() {
-        // TODO: FETCH USING SUPABASE using clubID
-        Log.d("cTEST", clubID)
-        val tempList: Array<PostDto> = SupabaseSingleton.getPostsFromClub(clubID).toTypedArray()
-        Log.d("clubLandingViewModel", tempList.toString())
-        updateClubPosts(tempList)
+    public fun fetchPosts() {
+        viewModelScope.launch {
+            val tempList: Array<PostDto> = SupabaseSingleton.getPostsFromClubAsync(clubID).toTypedArray()
+            updateClubPosts(tempList)
+        }
     }
 }

@@ -10,7 +10,7 @@ data class PostDto(
     val id : String,
 
     @SerialName("user_id")
-    val userId : String,
+    var userId : String,
 
     @SerialName("club_id")
     val clubId : String,
@@ -25,26 +25,30 @@ data class PostDto(
     val media : String,
 
     @SerialName("created_at")
-    val createdAt : String,
+    var createdAt : String,
 
     @SerialName("event_id")
-    val eventId : String?,
+    val eventId : String? = null,
 
     @SerialName("event_title")
-    val eventTitle : String?,
+    val eventTitle : String? = null,
 
     @SerialName("event_body")
-    val eventBody : String?,
+    val eventBody : String? = null,
 
     @SerialName("event_time_start")
-    val eventTimeStart : String?,
+    var eventTimeStart : String? = null,
 
     @SerialName("event_duration")
-    val eventDuration : Int?,
+    val eventDuration : Int? = null,
 
     @SerialName("event_location")
-    val eventLocation : String?,
+    val eventLocation : String? = null,
 
     @SerialName("event_created_at")
-    val eventCreatedAt: String?,
+    val eventCreatedAt: String? = null,
+
+    var clubName: String = "" ,
+    var displayName: String = ""
     )
+

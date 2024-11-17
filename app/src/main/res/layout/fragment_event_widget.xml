@@ -6,7 +6,6 @@
     android:layout_height="wrap_content"
     tools:context=".ui.homePages.event.eventWidget">
 
-    <!-- TODO: Update blank fragment layout -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -31,8 +30,6 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:padding = "15dp">
-
-
 
                 <TextView
                     android:id="@+id/eventName"
@@ -95,30 +92,17 @@
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
-                    <com.google.android.gms.maps.MapView
+                    <org.osmdroid.views.MapView
                         android:id="@+id/map_view"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:contentDescription="location of event"/>
+                        android:layout_height="100dp"
+                        android:contentDescription="location of event" />
 
                 </androidx.cardview.widget.CardView>
 
-                <Button
-                    android:id="@+id/button3"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="#75A256"
-                    android:text="Sign Up!"
-                    android:textColor="#000000" />
-
-                <Button
-                    android:id="@+id/button4"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="#DC7E7E"
-                    android:text="Cancel" />
-
                 <!-- Action Buttons -->
+                <include layout="@layout/event_joining_button"/>
+
             </LinearLayout>
         </androidx.cardview.widget.CardView>
     </androidx.constraintlayout.widget.ConstraintLayout>
