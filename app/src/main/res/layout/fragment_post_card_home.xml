@@ -26,6 +26,14 @@
             android:text="Post Title"
             android:textSize="34sp" />
 
+        <ImageView
+            android:id="@+id/postImage"
+            android:layout_width="match_parent"
+            android:layout_height="189dp"
+            android:scaleType="centerCrop"
+            android:visibility="gone"
+            tools:srcCompat="@tools:sample/avatars" />
+
         <TextView
             android:id="@+id/postDescription"
             android:layout_width="match_parent"

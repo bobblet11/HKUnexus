@@ -87,7 +87,8 @@ class PostPageFragment : Fragment() {
 
         CoroutineScope(Dispatchers.Main).launch {
             viewModel.uiStatePosts.collect { state ->
-
+//                viewModel.fetchPostImage(requireContext(), postImage)
+//                viewModel.fetchGroupPfp(requireContext(), groupPfp)
                 if (viewModel.uiStatePosts.value.post != null) {
                     // Call this updater function if you want to update the states of buttons
                     eventButtonUpdater = EventInterface.attachListenersAndUpdatersToEventJoiningButtons(
@@ -95,6 +96,8 @@ class PostPageFragment : Fragment() {
                         viewModel.uiStatePosts.value.post!!.eventId
                     )
                 }
+
+
 
 
                 title.text = state.post?.title

@@ -2,15 +2,26 @@ package com.example.hkunexus.ui.homePages.home
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.drawable.Drawable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.example.hkunexus.R
 import com.example.hkunexus.data.EventInterface
 import com.example.hkunexus.data.model.dto.PostDto
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class PostInHomeListAdapter(private val dataSet: ArrayList<PostDto>, private val context: Context) :
@@ -90,6 +101,53 @@ class PostInHomeListAdapter(private val dataSet: ArrayList<PostDto>, private val
                 }
 
                 setAnimation(viewHolder.itemView, position);
+
+                if (dataSet[position].media == null){
+                    Log.d("Glide", "Image URL is null")
+                } else
+                {
+                    viewHolder.postImage.visibility = View.VISIBLE
+
+                    CoroutineScope(Dispatchers.Main).launch {
+                        val imageURL = dataSet[position].media
+                        Log.d("ImageURL", "Fetched URL: $imageURL") // Log the fetched URL
+                        val placeholderImage = R.drawable.placeholder_view_vector
+                        // Load image using Glide with RequestListener
+                        Glide.with(viewHolder.itemView.context)
+                            .load(imageURL) // Load the image from the URL
+                            .placeholder(placeholderImage) // Placeholder while loading
+                            .error(placeholderImage) // Error image if loading fails
+                            .override(300, 200) // Resize to desired size (adjust as needed)
+                            .diskCacheStrategy(DiskCacheStrategy.ALL) // Enable caching
+                            .thumbnail(0.1f) // Load a smaller thumbnail first
+                            .listener(object : RequestListener<Drawable> {
+                                override fun onLoadFailed(
+                                    e: GlideException?,
+                                    model: Any?,
+                                    target: Target<Drawable>?,
+                                    isFirstResource: Boolean
+                                ): Boolean {
+                                    // Hide the image container on error
+                                    viewHolder.postImage.visibility = View.GONE
+                                    Log.d("Glide", "Image load failed: ${e?.message}")
+                                    return false // Allow Glide to handle the error placeholder
+                                }
+                                override fun onResourceReady(
+                                    resource: Drawable?,
+                                    model: Any?,
+                                    target: Target<Drawable>?,
+                                    dataSource: DataSource?,
+                                    isFirstResource: Boolean
+                                ): Boolean {
+                                    // Show the image container when image is loaded successfully
+                                    viewHolder.postImage.visibility = View.GONE
+                                    Log.d("Glide", "Image loaded successfully")
+                                    return false // Allow Glide to handle the resource
+                                }
+                            })
+                            .into(viewHolder.postImage) // Set the ImageView
+                    }
+                }
             }
             //NORMAL POST
             1 -> {
@@ -104,6 +162,53 @@ class PostInHomeListAdapter(private val dataSet: ArrayList<PostDto>, private val
                     goToPostPage(dataSet[position].id)
                 }
                 setAnimation(viewHolder.itemView, position);
+
+                if (dataSet[position].media == null){
+                    Log.d("Glide", "Image URL is null")
+                } else {
+                    viewHolder.postImage.visibility = View.VISIBLE
+
+                    CoroutineScope(Dispatchers.Main).launch {
+                        val imageURL = dataSet[position].media
+                        Log.d("ImageURL", "Fetched URL: $imageURL") // Log the fetched URL
+                        val placeholderImage = R.drawable.placeholder_view_vector
+                        // Load image using Glide with RequestListener
+                        Glide.with(viewHolder.itemView.context)
+                            .load(imageURL) // Load the image from the URL
+                            .placeholder(placeholderImage) // Placeholder while loading
+                            .error(placeholderImage) // Error image if loading fails
+                            .override(300, 200) // Resize to desired size (adjust as needed)
+                            .diskCacheStrategy(DiskCacheStrategy.ALL) // Enable caching
+                            .thumbnail(0.1f) // Load a smaller thumbnail first
+                            .listener(object : RequestListener<Drawable> {
+                                override fun onLoadFailed(
+                                    e: GlideException?,
+                                    model: Any?,
+                                    target: Target<Drawable>?,
+                                    isFirstResource: Boolean
+                                ): Boolean {
+                                    // Hide the image container on error
+                                    viewHolder.postImage.visibility = View.GONE
+                                    Log.d("Glide", "Image load failed: ${e?.message}")
+                                    return false // Allow Glide to handle the error placeholder
+                                }
+
+                                override fun onResourceReady(
+                                    resource: Drawable?,
+                                    model: Any?,
+                                    target: Target<Drawable>?,
+                                    dataSource: DataSource?,
+                                    isFirstResource: Boolean
+                                ): Boolean {
+                                    // Show the image container when image is loaded successfully
+                                    viewHolder.postImage.visibility = View.GONE
+                                    Log.d("Glide", "Image loaded successfully")
+                                    return false // Allow Glide to handle the resource
+                                }
+                            })
+                            .into(viewHolder.postImage) // Set the ImageView
+                    }
+                }
             }
             //DEFAULT IS NORMAL POST
             else -> {
@@ -119,6 +224,53 @@ class PostInHomeListAdapter(private val dataSet: ArrayList<PostDto>, private val
                 }
 
                 setAnimation(viewHolder.itemView, position);
+
+                if (dataSet[position].media == null){
+                    Log.d("Glide", "Image URL is null")
+                } else {
+                    viewHolder.postImage.visibility = View.VISIBLE
+
+                    CoroutineScope(Dispatchers.Main).launch {
+                        val imageURL = dataSet[position].media
+                        Log.d("ImageURL", "Fetched URL: $imageURL") // Log the fetched URL
+                        val placeholderImage = R.drawable.placeholder_view_vector
+                        // Load image using Glide with RequestListener
+                        Glide.with(viewHolder.itemView.context)
+                            .load(imageURL) // Load the image from the URL
+                            .placeholder(placeholderImage) // Placeholder while loading
+                            .error(placeholderImage) // Error image if loading fails
+                            .override(300, 200) // Resize to desired size (adjust as needed)
+                            .diskCacheStrategy(DiskCacheStrategy.ALL) // Enable caching
+                            .thumbnail(0.1f) // Load a smaller thumbnail first
+                            .listener(object : RequestListener<Drawable> {
+                                override fun onLoadFailed(
+                                    e: GlideException?,
+                                    model: Any?,
+                                    target: Target<Drawable>?,
+                                    isFirstResource: Boolean
+                                ): Boolean {
+                                    // Hide the image container on error
+                                    viewHolder.postImage.visibility = View.GONE
+                                    Log.d("Glide", "Image load failed: ${e?.message}")
+                                    return false // Allow Glide to handle the error placeholder
+                                }
+
+                                override fun onResourceReady(
+                                    resource: Drawable?,
+                                    model: Any?,
+                                    target: Target<Drawable>?,
+                                    dataSource: DataSource?,
+                                    isFirstResource: Boolean
+                                ): Boolean {
+                                    // Show the image container when image is loaded successfully
+                                    viewHolder.postImage.visibility = View.GONE
+                                    Log.d("Glide", "Image loaded successfully")
+                                    return false // Allow Glide to handle the resource
+                                }
+                            })
+                            .into(viewHolder.postImage) // Set the ImageView
+                    }
+                }
             }
         }
     }

@@ -49,7 +49,7 @@ class CreateGroupViewModel: ViewModel() {
     }
 
     fun canCreate(): Boolean {
-        return uiState.value.clubName.trim().isNotEmpty()
+        return uiState.value.clubName.trim().isNotEmpty() && hasBannerImage()
     }
 
     fun create(context: Context?): Boolean {

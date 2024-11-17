@@ -2,6 +2,7 @@ package com.example.hkunexus.ui.homePages.home
 
 import android.view.View
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
@@ -15,6 +16,7 @@ class EventPostInHomeViewHolder(view: View) : JoinableEventPostViewHolder(view) 
     var postTitle = view.findViewById<TextView>(R.id.postTitle)
     var description = view.findViewById<TextView>(R.id.postDescription)
     var timeSincePosted = view.findViewById<TextView>(R.id.timeSincePosted)
+    var postImage = view.findViewById<ImageView>(R.id.postImageEvent)
 
     var eventLocation = view.findViewById<TextView>(R.id.eventLocation)
     var eventTime = view.findViewById<TextView>(R.id.eventTime)

@@ -38,6 +38,7 @@ class ClubLandingFragment : Fragment() {
         val joinButton = binding.clubJoinButton
         val leaveButton = binding.clubLeaveButton
         val numberOfMembers = binding.clubMemberCount
+        val image = binding.clubBanner
 
         val postListAdapter = PostInClubListAdapter(arrayListOf(), requireContext())
         //set the clubID and fetch required data using clubID
@@ -62,7 +63,9 @@ class ClubLandingFragment : Fragment() {
                 joinButton.visibility = if (state.joined) View.GONE else View.VISIBLE
                 leaveButton.visibility = if (state.joined) View.VISIBLE else View.GONE
                 numberOfMembers.text = state.numberOfMembers.toString() + " members"
+                viewModel.fetchImage(requireContext(), image)
             }
+
         }
 
         joinButton.setOnClickListener {
@@ -90,6 +93,7 @@ class ClubLandingFragment : Fragment() {
 
             viewModel.fetchClubData()
             viewModel.fetchPosts()
+            viewModel.fetchImage(requireContext(), image)
             // This line is important as it explicitly refreshes only once
             // If "true" it implicitly refreshes forever
             swipeRefreshLayout.isRefreshing = false

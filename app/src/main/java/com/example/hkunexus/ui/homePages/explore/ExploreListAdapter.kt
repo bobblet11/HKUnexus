@@ -44,7 +44,7 @@ class ExploreListAdapter(private val dataSet: ArrayList<ClubDto>, private val co
 
 
         if (club.clubImage == null){
-            viewHolder.clubImageContainer.visibility = View.GONE // Hide if no image URL
+//            viewHolder.clubImageContainer.visibility = View.GONE // Hide if no image URL
             Log.d("Glide", "Image URL is null")
         } else {
 
@@ -91,7 +91,7 @@ class ExploreListAdapter(private val dataSet: ArrayList<ClubDto>, private val co
                             })
                             .into(viewHolder.clubBannerImage) // Set the ImageView
                     } else {
-                        viewHolder.clubImageContainer.visibility = View.GONE // Hide if no image URL
+//                        viewHolder.clubImageContainer.visibility = View.GONE // Hide if no image URL
                         Log.d("Glide", "Image URL is null")
                     }
                 }

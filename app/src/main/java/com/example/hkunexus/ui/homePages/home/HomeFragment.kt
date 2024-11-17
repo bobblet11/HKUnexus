@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -42,27 +43,20 @@ class HomeFragment : Fragment() {
 
 
         })
-        val nothingToSee = binding.nothingToSeeHere
+
         homePostsRecycler.adapter = postListAdapter
         CoroutineScope(Dispatchers.Main).launch {
             viewModel.uiStatePosts.collect { state ->
-
-                if (state.posts.isEmpty()){
-                    nothingToSee.visibility = View.VISIBLE
-                    homePostsRecycler.visibility = View.GONE
-                }else{
-                    nothingToSee.visibility = View.GONE
-                    homePostsRecycler.visibility = View.VISIBLE
-                }
                 postListAdapter.updateDataSet(state.posts.toCollection(ArrayList()))
+
             }
+
         }
 
         val swipeRefreshLayout = binding.refreshLayout
 
         // Refresh function for the layout
         swipeRefreshLayout.setOnRefreshListener{
-
             // Your code goes here
             // In this code, we are just changing the text in the
             // textbox
