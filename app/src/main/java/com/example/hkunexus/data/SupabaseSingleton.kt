@@ -4,6 +4,8 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.media.metrics.Event
 import android.util.Log
+import android.widget.TextView
+import com.example.hkunexus.R
 import com.example.hkunexus.data.model.dto.ClubDto
 import com.example.hkunexus.data.model.dto.EventDto
 import com.example.hkunexus.data.model.dto.EventToPost
@@ -105,7 +107,6 @@ object SupabaseSingleton {
             UserSingleton.email = currentUser!!.email!!
             UserSingleton.display_name = getDisplayName(currentUser!!.id)
 //                UserSingleton.userProfile = getUserProfile(userID = currentUser!!.id)
-
 
             return true
 

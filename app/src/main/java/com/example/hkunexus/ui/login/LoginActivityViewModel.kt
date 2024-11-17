@@ -29,6 +29,7 @@ class LoginActivityViewModel() : ViewModel() {
             //val isSuccess = validateLogin(emailInput, passwordInput) && SupabaseSingleton.login("$emailInput@connect.hku.hk", passwordInput)
             val isSuccess = SupabaseSingleton.login("$emailInput@connect.hku.hk", passwordInput)
             callback(isSuccess)
+
         }
         Log.d("LoginActivityViewModel", "login_register success")
         return true

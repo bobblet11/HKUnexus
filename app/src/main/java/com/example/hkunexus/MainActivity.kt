@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.content.Intent
 import android.util.Log
+import android.widget.TextView
 import android.window.OnBackInvokedDispatcher
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.addCallback
@@ -25,11 +26,12 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.hkunexus.databinding.ActivityMainBinding
 import com.example.hkunexus.ui.login.LoginActivity
 import com.example.hkunexus.data.SupabaseSingleton
+import com.example.hkunexus.data.UserSingleton
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity()  {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var drawerLayout: DrawerLayout
@@ -79,6 +81,23 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        val header = navigationView.getHeaderView(0)
+        val usernameAside = header.findViewById<TextView>(R.id.usernameAside)
+        val emailAside = header.findViewById<TextView>(R.id.emailAside)
+        usernameAside.text = UserSingleton.display_name
+        emailAside.text = UserSingleton.email
+
+
+        navigationView.getMenu().findItem(R.id.nav_logout).setOnMenuItemClickListener({ menuItem ->
+            Log.d("MainActivity", "Logout clicked")
+            SupabaseSingleton.logout()
+            val intent = Intent(this, LoginActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+            finish()
+            true
+        })
+
         navController.addOnDestinationChangedListener { _, destination, _ ->
             Log.d("Navigation", "Navigated to ${destination.label}")
             logBackStack()
@@ -88,12 +107,13 @@ class MainActivity : AppCompatActivity() {
         val bottomNavView: BottomNavigationView = binding.bottomNavView
         bottomNavView.setupWithNavController(navController)
         navigationView.setupWithNavController(navController)
-    }
 
-//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        return item.onNavDestinationSelected(navController) ||
-//                super.onOptionsItemSelected(item)
-//    }
+//        val usernameAside = binding.root.findViewById<TextView>(R.id.usernameAside)
+//        val emailAside = binding.root.findViewById<TextView>(R.id.emailAside)
+//        usernameAside.text = UserSingleton.display_name
+//        emailAside.text = UserSingleton.email
+
+    }
 
     override fun onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
@@ -118,4 +138,7 @@ class MainActivity : AppCompatActivity() {
             Log.d("MainActivity", "Back Stack Entry $i: ${backStackEntry.name}")
         }
     }
+
+
+
 }

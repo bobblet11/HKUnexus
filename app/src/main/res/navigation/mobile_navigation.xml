@@ -69,11 +69,6 @@
                 app:destination="@id/navigation_home" />
         </fragment>
 
-        <activity
-            android:id="@+id/loginActivity"
-            android:name="com.example.hkunexus.ui.login.LoginActivity"
-            android:label="login"
-            tools:layout="@layout/activity_login" />
     <fragment
         android:id="@+id/navigation_my_events"
         android:name="MyEventsSlide"
