@@ -1,6 +1,7 @@
 package com.example.hkunexus.ui.homePages.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,10 +34,12 @@ class HomeFragment : Fragment() {
         val postListAdapter = PostInHomeListAdapter(arrayListOf())
 
         postListAdapter.setPostPageCallBack ({ postId: String ->
+            Log.d("PostListAdapter", "Navigating to post with ID: $postId")
             val b = Bundle()
             b.putString("postID", postId)
 
-            findNavController().navigate(R.id.navigation_post_page, b)
+            findNavController().navigate(R.id.action_navigation_home_to_navigation_post_page, b)
+
 
         })
         val nothingToSee = binding.nothingToSeeHere

@@ -51,6 +51,7 @@
 
         <fragment
             android:id="@+id/navigation_post_page"
+            android:label="post page"
             android:name="com.example.hkunexus.ui.homePages.post.PostPageFragment"
             tools:layout="@layout/fragment_post_page" >
             <action
