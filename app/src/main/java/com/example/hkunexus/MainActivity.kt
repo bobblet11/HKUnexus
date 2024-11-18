@@ -11,6 +11,7 @@ import androidx.activity.addCallback
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
@@ -95,6 +96,11 @@ class MainActivity : AppCompatActivity()  {
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
             finish()
+            true
+        })
+
+        navigationView.getMenu().findItem(R.id.nav_edit_profile).setOnMenuItemClickListener({ menuItem ->
+            getEditProfileDialog(this).show();
             true
         })
 
