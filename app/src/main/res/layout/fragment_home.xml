@@ -21,10 +21,11 @@
             android:id="@+id/home_recycler"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="#DBDBDB"
             android:clipToPadding="false"
             android:paddingBottom="300dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/fragment_post_card" >
+            tools:listitem="@layout/fragment_post_card">
 
         </androidx.recyclerview.widget.RecyclerView>
 

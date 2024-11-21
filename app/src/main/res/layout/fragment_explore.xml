@@ -43,6 +43,7 @@
             android:id="@+id/explore_clubs_recycler"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="#DBDBDB"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
