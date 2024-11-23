@@ -2,10 +2,16 @@ package com.example.hkunexus.ui.login
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import com.example.hkunexus.R
 import kotlinx.coroutines.CoroutineScope
@@ -16,6 +22,43 @@ import kotlinx.coroutines.launch
 class RegisterActivity : AppCompatActivity() {
 
     private val viewModel: RegisterActivityViewModel by viewModels()
+
+
+    private val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+        if (uri != null) {
+            Log.d("PhotoPicker", "Selected URI: $uri")
+            viewModel.setPostImage(uri)
+            val inputStream = contentResolver.openInputStream(uri)
+            inputStream.use{
+                    input ->
+                viewModel.imageFile!!.outputStream().use{
+                        output ->
+                    input!!.copyTo(output)
+                }
+            }
+
+            updateBannerPhoto()
+            inputStream?.close()
+
+            Log.d("PhotoPicker", viewModel.imageFile.toString())
+        } else {
+            Log.d("PhotoPicker", "No media selected")
+        }
+    }
+
+    private fun updateBannerPhoto() {
+        findViewById<ImageView>(R.id.post_image).setImageURI(
+            viewModel.uiState.value.postImage
+        )
+
+        if (viewModel.hasPostImage()) {
+            findViewById<ImageView>(R.id.post_image).visibility = View.VISIBLE
+            findViewById<ImageView>(R.id.remove_post_image).visibility = View.VISIBLE
+        } else {
+            findViewById<ImageView>(R.id.post_image).visibility = View.GONE
+            findViewById<ImageView>(R.id.remove_post_image).visibility = View.GONE
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -54,6 +97,15 @@ class RegisterActivity : AppCompatActivity() {
                 startActivity(goToOTP)
             }
         }
+
+        findViewById<Button>(R.id.upload_post_image).setOnClickListener {
+            pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+        }
+
+        findViewById<ImageView>(R.id.remove_post_image).setOnClickListener {
+            viewModel.setPostImage(null)
+            updateBannerPhoto()
+        }
     }
 
     private fun updateBorderColour(border: EditText, isValid:Boolean){
@@ -61,4 +113,6 @@ class RegisterActivity : AppCompatActivity() {
         val validBorder = ContextCompat.getDrawable(this, R.drawable.edit_text_border_normal)
         border.background = if(isValid) validBorder else invalidBorder
     }
+
+
 }

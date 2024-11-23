@@ -235,6 +235,32 @@ object SupabaseSingleton {
         }
     }
 
+    suspend fun getUserPfpAsync(userID: String): String {
+
+        @Serializable
+        data class outputDTO(
+            @SerialName("profile_picture")
+            var media: String = "",
+        )
+
+        val funcName = "get_user_profile_image"
+        val funcParam = buildJsonObject {
+            put("user_id", userID)
+        }
+        return withContext(Dispatchers.IO) {
+            try {
+                val result = client!!.postgrest.rpc(funcName, funcParam)
+                Log.d("SupabaseSingleton", "$funcName rpc, $result")
+                val output: outputDTO = result.decodeSingle<outputDTO>()
+                Log.d("SupabaseSingleton", "$funcName rpc output, $output")
+                output.media
+            } catch (e: Exception) {
+                Log.d("SupabaseSingleton", "Failure, $e")
+                ""
+            }
+        }
+    }
+
     fun getClubName(clubID: String): String {
 
         @Serializable
@@ -312,7 +338,8 @@ object SupabaseSingleton {
         lastName: String,
         email: String,
         password: String,
-        username: String
+        username: String,
+        mediaArg: String
     ): Boolean {
         return runBlocking {
             try {
@@ -321,22 +348,18 @@ object SupabaseSingleton {
                     this.password = password
                     data = buildJsonObject {
                         put("first_name", firstName)
+                        put("email_", email)
                         put("last_name", lastName)
-                        put("display_name", username)
-                        put("profile_picture", "")
-                        put("joined_at", "")
+                        put("display_name_", username)
+                        put("profile_picture", mediaArg)
+//                        put("created_at", "")
                     }
                 }
-
                 Log.d("SupabaseSingleton", "Sign-up successful: $user")
-
                 return@runBlocking true
 
             } catch (e: Exception) {
                 Log.d("SupabaseSingleton", "Sign-in failed: $e")
-                currentUser = null
-                session = null
-                accessToken = null
                 return@runBlocking false
             }
 
@@ -749,6 +772,7 @@ object SupabaseSingleton {
         }
     }
 
+
     fun getLargestDenominationPast(duration: Duration): String {
         return when {
             duration.toDays() > 60 -> "${duration.toDays() / 30} months ago"
@@ -835,6 +859,7 @@ object SupabaseSingleton {
                     val duration = Duration.between(postDateTime, currentDateTime)
                     Log.d("test", getLargestDenominationPast(duration))
                     P.createdAt = getLargestDenominationPast(duration)
+                    P.userPfp = getUserPfpAsync(P.userId)
 
                     if (P.eventId != null) {
                         val eventDateTime = OffsetDateTime.parse(P.eventTimeStart, firstApiFormat)
@@ -1007,45 +1032,6 @@ object SupabaseSingleton {
         }
     }
 
-    fun getPostsFromHome(): List<PostDto> {
-
-        Log.d("getPOSTfromHome", UserSingleton.userID)
-
-        return runBlocking {
-            val funcName = "get_all_posts_and_unjoined_events_from_all_joined_clubs"
-            val funcParam = buildJsonObject {
-                put("user_uuid", UserSingleton.userID)
-            }
-
-            try {
-                val result = client!!.postgrest.rpc(funcName, funcParam)
-                Log.d("SupabaseSingleton", "$funcName rpc, $result")
-                val output: List<PostDto> = result.decodeList<PostDto>()
-                Log.d("SupabaseSingleton", "$funcName rpc output, $output")
-                val firstApiFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssXXX")
-                val currentDateTime = OffsetDateTime.now(ZoneOffset.UTC)
-                for (P in output) {
-                    val postDateTime = OffsetDateTime.parse(P.createdAt, firstApiFormat)
-                    val duration = Duration.between(postDateTime, currentDateTime)
-                    Log.d("test", getLargestDenominationPast(duration))
-                    P.createdAt = getLargestDenominationPast(duration)
-                    P.clubPfp = getClubBannerAsync(P.clubId)
-
-                    if (P.eventId != null) {
-                        val eventDateTime = OffsetDateTime.parse(P.eventTimeStart, firstApiFormat)
-                        val durationE = Duration.between(currentDateTime, eventDateTime)
-                        P.eventTimeStart = getLargestDenominationFuture(durationE)
-                    }
-                }
-
-                return@runBlocking output
-            } catch (e: Exception) {
-                Log.d("SupabaseSingleton", "Failure, $e")
-                return@runBlocking listOf()
-            }
-        }
-    }
-
     suspend fun getPostsFromHomeAsync(): List<PostDto> {
 
         Log.d("getPOSTfromHome", UserSingleton.userID)
@@ -1068,7 +1054,9 @@ object SupabaseSingleton {
                     val duration = Duration.between(postDateTime, currentDateTime)
                     Log.d("test", getLargestDenominationPast(duration))
                     P.createdAt = getLargestDenominationPast(duration)
-                    P.clubPfp = getClubBannerAsync(P.clubId)
+//                    P.clubPfp = getClubBannerAsync(P.clubId)
+                    //changed to user
+                    P.userPfp = getUserPfpAsync(P.userId)
 
                     if (P.eventId != null) {
                         val eventDateTime = OffsetDateTime.parse(P.eventTimeStart, firstApiFormat)
@@ -1266,6 +1254,7 @@ object SupabaseSingleton {
                     val durationE = Duration.between(currentDateTime, eventDateTime)
                     output.eventTimeStart = getLargestDenominationFuture(durationE)
                 }
+                output.userPfp = getUserPfpAsync(output.userId)
 
                 Log.d("SupabaseSingleton", "$funcName rpc output, $output")
                 return@runBlocking output
@@ -1294,6 +1283,7 @@ object SupabaseSingleton {
                 val postDateTime = OffsetDateTime.parse(output.createdAt, firstApiFormat)
                 val duration = Duration.between(postDateTime, currentDateTime)
                 output.createdAt = getLargestDenominationPast(duration)
+
                 if (output.eventId != null) {
                     val eventDateTime = OffsetDateTime.parse(output.eventTimeStart, firstApiFormat)
                     val durationE = Duration.between(currentDateTime, eventDateTime)
@@ -1302,7 +1292,7 @@ object SupabaseSingleton {
 
                 output.displayName = getDisplayNameAsync(output.userId)
                 output.clubName = getClubNameAsync(output.clubId)
-                output.clubPfp = getClubBannerAsync(output.clubId)
+                output.userPfp = getUserPfpAsync(output.userId)
 
                 Log.d("SupabaseSingleton", "$funcName rpc output, $output")
                 output

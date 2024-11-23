@@ -70,7 +70,6 @@ class ClubLandingFragment : Fragment() {
                 joinButton.visibility = if (state.joined) View.GONE else View.VISIBLE
                 leaveButton.visibility = if (state.joined) View.VISIBLE else View.GONE
                 numberOfMembers.text = state.numberOfMembers.toString() + " members"
-                viewModel.fetchImage(requireContext(), image)
 
                 if (state.image == null || state.image.isEmpty()){
                     Log.d("Glide", "Image URL is null")

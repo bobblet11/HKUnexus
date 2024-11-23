@@ -128,15 +128,14 @@ class PostPageFragment : Fragment() {
 
 
 
-
-                if (state.post == null || state.post.clubPfp.isEmpty()){
+                if (state.post == null || state.post.userPfp!!.isEmpty()){
                     Log.d("Glide", "Image URL is null")
                 } else
                 {
                     clubPfp.visibility = View.VISIBLE
 
                     CoroutineScope(Dispatchers.Main).launch {
-                        val imageURL = state.post.clubPfp
+                        val imageURL = state.post.userPfp
                         Log.d("ImageURL", "Fetched URL: $imageURL") // Log the fetched URL
                         val placeholderImage = R.drawable.placeholder_view_vector
                         // Load image using Glide with RequestListener
@@ -155,7 +154,6 @@ class PostPageFragment : Fragment() {
                                     isFirstResource: Boolean
                                 ): Boolean {
                                     // Hide the image container on error
-                                    clubPfp.visibility = View.INVISIBLE
                                     Log.d("Glide", "Image load failed: ${e?.message}")
                                     return false // Allow Glide to handle the error placeholder
                                 }
@@ -175,6 +173,7 @@ class PostPageFragment : Fragment() {
                             .into(clubPfp) // Set the ImageView
                     }
                 }
+
 
                 if (state.post == null || state.post.media.isEmpty()){
                     Log.d("Glide", "Image URL is null")

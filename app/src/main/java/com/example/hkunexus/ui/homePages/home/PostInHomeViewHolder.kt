@@ -16,5 +16,6 @@ class PostInHomeViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     var timeSincePosted = view.findViewById<TextView>(R.id.timeSincePosted)
     var postImage = view.findViewById<ImageView>(R.id.postImage)
     var postImageContainer = view.findViewById<CardView>(R.id.imageCard)
+
     var clubPfp = view.findViewById<ImageView>(R.id.groupProfileImage)
 }

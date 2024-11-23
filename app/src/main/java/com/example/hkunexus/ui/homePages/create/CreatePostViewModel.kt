@@ -142,8 +142,6 @@ class CreatePostViewModel: ViewModel() {
     }
 
     fun hasPostImage(): Boolean {
-
-
         return uiState.value.postImage != null
     }
 

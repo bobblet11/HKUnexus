@@ -149,14 +149,14 @@ class PostInHomeListAdapter(private val dataSet: ArrayList<PostDto>, private val
                     }
                 }
 
-                if (dataSet[position].clubPfp.isEmpty()){
+                if (dataSet[position].userPfp == null || dataSet[position].userPfp!!.isEmpty()){
                     Log.d("Glide", "Image URL is null")
                 } else
                 {
                     viewHolder.clubPfp.visibility = View.VISIBLE
 
                     CoroutineScope(Dispatchers.Main).launch {
-                        val imageURL = dataSet[position].clubPfp
+                        val imageURL = dataSet[position].media
                         Log.d("ImageURL", "Fetched URL: $imageURL") // Log the fetched URL
                         val placeholderImage = R.drawable.placeholder_view_vector
                         // Load image using Glide with RequestListener
@@ -175,7 +175,6 @@ class PostInHomeListAdapter(private val dataSet: ArrayList<PostDto>, private val
                                     isFirstResource: Boolean
                                 ): Boolean {
                                     // Hide the image container on error
-                                    viewHolder.clubPfp.visibility = View.GONE
                                     Log.d("Glide", "Image load failed: ${e?.message}")
                                     return false // Allow Glide to handle the error placeholder
                                 }
@@ -262,14 +261,14 @@ class PostInHomeListAdapter(private val dataSet: ArrayList<PostDto>, private val
                 }
 
 
-                if (dataSet[position].clubPfp.isEmpty()){
+                if (dataSet[position].userPfp == null || dataSet[position].userPfp!!.isEmpty()){
                     Log.d("Glide", "Image URL is null")
                 } else
                 {
                     viewHolder.clubPfp.visibility = View.VISIBLE
 
                     CoroutineScope(Dispatchers.Main).launch {
-                        val imageURL = dataSet[position].clubPfp
+                        val imageURL = dataSet[position].media
                         Log.d("ImageURL", "Fetched URL: $imageURL") // Log the fetched URL
                         val placeholderImage = R.drawable.placeholder_view_vector
                         // Load image using Glide with RequestListener
@@ -288,7 +287,6 @@ class PostInHomeListAdapter(private val dataSet: ArrayList<PostDto>, private val
                                     isFirstResource: Boolean
                                 ): Boolean {
                                     // Hide the image container on error
-                                    viewHolder.clubPfp.visibility = View.GONE
                                     Log.d("Glide", "Image load failed: ${e?.message}")
                                     return false // Allow Glide to handle the error placeholder
                                 }
@@ -372,14 +370,14 @@ class PostInHomeListAdapter(private val dataSet: ArrayList<PostDto>, private val
                 }
 
 
-                if (dataSet[position].clubPfp.isEmpty()){
+                if (dataSet[position].userPfp == null || dataSet[position].userPfp!!.isEmpty()){
                     Log.d("Glide", "Image URL is null")
                 } else
                 {
                     viewHolder.clubPfp.visibility = View.VISIBLE
 
                     CoroutineScope(Dispatchers.Main).launch {
-                        val imageURL = dataSet[position].clubPfp
+                        val imageURL = dataSet[position].media
                         Log.d("ImageURL", "Fetched URL: $imageURL") // Log the fetched URL
                         val placeholderImage = R.drawable.placeholder_view_vector
                         // Load image using Glide with RequestListener
@@ -398,7 +396,6 @@ class PostInHomeListAdapter(private val dataSet: ArrayList<PostDto>, private val
                                     isFirstResource: Boolean
                                 ): Boolean {
                                     // Hide the image container on error
-                                    viewHolder.clubPfp.visibility = View.GONE
                                     Log.d("Glide", "Image load failed: ${e?.message}")
                                     return false // Allow Glide to handle the error placeholder
                                 }

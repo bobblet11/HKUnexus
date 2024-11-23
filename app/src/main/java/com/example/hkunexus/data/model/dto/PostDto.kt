@@ -50,6 +50,8 @@ data class PostDto(
 
     var clubName: String = "" ,
     var displayName: String = "",
-    var clubPfp: String = ""
+    var clubPfp: String = "",
+
+    var userPfp:String? = ""
     )
 
