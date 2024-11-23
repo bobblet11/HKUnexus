@@ -1,4 +1,13 @@
 import org.apache.tools.ant.util.JavaEnvUtils.VERSION_11
+import java.util.Properties
+
+val localProperties = Properties()
+val localPropertiesFile = rootProject.file("local.properties")
+if(localPropertiesFile.exists()) {
+    localPropertiesFile.inputStream().use {
+        localProperties.load(it)
+    }
+}
 
 plugins {
     alias(libs.plugins.android.application)
@@ -20,6 +29,16 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField(
+            type = "String",
+            name = "API_KEY",
+            value = localProperties["API_KEY"].toString()
+        )
+    }
+
+    buildFeatures {
+        buildConfig = true
     }
 
     buildTypes {
@@ -70,7 +89,7 @@ dependencies {
     annotationProcessor(libs.compiler) // For Java
     implementation(libs.osmdroid.android) // Check for the latest version
     implementation("androidx.activity:activity:1.7.0")
-
+    implementation("com.github.MikeOrtiz:TouchImageView:3.6")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
