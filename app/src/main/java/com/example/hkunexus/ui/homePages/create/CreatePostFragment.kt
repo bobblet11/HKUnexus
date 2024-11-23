@@ -2,6 +2,8 @@ package com.example.hkunexus.ui.homePages.create
 
 import android.app.Activity.RESULT_OK
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -14,6 +16,7 @@ import android.widget.CompoundButton
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.net.toFile
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -24,6 +27,7 @@ import com.example.hkunexus.databinding.FragmentCreatePostBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.io.FileOutputStream
 
 
 class CreatePostFragment : Fragment() {
@@ -35,7 +39,20 @@ class CreatePostFragment : Fragment() {
         if (uri != null) {
             Log.d("PhotoPicker", "Selected URI: $uri")
             viewModel.setPostImage(uri)
+            val inputStream = requireContext().contentResolver.openInputStream(uri)
+
+            inputStream.use{
+                input ->
+                viewModel.imageFile!!.outputStream().use{
+                    output ->
+                    input!!.copyTo(output)
+                }
+            }
+
             updateBannerPhoto()
+            inputStream?.close()
+
+            Log.d("PhotoPicker", viewModel.imageFile.toString())
         } else {
             Log.d("PhotoPicker", "No media selected")
         }
