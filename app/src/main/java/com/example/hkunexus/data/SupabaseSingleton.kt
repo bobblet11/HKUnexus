@@ -82,7 +82,7 @@ object SupabaseSingleton {
             ) {
                 install(Postgrest)
                 install(Auth)
-//                install(Storage)
+                install(Storage)
             }
         } catch (e: Exception) {
             Log.e("SupabaseSingleton", "could not create supabase client\nClosing app", e)
@@ -1059,7 +1059,7 @@ object SupabaseSingleton {
 
 
     //valid bucketNames: "post_images", "club_images"
-    fun uploadImageToBucket(imageFile: File, bucketName: String, quality: Int = 80): String? {
+    fun uploadImageToBucket(imageFile: File, bucketName: String, quality: Int = 80, filepathArg: String? = null): String? {
         return runBlocking {
             val userId = currentUser?.id ?: return@runBlocking null
 
@@ -1072,12 +1072,12 @@ object SupabaseSingleton {
             originalBitmap.compress(Bitmap.CompressFormat.JPEG, quality, compressedImageOutput)
 
             // Step 3: Upload the compressed image
-            val filePath = "images/${imageFile.nameWithoutExtension}.jpg" // Save as JPEG
+            val filePath = filepathArg ?: "images/${imageFile.nameWithoutExtension}.jpg" // Save as JPEG
             return@runBlocking try {
                 val uploadResult = client!!.storage.from(bucketName)
                     .upload(filePath, compressedImageOutput.toByteArray())
                 Log.d("SupabaseSingleton", "Upload result: $uploadResult")
-                filePath
+                uploadResult.key
             } catch (e: Exception) {
                 Log.d("SupabaseSingleton", "Error uploading image: $e")
                 null
