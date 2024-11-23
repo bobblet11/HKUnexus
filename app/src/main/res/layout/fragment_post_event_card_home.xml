@@ -23,7 +23,7 @@
             android:gravity="center"
             android:text="EVENT" />
 
-        <include layout="@layout/post_profile_section_home" />
+        <include layout="@layout/post_profile_section_home_no_delete" />
 
         <TextView
             android:id="@+id/postTitle"
@@ -33,13 +33,23 @@
             android:text="Post Title"
             android:textSize="34sp" />
 
-        <ImageView
-            android:id="@+id/postImageEvent"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/imageCard"
             android:layout_width="match_parent"
-            android:layout_height="189dp"
-            android:scaleType="centerCrop"
+            android:layout_height="match_parent"
+            android:layout_marginVertical="10dp"
             android:visibility="gone"
-            tools:srcCompat="@tools:sample/avatars" />
+            app:cardCornerRadius="30dp"
+            app:cardElevation="-10dp"
+            tools:ignore="MissingClass">
+
+            <ImageView
+                android:id="@+id/postImageEvent"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:scaleType="centerCrop"
+                tools:srcCompat="@tools:sample/avatars" />
+        </androidx.cardview.widget.CardView>
 
         <TextView
             android:id="@+id/postDescription"

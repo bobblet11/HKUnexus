@@ -106,7 +106,7 @@ class PostInHomeListAdapter(private val dataSet: ArrayList<PostDto>, private val
                     Log.d("Glide", "Image URL is null")
                 } else
                 {
-                    viewHolder.postImage.visibility = View.VISIBLE
+                    viewHolder.postImageContainer.visibility = View.VISIBLE
 
                     CoroutineScope(Dispatchers.Main).launch {
                         val imageURL = dataSet[position].media
@@ -128,7 +128,7 @@ class PostInHomeListAdapter(private val dataSet: ArrayList<PostDto>, private val
                                     isFirstResource: Boolean
                                 ): Boolean {
                                     // Hide the image container on error
-                                    viewHolder.postImage.visibility = View.GONE
+                                    viewHolder.postImageContainer.visibility = View.GONE
                                     Log.d("Glide", "Image load failed: ${e?.message}")
                                     return false // Allow Glide to handle the error placeholder
                                 }
@@ -140,7 +140,7 @@ class PostInHomeListAdapter(private val dataSet: ArrayList<PostDto>, private val
                                     isFirstResource: Boolean
                                 ): Boolean {
                                     // Show the image container when image is loaded successfully
-                                    viewHolder.postImage.visibility = View.GONE
+                                    viewHolder.postImageContainer.visibility = View.VISIBLE
                                     Log.d("Glide", "Image loaded successfully")
                                     return false // Allow Glide to handle the resource
                                 }
@@ -166,7 +166,7 @@ class PostInHomeListAdapter(private val dataSet: ArrayList<PostDto>, private val
                 if (dataSet[position].media == null){
                     Log.d("Glide", "Image URL is null")
                 } else {
-                    viewHolder.postImage.visibility = View.VISIBLE
+                    viewHolder.postImageContainer.visibility = View.VISIBLE
 
                     CoroutineScope(Dispatchers.Main).launch {
                         val imageURL = dataSet[position].media
@@ -188,7 +188,7 @@ class PostInHomeListAdapter(private val dataSet: ArrayList<PostDto>, private val
                                     isFirstResource: Boolean
                                 ): Boolean {
                                     // Hide the image container on error
-                                    viewHolder.postImage.visibility = View.GONE
+                                    viewHolder.postImageContainer.visibility = View.GONE
                                     Log.d("Glide", "Image load failed: ${e?.message}")
                                     return false // Allow Glide to handle the error placeholder
                                 }
@@ -201,7 +201,7 @@ class PostInHomeListAdapter(private val dataSet: ArrayList<PostDto>, private val
                                     isFirstResource: Boolean
                                 ): Boolean {
                                     // Show the image container when image is loaded successfully
-                                    viewHolder.postImage.visibility = View.GONE
+                                    viewHolder.postImageContainer.visibility = View.GONE
                                     Log.d("Glide", "Image loaded successfully")
                                     return false // Allow Glide to handle the resource
                                 }
@@ -228,7 +228,7 @@ class PostInHomeListAdapter(private val dataSet: ArrayList<PostDto>, private val
                 if (dataSet[position].media == null){
                     Log.d("Glide", "Image URL is null")
                 } else {
-                    viewHolder.postImage.visibility = View.VISIBLE
+                    viewHolder.postImageContainer.visibility = View.VISIBLE
 
                     CoroutineScope(Dispatchers.Main).launch {
                         val imageURL = dataSet[position].media
@@ -250,7 +250,7 @@ class PostInHomeListAdapter(private val dataSet: ArrayList<PostDto>, private val
                                     isFirstResource: Boolean
                                 ): Boolean {
                                     // Hide the image container on error
-                                    viewHolder.postImage.visibility = View.GONE
+                                    viewHolder.postImageContainer.visibility = View.GONE
                                     Log.d("Glide", "Image load failed: ${e?.message}")
                                     return false // Allow Glide to handle the error placeholder
                                 }
@@ -263,7 +263,7 @@ class PostInHomeListAdapter(private val dataSet: ArrayList<PostDto>, private val
                                     isFirstResource: Boolean
                                 ): Boolean {
                                     // Show the image container when image is loaded successfully
-                                    viewHolder.postImage.visibility = View.GONE
+                                    viewHolder.postImageContainer.visibility = View.GONE
                                     Log.d("Glide", "Image loaded successfully")
                                     return false // Allow Glide to handle the resource
                                 }

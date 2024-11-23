@@ -15,6 +15,7 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.example.hkunexus.R
 import com.example.hkunexus.data.SupabaseSingleton
+import com.example.hkunexus.data.UserSingleton
 import com.example.hkunexus.data.model.dto.PostDto
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -28,6 +29,7 @@ import kotlinx.coroutines.launch
 data class PostInfoState(
     val postId: String? = null,
     val post: PostDto? = null,
+    val canDelete : Boolean = false
 )
 
 
@@ -45,12 +47,23 @@ class PostViewModel : ViewModel() {
         }
     }
 
+    private fun updateCanDelete(canDelete: Boolean) {
+        _uiStatePosts.update {
+            it.copy(
+                canDelete = canDelete
+            )
+        }
+    }
+
+
+
     fun fetchPosts() {
         viewModelScope.launch {
             val post: PostDto? = SupabaseSingleton.getPostByIdAsync(uiStatePosts.value.postId!!)
             Log.d("homeViewModel", post.toString())
             updatePostInfo(post!!)
-
+            val canDelete = SupabaseSingleton.getPostById(uiStatePosts.value.postId!!)!!.userId == UserSingleton.userID
+            updateCanDelete(canDelete)
         }
 
     }

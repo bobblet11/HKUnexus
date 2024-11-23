@@ -16,6 +16,8 @@ class EventPostInHomeViewHolder(view: View) : JoinableEventPostViewHolder(view) 
     var postTitle = view.findViewById<TextView>(R.id.postTitle)
     var description = view.findViewById<TextView>(R.id.postDescription)
     var timeSincePosted = view.findViewById<TextView>(R.id.timeSincePosted)
+
+    var postImageContainer = view.findViewById<CardView>(R.id.imageCard)
     var postImage = view.findViewById<ImageView>(R.id.postImageEvent)
 
     var eventLocation = view.findViewById<TextView>(R.id.eventLocation)

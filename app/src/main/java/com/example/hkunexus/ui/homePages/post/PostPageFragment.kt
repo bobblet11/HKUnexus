@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -57,30 +58,30 @@ class PostPageFragment : Fragment() {
         val groupPfp: ImageView = binding.root.findViewById(R.id.groupProfileImage)
 
         var eventButtonUpdater: (() -> Unit)? = null
-
-        binding.deletePostButton.setOnClickListener {
+        val deletePost = binding.root.findViewById<Button>(R.id.deletePost)
+        deletePost.setOnClickListener {
             val canDelete : Boolean = SupabaseSingleton.getPostById(requireArguments().getString("postID")!!)!!.userId == UserSingleton.userID
 
             if(!canDelete){
                 Toast.makeText(context, "You cannot delete this post", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
             }
+            else{
+                val builder: AlertDialog.Builder = AlertDialog.Builder(context)
+                builder
+                    .setMessage("Delete Post")
+                    .setTitle("Are you sure you want to delete this post?")
+                    .setPositiveButton("Delete Post") { dialog, which ->
 
-            val builder: AlertDialog.Builder = AlertDialog.Builder(context)
-            builder
-                .setMessage("Delete Post")
-                .setTitle("Are you sure you want to delete this post?")
-                .setPositiveButton("Delete Post") { dialog, which ->
+                        SupabaseSingleton.removePost(requireArguments().getString("postID")!!)
+                        findNavController().popBackStack()
+                    }
+                    .setNegativeButton("Go Back") { dialog, which ->
 
-                    SupabaseSingleton.removePost(requireArguments().getString("postID")!!)
-                    findNavController().popBackStack()
-                }
-                .setNegativeButton("Go Back") { dialog, which ->
+                    }
 
-                }
-
-            val dialog: AlertDialog = builder.create()
-            dialog.show()
+                val dialog: AlertDialog = builder.create()
+                dialog.show()
+            }
 
         }
 
@@ -99,7 +100,7 @@ class PostPageFragment : Fragment() {
 
 
 
-
+                deletePost.visibility = if (state.canDelete) View.VISIBLE else View.GONE
                 title.text = state.post?.title
                 description.text = state.post?.body
                 timeSincePosted.text = state.post?.createdAt

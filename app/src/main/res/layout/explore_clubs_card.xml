@@ -11,9 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginVertical="10dp"
-        android:backgroundTint="@color/cardview_shadow_end_color"
-        android:padding="20dp"
-        app:cardCornerRadius="0dp"
+        android:elevation="20dp"
+        app:cardCornerRadius="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -32,22 +31,32 @@
                 android:layout_gravity="center"
                 android:visibility="visible">
 
-                <ImageView
-                    android:id="@+id/club_banner_image"
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/club_image_card"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:adjustViewBounds="false"
-                    android:contentDescription="Image banner of the student-led group"
-                    android:cropToPadding="false"
-                    android:scaleType="centerCrop"
-                    android:visibility="visible"
-                    android:src="@drawable/placeholder_view_vector"
+                    android:layout_marginVertical="10dp"
+                    android:elevation="20dp"
+                    app:cardCornerRadius="30dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@mipmap/ic_launcher"
-                    tools:ignore="HardcodedText" />
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                        android:id="@+id/club_banner_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:adjustViewBounds="false"
+                        android:contentDescription="Image banner of the student-led group"
+                        android:cropToPadding="false"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/placeholder_view_vector"
+                        android:visibility="visible"
+                        app:srcCompat="@mipmap/ic_launcher"
+                        tools:ignore="HardcodedText" />
+                </androidx.cardview.widget.CardView>
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout
