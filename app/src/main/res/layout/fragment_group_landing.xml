@@ -26,7 +26,7 @@
             <ImageView
                 android:id="@+id/club_banner"
                 android:layout_width="match_parent"
-                android:layout_height="200sp"
+                android:layout_height="150dp"
                 android:contentDescription="Club Banner"
                 android:scaleType="centerCrop"
                 app:srcCompat="@drawable/ic_launcher_background"

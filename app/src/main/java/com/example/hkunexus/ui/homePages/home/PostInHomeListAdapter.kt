@@ -216,7 +216,8 @@ class PostInHomeListAdapter(private val dataSet: ArrayList<PostDto>, private val
 
                 if (dataSet[position].media.isEmpty()){
                     Log.d("Glide", "Image URL is null")
-                } else {
+                } else
+                {
                     viewHolder.postImageContainer.visibility = View.VISIBLE
 
                     CoroutineScope(Dispatchers.Main).launch {
@@ -243,7 +244,6 @@ class PostInHomeListAdapter(private val dataSet: ArrayList<PostDto>, private val
                                     Log.d("Glide", "Image load failed: ${e?.message}")
                                     return false // Allow Glide to handle the error placeholder
                                 }
-
                                 override fun onResourceReady(
                                     resource: Drawable?,
                                     model: Any?,
@@ -252,7 +252,7 @@ class PostInHomeListAdapter(private val dataSet: ArrayList<PostDto>, private val
                                     isFirstResource: Boolean
                                 ): Boolean {
                                     // Show the image container when image is loaded successfully
-                                    viewHolder.postImageContainer.visibility = View.GONE
+                                    viewHolder.postImageContainer.visibility = View.VISIBLE
                                     Log.d("Glide", "Image loaded successfully")
                                     return false // Allow Glide to handle the resource
                                 }
