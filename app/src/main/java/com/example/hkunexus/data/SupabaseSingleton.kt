@@ -209,6 +209,32 @@ object SupabaseSingleton {
         }
     }
 
+    suspend fun getClubBannerAsync(clubID: String): String {
+
+        @Serializable
+        data class outputDTO(
+            @SerialName("image")
+            var media: String = "",
+        )
+
+        val funcName = "get_club_banner_image"
+        val funcParam = buildJsonObject {
+            put("club_id", clubID)
+        }
+        return withContext(Dispatchers.IO) {
+            try {
+                val result = client!!.postgrest.rpc(funcName, funcParam)
+                Log.d("SupabaseSingleton", "$funcName rpc, $result")
+                val output: outputDTO = result.decodeSingle<outputDTO>()
+                Log.d("SupabaseSingleton", "$funcName rpc output, $output")
+                output.media
+            } catch (e: Exception) {
+                Log.d("SupabaseSingleton", "Failure, $e")
+                ""
+            }
+        }
+    }
+
     fun getClubName(clubID: String): String {
 
         @Serializable
@@ -1003,6 +1029,7 @@ object SupabaseSingleton {
                     val duration = Duration.between(postDateTime, currentDateTime)
                     Log.d("test", getLargestDenominationPast(duration))
                     P.createdAt = getLargestDenominationPast(duration)
+                    P.clubPfp = getClubBannerAsync(P.clubId)
 
                     if (P.eventId != null) {
                         val eventDateTime = OffsetDateTime.parse(P.eventTimeStart, firstApiFormat)
@@ -1041,6 +1068,7 @@ object SupabaseSingleton {
                     val duration = Duration.between(postDateTime, currentDateTime)
                     Log.d("test", getLargestDenominationPast(duration))
                     P.createdAt = getLargestDenominationPast(duration)
+                    P.clubPfp = getClubBannerAsync(P.clubId)
 
                     if (P.eventId != null) {
                         val eventDateTime = OffsetDateTime.parse(P.eventTimeStart, firstApiFormat)
@@ -1274,6 +1302,7 @@ object SupabaseSingleton {
 
                 output.displayName = getDisplayNameAsync(output.userId)
                 output.clubName = getClubNameAsync(output.clubId)
+                output.clubPfp = getClubBannerAsync(output.clubId)
 
                 Log.d("SupabaseSingleton", "$funcName rpc output, $output")
                 output

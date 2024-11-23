@@ -102,7 +102,7 @@ class PostInHomeListAdapter(private val dataSet: ArrayList<PostDto>, private val
 
                 setAnimation(viewHolder.itemView, position);
 
-                if (dataSet[position].media == null){
+                if (dataSet[position].media.isEmpty()){
                     Log.d("Glide", "Image URL is null")
                 } else
                 {
@@ -148,9 +148,60 @@ class PostInHomeListAdapter(private val dataSet: ArrayList<PostDto>, private val
                             .into(viewHolder.postImage) // Set the ImageView
                     }
                 }
+
+                if (dataSet[position].clubPfp.isEmpty()){
+                    Log.d("Glide", "Image URL is null")
+                } else
+                {
+                    viewHolder.clubPfp.visibility = View.VISIBLE
+
+                    CoroutineScope(Dispatchers.Main).launch {
+                        val imageURL = dataSet[position].clubPfp
+                        Log.d("ImageURL", "Fetched URL: $imageURL") // Log the fetched URL
+                        val placeholderImage = R.drawable.placeholder_view_vector
+                        // Load image using Glide with RequestListener
+                        Glide.with(viewHolder.itemView.context)
+                            .load(imageURL) // Load the image from the URL
+                            .placeholder(placeholderImage) // Placeholder while loading
+                            .error(placeholderImage) // Error image if loading fails
+                            .override(300, 200) // Resize to desired size (adjust as needed)
+                            .diskCacheStrategy(DiskCacheStrategy.ALL) // Enable caching
+                            .thumbnail(0.1f) // Load a smaller thumbnail first
+                            .listener(object : RequestListener<Drawable> {
+                                override fun onLoadFailed(
+                                    e: GlideException?,
+                                    model: Any?,
+                                    target: Target<Drawable>?,
+                                    isFirstResource: Boolean
+                                ): Boolean {
+                                    // Hide the image container on error
+                                    viewHolder.clubPfp.visibility = View.GONE
+                                    Log.d("Glide", "Image load failed: ${e?.message}")
+                                    return false // Allow Glide to handle the error placeholder
+                                }
+                                override fun onResourceReady(
+                                    resource: Drawable?,
+                                    model: Any?,
+                                    target: Target<Drawable>?,
+                                    dataSource: DataSource?,
+                                    isFirstResource: Boolean
+                                ): Boolean {
+                                    // Show the image container when image is loaded successfully
+                                    viewHolder.clubPfp.visibility = View.VISIBLE
+                                    Log.d("Glide", "Image loaded successfully")
+                                    return false // Allow Glide to handle the resource
+                                }
+                            })
+                            .into(viewHolder.clubPfp) // Set the ImageView
+                    }
+                }
+
+
             }
             //NORMAL POST
             1 -> {
+
+                Log.d("t", dataSet[position].media)
                 val viewHolder: PostInHomeViewHolder = holder as PostInHomeViewHolder
 //                viewHolder.postersUsername.text =  SupabaseSingleton.getDisplayName(dataSet[position].userId)
                 viewHolder.postersUsername.text = "posted by " + dataSet[position].displayName
@@ -163,7 +214,7 @@ class PostInHomeListAdapter(private val dataSet: ArrayList<PostDto>, private val
                 }
                 setAnimation(viewHolder.itemView, position);
 
-                if (dataSet[position].media == null){
+                if (dataSet[position].media.isEmpty()){
                     Log.d("Glide", "Image URL is null")
                 } else {
                     viewHolder.postImageContainer.visibility = View.VISIBLE
@@ -209,6 +260,54 @@ class PostInHomeListAdapter(private val dataSet: ArrayList<PostDto>, private val
                             .into(viewHolder.postImage) // Set the ImageView
                     }
                 }
+
+
+                if (dataSet[position].clubPfp.isEmpty()){
+                    Log.d("Glide", "Image URL is null")
+                } else
+                {
+                    viewHolder.clubPfp.visibility = View.VISIBLE
+
+                    CoroutineScope(Dispatchers.Main).launch {
+                        val imageURL = dataSet[position].clubPfp
+                        Log.d("ImageURL", "Fetched URL: $imageURL") // Log the fetched URL
+                        val placeholderImage = R.drawable.placeholder_view_vector
+                        // Load image using Glide with RequestListener
+                        Glide.with(viewHolder.itemView.context)
+                            .load(imageURL) // Load the image from the URL
+                            .placeholder(placeholderImage) // Placeholder while loading
+                            .error(placeholderImage) // Error image if loading fails
+                            .override(300, 200) // Resize to desired size (adjust as needed)
+                            .diskCacheStrategy(DiskCacheStrategy.ALL) // Enable caching
+                            .thumbnail(0.1f) // Load a smaller thumbnail first
+                            .listener(object : RequestListener<Drawable> {
+                                override fun onLoadFailed(
+                                    e: GlideException?,
+                                    model: Any?,
+                                    target: Target<Drawable>?,
+                                    isFirstResource: Boolean
+                                ): Boolean {
+                                    // Hide the image container on error
+                                    viewHolder.clubPfp.visibility = View.GONE
+                                    Log.d("Glide", "Image load failed: ${e?.message}")
+                                    return false // Allow Glide to handle the error placeholder
+                                }
+                                override fun onResourceReady(
+                                    resource: Drawable?,
+                                    model: Any?,
+                                    target: Target<Drawable>?,
+                                    dataSource: DataSource?,
+                                    isFirstResource: Boolean
+                                ): Boolean {
+                                    // Show the image container when image is loaded successfully
+                                    viewHolder.clubPfp.visibility = View.VISIBLE
+                                    Log.d("Glide", "Image loaded successfully")
+                                    return false // Allow Glide to handle the resource
+                                }
+                            })
+                            .into(viewHolder.clubPfp) // Set the ImageView
+                    }
+                }
             }
             //DEFAULT IS NORMAL POST
             else -> {
@@ -225,7 +324,7 @@ class PostInHomeListAdapter(private val dataSet: ArrayList<PostDto>, private val
 
                 setAnimation(viewHolder.itemView, position);
 
-                if (dataSet[position].media == null){
+                if (dataSet[position].media.isEmpty()){
                     Log.d("Glide", "Image URL is null")
                 } else {
                     viewHolder.postImageContainer.visibility = View.VISIBLE
@@ -269,6 +368,54 @@ class PostInHomeListAdapter(private val dataSet: ArrayList<PostDto>, private val
                                 }
                             })
                             .into(viewHolder.postImage) // Set the ImageView
+                    }
+                }
+
+
+                if (dataSet[position].clubPfp.isEmpty()){
+                    Log.d("Glide", "Image URL is null")
+                } else
+                {
+                    viewHolder.clubPfp.visibility = View.VISIBLE
+
+                    CoroutineScope(Dispatchers.Main).launch {
+                        val imageURL = dataSet[position].clubPfp
+                        Log.d("ImageURL", "Fetched URL: $imageURL") // Log the fetched URL
+                        val placeholderImage = R.drawable.placeholder_view_vector
+                        // Load image using Glide with RequestListener
+                        Glide.with(viewHolder.itemView.context)
+                            .load(imageURL) // Load the image from the URL
+                            .placeholder(placeholderImage) // Placeholder while loading
+                            .error(placeholderImage) // Error image if loading fails
+                            .override(300, 200) // Resize to desired size (adjust as needed)
+                            .diskCacheStrategy(DiskCacheStrategy.ALL) // Enable caching
+                            .thumbnail(0.1f) // Load a smaller thumbnail first
+                            .listener(object : RequestListener<Drawable> {
+                                override fun onLoadFailed(
+                                    e: GlideException?,
+                                    model: Any?,
+                                    target: Target<Drawable>?,
+                                    isFirstResource: Boolean
+                                ): Boolean {
+                                    // Hide the image container on error
+                                    viewHolder.clubPfp.visibility = View.GONE
+                                    Log.d("Glide", "Image load failed: ${e?.message}")
+                                    return false // Allow Glide to handle the error placeholder
+                                }
+                                override fun onResourceReady(
+                                    resource: Drawable?,
+                                    model: Any?,
+                                    target: Target<Drawable>?,
+                                    dataSource: DataSource?,
+                                    isFirstResource: Boolean
+                                ): Boolean {
+                                    // Show the image container when image is loaded successfully
+                                    viewHolder.clubPfp.visibility = View.VISIBLE
+                                    Log.d("Glide", "Image loaded successfully")
+                                    return false // Allow Glide to handle the resource
+                                }
+                            })
+                            .into(viewHolder.clubPfp) // Set the ImageView
                     }
                 }
             }

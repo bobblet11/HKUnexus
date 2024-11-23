@@ -49,6 +49,7 @@ data class PostDto(
     val eventCreatedAt: String? = null,
 
     var clubName: String = "" ,
-    var displayName: String = ""
+    var displayName: String = "",
+    var clubPfp: String = ""
     )
 

@@ -2,6 +2,7 @@ package com.example.hkunexus.ui.homePages.post
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -15,6 +16,12 @@ import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.example.hkunexus.R
 import com.example.hkunexus.data.EventInterface
 import com.example.hkunexus.data.SupabaseSingleton
@@ -46,6 +53,7 @@ class PostPageFragment : Fragment() {
         val title = binding.postEventTitle
         val description = binding.eventPostDescription
         val postImage = binding.eventBannerImage
+        val postImageContainer = binding.imageCard
         val timeSincePosted = binding.root.findViewById<TextView>(R.id.timeSincePosted)
 
         val postersGroup= binding.root.findViewById<TextView>(R.id.clubNamePost)
@@ -55,7 +63,7 @@ class PostPageFragment : Fragment() {
         val eventDate: TextView = binding.root.findViewById<TextView>(R.id.eventName3)
         val eventTime: TextView = binding.root.findViewById<TextView>(R.id.eventName5)
         val eventLocation: TextView = binding.root.findViewById<TextView>(R.id.eventName6)
-        val groupPfp: ImageView = binding.root.findViewById(R.id.groupProfileImage)
+        val clubPfp: ImageView = binding.root.findViewById(R.id.groupProfileImage)
 
         var eventButtonUpdater: (() -> Unit)? = null
         val deletePost = binding.root.findViewById<Button>(R.id.deletePost)
@@ -109,7 +117,7 @@ class PostPageFragment : Fragment() {
 
                 val b = Bundle()
                 b.putString("clubID", state.post?.clubId)
-                groupPfp.setOnClickListener{
+                clubPfp.setOnClickListener{
                     findNavController().navigate(R.id.navigation_group_landing, b)
                 }
 
@@ -118,9 +126,105 @@ class PostPageFragment : Fragment() {
                 eventTime.text = state.post?.eventTimeStart
                 eventLocation.text = state.post?.eventLocation
 
-//                if (eventButtonUpdater != null) {
-//                    eventButtonUpdater()
-//                }
+
+
+
+                if (state.post == null || state.post.clubPfp.isEmpty()){
+                    Log.d("Glide", "Image URL is null")
+                } else
+                {
+                    clubPfp.visibility = View.VISIBLE
+
+                    CoroutineScope(Dispatchers.Main).launch {
+                        val imageURL = state.post.clubPfp
+                        Log.d("ImageURL", "Fetched URL: $imageURL") // Log the fetched URL
+                        val placeholderImage = R.drawable.placeholder_view_vector
+                        // Load image using Glide with RequestListener
+                        Glide.with(clubPfp.context)
+                            .load(imageURL) // Load the image from the URL
+                            .placeholder(placeholderImage) // Placeholder while loading
+                            .error(placeholderImage) // Error image if loading fails
+                            .override(300, 200) // Resize to desired size (adjust as needed)
+                            .diskCacheStrategy(DiskCacheStrategy.ALL) // Enable caching
+                            .thumbnail(0.1f) // Load a smaller thumbnail first
+                            .listener(object : RequestListener<Drawable> {
+                                override fun onLoadFailed(
+                                    e: GlideException?,
+                                    model: Any?,
+                                    target: Target<Drawable>?,
+                                    isFirstResource: Boolean
+                                ): Boolean {
+                                    // Hide the image container on error
+                                    clubPfp.visibility = View.INVISIBLE
+                                    Log.d("Glide", "Image load failed: ${e?.message}")
+                                    return false // Allow Glide to handle the error placeholder
+                                }
+                                override fun onResourceReady(
+                                    resource: Drawable?,
+                                    model: Any?,
+                                    target: Target<Drawable>?,
+                                    dataSource: DataSource?,
+                                    isFirstResource: Boolean
+                                ): Boolean {
+                                    // Show the image container when image is loaded successfully
+                                    clubPfp.visibility = View.VISIBLE
+                                    Log.d("Glide", "Image loaded successfully")
+                                    return false // Allow Glide to handle the resource
+                                }
+                            })
+                            .into(clubPfp) // Set the ImageView
+                    }
+                }
+
+                if (state.post == null || state.post.media.isEmpty()){
+                    Log.d("Glide", "Image URL is null")
+                } else
+                {
+                    postImageContainer.visibility = View.VISIBLE
+
+                    CoroutineScope(Dispatchers.Main).launch {
+                        val imageURL = state.post.media
+                        Log.d("ImageURL", "Fetched URL: $imageURL") // Log the fetched URL
+                        val placeholderImage = R.drawable.placeholder_view_vector
+                        // Load image using Glide with RequestListener
+                        Glide.with(postImage.context)
+                            .load(imageURL) // Load the image from the URL
+                            .placeholder(placeholderImage) // Placeholder while loading
+                            .error(placeholderImage) // Error image if loading fails
+                            .override(300, 200) // Resize to desired size (adjust as needed)
+                            .diskCacheStrategy(DiskCacheStrategy.ALL) // Enable caching
+                            .thumbnail(0.1f) // Load a smaller thumbnail first
+                            .listener(object : RequestListener<Drawable> {
+                                override fun onLoadFailed(
+                                    e: GlideException?,
+                                    model: Any?,
+                                    target: Target<Drawable>?,
+                                    isFirstResource: Boolean
+                                ): Boolean {
+                                    // Hide the image container on error
+                                    postImageContainer.visibility = View.GONE
+                                    Log.d("Glide", "Image load failed: ${e?.message}")
+                                    return false // Allow Glide to handle the error placeholder
+                                }
+                                override fun onResourceReady(
+                                    resource: Drawable?,
+                                    model: Any?,
+                                    target: Target<Drawable>?,
+                                    dataSource: DataSource?,
+                                    isFirstResource: Boolean
+                                ): Boolean {
+                                    // Show the image container when image is loaded successfully
+                                    postImageContainer.visibility = View.VISIBLE
+                                    Log.d("Glide", "Image loaded successfully")
+                                    return false // Allow Glide to handle the resource
+                                }
+                            })
+                            .into(postImage) // Set the ImageView
+                    }
+                }
+
+
+
 
                 Log.d("tes", state.post.toString())
                 eventParent.visibility = if (state.post?.eventId != null) View.VISIBLE else View.GONE

@@ -22,4 +22,5 @@ class EventPostInHomeViewHolder(view: View) : JoinableEventPostViewHolder(view) 
 
     var eventLocation = view.findViewById<TextView>(R.id.eventLocation)
     var eventTime = view.findViewById<TextView>(R.id.eventTime)
+    var clubPfp = view.findViewById<ImageView>(R.id.groupProfileImage)
 }
