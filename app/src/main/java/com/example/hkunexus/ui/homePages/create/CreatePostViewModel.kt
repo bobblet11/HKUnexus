@@ -13,11 +13,11 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import java.util.UUID
 
-val MIN_TITLE_LENGTH = 10
-val MAX_TITLE_LENGTH = 20
+val MIN_TITLE_LENGTH = 5
+val MAX_TITLE_LENGTH = 100
 
-val MIN_BODY_LENGTH = 20
-val MAX_BODY_LENGTH = 100
+val MIN_BODY_LENGTH = 5
+val MAX_BODY_LENGTH = 500
 
 class CreatePostViewModel: ViewModel() {
     data class MyGroupsUiState(
