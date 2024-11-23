@@ -74,7 +74,8 @@ class RegisterActivityViewModel() : ViewModel() {
                 val result = SupabaseSingleton.uploadImageToBucket(
                     imageFile!!,
                     "user_profiles",
-                    filepathArg = "images/attachment_$postIdArg.jpg"
+                    filepathArg = "images/attachment_$postIdArg.jpg",
+                    register = true
                 )
                 Log.d("POST", result.toString())
                 mediaArg = (BUCKET_URL_PREFIX + result) ?: "";

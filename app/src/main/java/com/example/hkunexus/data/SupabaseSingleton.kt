@@ -1075,9 +1075,8 @@ object SupabaseSingleton {
 
 
     //valid bucketNames: "post_images", "club_images"
-    fun uploadImageToBucket(imageFile: File, bucketName: String, quality: Int = 80, filepathArg: String? = null): String? {
+    fun uploadImageToBucket(imageFile: File, bucketName: String, quality: Int = 80, filepathArg: String? = null, register: Boolean = false): String? {
         return runBlocking {
-            val userId = currentUser?.id ?: return@runBlocking null
 
             // Step 1: Decode the image file to a Bitmap
             val originalBitmap: Bitmap = BitmapFactory.decodeFile(imageFile.absolutePath)
@@ -1089,14 +1088,14 @@ object SupabaseSingleton {
 
             // Step 3: Upload the compressed image
             val filePath = filepathArg ?: "images/${imageFile.nameWithoutExtension}.jpg" // Save as JPEG
-            return@runBlocking try {
+            try {
                 val uploadResult = client!!.storage.from(bucketName)
                     .upload(filePath, compressedImageOutput.toByteArray())
                 Log.d("SupabaseSingleton", "Upload result: $uploadResult")
-                uploadResult.key
+                return@runBlocking uploadResult.key
             } catch (e: Exception) {
                 Log.d("SupabaseSingleton", "Error uploading image: $e")
-                null
+                return@runBlocking null
             }
         }
     }
