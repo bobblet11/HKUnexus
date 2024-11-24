@@ -11,6 +11,7 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.SimpleTarget
@@ -53,6 +54,7 @@ class EventListAdapter(private val dataSet: ArrayList<EventDto>, private val con
         val localDate = localDateTime.toLocalDate().toString()
         val localTime = localDateTime.toLocalTime().toString()
         val eventLocation = event.location
+        val eventCoordinates = event.coordinates
 
         viewHolder.eventName.text = event.title
         viewHolder.eventDate.text = "Date:  $localDate"
@@ -60,31 +62,35 @@ class EventListAdapter(private val dataSet: ArrayList<EventDto>, private val con
         viewHolder.eventLocation.text = "Location:  $eventLocation"
 
         // Google Maps static image URL
-        val centerLatLng = eventLocation
-        val zoom = 11
-        val size = "1080x1080"
-        val mapType = "roadmap"
-        val marker1 = "color:red|label:1|$centerLatLng"
-        val apiKey = BuildConfig.API_KEY // Replace with your actual API key
-        val url = "https://maps.googleapis.com/maps/api/staticmap?center=$centerLatLng&zoom=$zoom&size=$size&maptype=$mapType&markers=$marker1&key=$apiKey"
+        if (eventCoordinates != null){
+            val zoom = 11
+            val size = "1080x1080"
+            val mapType = "roadmap"
+            val marker1 = "color:red|label:1|$eventCoordinates"
+            val apiKey = BuildConfig.API_KEY // Replace with your actual API key
+            val url = "https://maps.googleapis.com/maps/api/staticmap?center=$eventCoordinates&zoom=$zoom&size=$size&maptype=$mapType&markers=$marker1&key=$apiKey"
 
-        Log.d("EventListAdapter", "Loading map from URL: $url")
+            Log.d("EventListAdapter", "Loading map from URL: $url")
 
-        // Load and cache the bitmap using Glide
-        Glide.with(viewHolder.eventMap.context)
-            .asBitmap()
-            .load(url)
-            .error(R.drawable.placeholder_view_vector) // Placeholder in case of error
-            .into(object : SimpleTarget<Bitmap>() {
-                override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-                    viewHolder.eventMap.setImageBitmap(resource)
-                }
+            // Load and cache the bitmap using Glide
+            Glide.with(viewHolder.eventMap.context)
+                .asBitmap()
+                .load(url)
+                .error(R.drawable.placeholder_view_vector) // Placeholder in case of error
+                .into(object : SimpleTarget<Bitmap>() {
+                    override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                        viewHolder.eventMap.setImageBitmap(resource)
+                    }
 
-                override fun onLoadFailed(errorDrawable: Drawable?) {
-                    super.onLoadFailed(errorDrawable)
-                    viewHolder.eventMap.setImageDrawable(errorDrawable)
-                }
-            })
+                    override fun onLoadFailed(errorDrawable: Drawable?) {
+                        super.onLoadFailed(errorDrawable)
+                        viewHolder.eventMap.setImageDrawable(errorDrawable)
+                    }
+                })
+        } else{
+            viewHolder.eventMap.isVisible = false;
+        }
+
 
         EventInterface.attachListenersAndUpdatersToEventJoiningButtons(
             viewHolder.eventButtonsView,
