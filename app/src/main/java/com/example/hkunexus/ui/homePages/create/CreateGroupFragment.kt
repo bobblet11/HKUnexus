@@ -24,7 +24,19 @@ class CreateGroupFragment : Fragment() {
         if (uri != null) {
             Log.d("PhotoPicker", "Selected URI: $uri")
             viewModel.setBannerImage(uri)
+            val inputStream = requireContext().contentResolver.openInputStream(uri)
+            inputStream.use{
+                    input ->
+                viewModel.imageFile!!.outputStream().use{
+                        output ->
+                    input!!.copyTo(output)
+                }
+            }
+
             updateBannerPhoto()
+            inputStream?.close()
+
+            Log.d("PhotoPicker", viewModel.imageFile.toString())
         } else {
             Log.d("PhotoPicker", "No media selected")
         }
@@ -63,6 +75,7 @@ class CreateGroupFragment : Fragment() {
             if (success) {
                 viewModel.reset()
                 updateAllFromViewModel()
+
                 Toast.makeText(context, "Club created!", Toast.LENGTH_SHORT).show()
             }
         }
@@ -75,6 +88,8 @@ class CreateGroupFragment : Fragment() {
             viewModel.setBannerImage(null)
             updateBannerPhoto()
         }
+
+
 
         updateBannerPhoto()
         updateCreateButton()
