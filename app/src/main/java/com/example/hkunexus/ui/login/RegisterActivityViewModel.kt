@@ -54,6 +54,10 @@ class RegisterActivityViewModel() : ViewModel() {
             return false
         }
 
+        if (uiState.value.postImage == null){
+            return false
+        }
+
         if (!SupabaseSingleton.isEmailAvailable(emailInput)){
             Log.d("RegisterActivityViewModel", "email account is already taken")
             return false

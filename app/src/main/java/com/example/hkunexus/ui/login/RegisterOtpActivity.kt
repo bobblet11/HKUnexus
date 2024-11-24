@@ -21,10 +21,14 @@ class RegisterOtpActivity : AppCompatActivity() {
         val submitOTP = findViewById<Button>(R.id.submitOTP)
         val resendOTP = findViewById<Button>(R.id.resendOTP)
         val OTPcode = findViewById<EditText>(R.id.OtpCodeInput)
-
+        val bundle:Bundle? = getIntent().getExtras();
+        var email : String? = null
+        if (bundle != null) {
+            email = bundle.getString("email")
+        }
         submitOTP.setOnClickListener {
 
-            if(viewModel.attemptOTPAuthentication(OTPcode.text.toString())){
+            if(viewModel.attemptOTPAuthentication(OTPcode.text.toString(),email.toString()) ){
                 val goToLogin = Intent(this, LoginActivity::class.java)
                 startActivity(goToLogin)
             }

@@ -379,12 +379,12 @@ object SupabaseSingleton {
     }
 
 
-    fun authenticateOtp(otpInput: String): Boolean {
+    fun authenticateOtp(otpInput: String, email: String): Boolean {
         return runBlocking {
             try {
                 client!!.auth.verifyEmailOtp(
                     type = OtpType.Email.SIGNUP,
-                    email = "u3596276@connect.hku.hk",
+                    email = email,
                     token = otpInput
                 )
 

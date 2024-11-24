@@ -11,7 +11,6 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import com.example.hkunexus.R
 import kotlinx.coroutines.CoroutineScope
@@ -94,6 +93,9 @@ class RegisterActivity : AppCompatActivity() {
 
             if(viewModel.attemptRegister(firstNameInput, lastNameInput, emailInput, passwordInput, verifiedPasswordInput, displayNameInput)){
                 val goToOTP = Intent(this, RegisterOtpActivity::class.java)
+                val bundle = Bundle()
+                bundle.putString("email", "$emailInput@connect.hku.hk")
+                goToOTP.putExtras(bundle);
                 startActivity(goToOTP)
             }
         }
