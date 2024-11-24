@@ -141,7 +141,7 @@ public final class PostInClubListAdapter(private val dataSet: ArrayList<PostDto>
                     viewHolder.userPfp.visibility = View.VISIBLE
 
                     CoroutineScope(Dispatchers.Main).launch {
-                        val imageURL = dataSet[position].media
+                        val imageURL = dataSet[position].userPfp
                         Log.d("ImageURL", "Fetched URL: $imageURL") // Log the fetched URL
                         val placeholderImage = R.drawable.placeholder_view_vector
                         // Load image using Glide with RequestListener
@@ -248,7 +248,7 @@ public final class PostInClubListAdapter(private val dataSet: ArrayList<PostDto>
                     viewHolder.userPfp.visibility = View.VISIBLE
 
                     CoroutineScope(Dispatchers.Main).launch {
-                        val imageURL = dataSet[position].media
+                        val imageURL = dataSet[position].userPfp
                         Log.d("ImageURL", "Fetched URL: $imageURL") // Log the fetched URL
                         val placeholderImage = R.drawable.placeholder_view_vector
                         // Load image using Glide with RequestListener
@@ -354,7 +354,7 @@ public final class PostInClubListAdapter(private val dataSet: ArrayList<PostDto>
                     viewHolder.userPfp.visibility = View.VISIBLE
 
                     CoroutineScope(Dispatchers.Main).launch {
-                        val imageURL = dataSet[position].media
+                        val imageURL = dataSet[position].userPfp
                         Log.d("ImageURL", "Fetched URL: $imageURL") // Log the fetched URL
                         val placeholderImage = R.drawable.placeholder_view_vector
                         // Load image using Glide with RequestListener

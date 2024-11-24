@@ -1057,6 +1057,7 @@ object SupabaseSingleton {
 //                    P.clubPfp = getClubBannerAsync(P.clubId)
                     //changed to user
                     P.userPfp = getUserPfpAsync(P.userId)
+                    Log.d("dwadw",   P.userPfp.toString())
 
                     if (P.eventId != null) {
                         val eventDateTime = OffsetDateTime.parse(P.eventTimeStart, firstApiFormat)
@@ -1064,7 +1065,7 @@ object SupabaseSingleton {
                         P.eventTimeStart = getLargestDenominationFuture(durationE)
                     }
                 }
-
+                Log.d("home posts",   output.toString())
                 output
             } catch (e: Exception) {
                 Log.d("SupabaseSingleton", "Failure, $e")
