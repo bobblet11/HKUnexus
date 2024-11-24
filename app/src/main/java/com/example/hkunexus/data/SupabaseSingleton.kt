@@ -235,6 +235,32 @@ object SupabaseSingleton {
         }
     }
 
+    fun getUserPfp(userID: String): String {
+
+        @Serializable
+        data class outputDTO(
+            @SerialName("profile_picture")
+            var media: String = "",
+        )
+
+        val funcName = "get_user_profile_image"
+        val funcParam = buildJsonObject {
+            put("user_id", userID)
+        }
+        return runBlocking {
+            try {
+                val result = client!!.postgrest.rpc(funcName, funcParam)
+                Log.d("SupabaseSingleton", "$funcName rpc, $result")
+                val output: outputDTO = result.decodeSingle<outputDTO>()
+                Log.d("SupabaseSingleton", "$funcName rpc output, $output")
+                return@runBlocking output.media
+            } catch (e: Exception) {
+                Log.d("SupabaseSingleton", "Failure, $e")
+                return@runBlocking ""
+            }
+        }
+    }
+
     suspend fun getUserPfpAsync(userID: String): String {
 
         @Serializable

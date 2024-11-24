@@ -3,7 +3,10 @@ package com.example.hkunexus
 import android.os.Bundle
 import android.view.MenuItem
 import android.content.Intent
+import android.graphics.drawable.Drawable
 import android.util.Log
+import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import android.window.OnBackInvokedDispatcher
 import androidx.activity.OnBackPressedCallback
@@ -24,6 +27,12 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.onNavDestinationSelected
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.example.hkunexus.databinding.ActivityMainBinding
 import com.example.hkunexus.ui.login.LoginActivity
 import com.example.hkunexus.data.SupabaseSingleton
@@ -87,6 +96,52 @@ class MainActivity : AppCompatActivity()  {
         val emailAside = header.findViewById<TextView>(R.id.emailAside)
         usernameAside.text = UserSingleton.display_name
         emailAside.text = UserSingleton.email
+        val pfp = header.findViewById<ImageView>(R.id.pfp)
+
+        UserSingleton.userPfp = SupabaseSingleton.getUserPfp(UserSingleton.userID)
+        val imageURL = UserSingleton.userPfp
+        Log.d("ImageURL", "Fetched URL: $imageURL") // Log the fetched URL
+        val placeholderImage = R.drawable.placeholder_view_vector
+        // Load image using Glide with RequestListener
+        Glide.with(pfp.context)
+            .load(imageURL) // Load the image from the URL
+            .placeholder(placeholderImage) // Placeholder while loading
+            .error(placeholderImage) // Error image if loading fails
+            .override(300, 200) // Resize to desired size (adjust as needed)
+            .diskCacheStrategy(DiskCacheStrategy.ALL) // Enable caching
+            .thumbnail(0.1f) // Load a smaller thumbnail first
+            .listener(object : RequestListener<Drawable> {
+                override fun onLoadFailed(
+                    e: GlideException?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    // Hide the image container on error
+                    Log.d("Glide", "Image load failed: ${e?.message}")
+                    return false // Allow Glide to handle the error placeholder
+                }
+                override fun onResourceReady(
+                    resource: Drawable?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    dataSource: DataSource?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    // Show the image container when image is loaded successfully
+                    pfp.visibility = View.VISIBLE
+                    Log.d("Glide", "Image loaded successfully")
+                    return false // Allow Glide to handle the resource
+                }
+            })
+            .into(pfp) // Set the ImageView
+
+
+
+
+
+
+
 
 
         navigationView.getMenu().findItem(R.id.nav_logout).setOnMenuItemClickListener({ menuItem ->

@@ -7,11 +7,13 @@ object UserSingleton{
     public var userID = ""
     public var email=""
     public var display_name=""
+    public var userPfp=""
 
     public fun clear(){
         userID = ""
         email=""
         display_name=""
+        userPfp=""
     }
 
 }
