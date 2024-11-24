@@ -47,7 +47,9 @@ class PostPageFragment : Fragment() {
     ): View {
         _binding = FragmentEventPostPageBinding.inflate(inflater, container, false)
         viewModel.setPostID(arguments?.getString("postID"))
-        viewModel.fetchPosts()
+
+        viewModel.fetchPost()
+        
         val eventParent = binding.eventWidgetParent
 
         val title = binding.postEventTitle
@@ -66,7 +68,7 @@ class PostPageFragment : Fragment() {
         val clubPfp: ImageView = binding.root.findViewById(R.id.groupProfileImage)
 
         var eventButtonUpdater: (() -> Unit)? = null
-        val deletePost = binding.root.findViewById<Button>(R.id.deletePost)
+        val deletePost = binding.root.findViewById<ImageView>(R.id.deletePost)
         deletePost.setOnClickListener {
             val canDelete : Boolean = SupabaseSingleton.getPostById(requireArguments().getString("postID")!!)!!.userId == UserSingleton.userID
 
@@ -76,8 +78,8 @@ class PostPageFragment : Fragment() {
             else{
                 val builder: AlertDialog.Builder = AlertDialog.Builder(context)
                 builder
-                    .setMessage("Delete Post")
-                    .setTitle("Are you sure you want to delete this post?")
+                    .setTitle("Delete Post")
+                    .setMessage("Are you sure you want to delete this post?")
                     .setPositiveButton("Delete Post") { dialog, which ->
 
                         SupabaseSingleton.removePost(requireArguments().getString("postID")!!)
@@ -112,7 +114,7 @@ class PostPageFragment : Fragment() {
                 title.text = state.post?.title
                 description.text = state.post?.body
                 timeSincePosted.text = state.post?.createdAt
-                postersUsername.text = "posted by" + state.post?.displayName
+                postersUsername.text = "posted by " + state.post?.displayName
                 postersGroup.text = state.post?.clubName
 
                 val b = Bundle()
@@ -242,7 +244,7 @@ class PostPageFragment : Fragment() {
             // In this code, we are just changing the text in the
             // textbox
 
-            viewModel.fetchPosts()
+            viewModel.fetchPost()
 
             // This line is important as it explicitly refreshes only once
             // If "true" it implicitly refreshes forever
