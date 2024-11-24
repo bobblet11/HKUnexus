@@ -108,6 +108,8 @@ class RegisterActivity : AppCompatActivity() {
             viewModel.setPostImage(null)
             updateBannerPhoto()
         }
+
+        updateBannerPhoto()
     }
 
     private fun updateBorderColour(border: EditText, isValid:Boolean){

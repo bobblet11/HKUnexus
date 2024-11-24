@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -59,10 +60,13 @@ class LoginActivity : AppCompatActivity() {
                     editor.putString("password", passwordInput)
                     editor.apply()
 
+                    Toast.makeText(baseContext, "Login successful", Toast.LENGTH_SHORT).show()
+
                     val goToMain = Intent(this, MainActivity::class.java);
                     startActivity(goToMain);
                 } else {
                     // Handle login failure
+                    Toast.makeText(baseContext, "Login failed", Toast.LENGTH_SHORT).show()
                     Log.d("LoginActivity", "Login failed")
                 }
             }
