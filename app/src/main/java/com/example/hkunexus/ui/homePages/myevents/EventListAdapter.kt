@@ -72,7 +72,7 @@ class EventListAdapter(private val dataSet: ArrayList<EventDto>, private val con
             val apiKey = BuildConfig.API_KEY // Replace with your actual API key
             val url = "https://maps.googleapis.com/maps/api/staticmap?center=$eventCoordinates&zoom=$zoom&size=$size&maptype=$mapType&markers=$marker1&key=$apiKey"
 
-            Log.d("EventListAdapter", "Loading map from URL: $url")
+            Log.d("Actual EventListAdapter", "Loading map from URL: $url")
 
             // Load and cache the bitmap using Glide
             Glide.with(viewHolder.eventMap.context)
@@ -90,7 +90,7 @@ class EventListAdapter(private val dataSet: ArrayList<EventDto>, private val con
                     }
                 })
         } else{
-            viewHolder.eventMap.isVisible = false;
+            viewHolder.eventMap.isVisible = false
         }
 
 

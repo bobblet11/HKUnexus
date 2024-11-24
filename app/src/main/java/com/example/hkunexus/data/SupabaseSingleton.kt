@@ -998,6 +998,26 @@ object SupabaseSingleton {
         }
     }
 
+    suspend fun getAllJoinedEventsFromRecentAsync(): List<EventDto> {
+        return withContext(Dispatchers.IO)  {
+            val userId = currentUser?.id ?: throw Error("")
+
+            val funcName = "get_all_joined_events_from_recent"
+            try {
+                val result = client!!.postgrest.rpc(funcName, buildJsonObject {
+                    put("user_uuid", Json.encodeToJsonElement(userId))
+                })
+                Log.d("SupabaseSingleton", "$funcName rpc, $result")
+                val output = result.decodeList<EventDto>()
+                Log.d("SupabaseSingleton", "$funcName rpc output, $output")
+                output
+            } catch (e: Exception) {
+                Log.d("SupabaseSingleton", "Failure, $e")
+                emptyList()
+            }
+        }
+    }
+
     suspend fun getAllJoinedEventsAsync(): List<EventDto> {
         return withContext(Dispatchers.IO)  {
             val userId = currentUser?.id ?: throw Error("")

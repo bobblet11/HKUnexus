@@ -26,7 +26,7 @@ class MyEventsViewModel : ViewModel() {
     fun fetchMyEvents() {
 
         viewModelScope.launch {
-            val tempList: List<EventDto> = SupabaseSingleton.getAllJoinedEventsAsync()
+            val tempList: List<EventDto> = SupabaseSingleton.getAllJoinedEventsFromRecentAsync()
             Log.d("new list", tempList.toString())
             _uiState.update {
                 it.copy(
