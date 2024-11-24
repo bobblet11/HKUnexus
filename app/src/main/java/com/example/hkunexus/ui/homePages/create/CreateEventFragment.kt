@@ -11,9 +11,12 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.text.format.DateFormat
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.DatePicker
 import android.widget.TimePicker
@@ -23,9 +26,16 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.example.hkunexus.BuildConfig
 import com.example.hkunexus.R
 import com.example.hkunexus.data.model.dto.ClubDto
 import com.example.hkunexus.databinding.FragmentCreateEventBinding
+import com.google.android.gms.common.api.ApiException
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.api.net.FetchPlaceRequest
+import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest
+import com.google.android.libraries.places.api.net.PlacesClient
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -122,6 +132,15 @@ class CreateEventFragment : Fragment() {
         val eventTitle = binding.Entertitle
         val eventDesc = binding.content
         val eventLocation = binding.location
+
+
+        // Initialize Places
+        if (!Places.isInitialized()) {
+            Places.initialize(requireContext(), BuildConfig.API_KEY)
+        }
+
+        // Set up the AutoCompleteTextView
+        setupPlacesAutocomplete()
 
         eventTitle.addTextChangedListener(object : TextWatcher {
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
@@ -273,4 +292,51 @@ class CreateEventFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
+
+
+    private fun setupPlacesAutocomplete() {
+        val placesAutocomplete: AutoCompleteTextView = binding.placesAutocomplete
+        val placesClient: PlacesClient = Places.createClient(requireContext())
+
+        // Create a new adapter for the Places Autocomplete
+        val adapter = ArrayAdapter<String>(requireContext(), android.R.layout.simple_dropdown_item_1line, mutableListOf())
+        placesAutocomplete.setAdapter(adapter)
+
+
+        placesAutocomplete.setOnItemClickListener { _, _, position, _ ->
+            val place = adapter.getItem(position)
+            Log.d("PlacesAPI", "Name: $place")
+            if (place != null) {
+                viewModel.setCoordinates(place)
+            } else{
+                viewModel.setCoordinates("")
+            };
+        }
+
+        // Set a text change listener to fetch suggestions
+        placesAutocomplete.addTextChangedListener(object : TextWatcher {
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (!s.isNullOrEmpty()) {
+                    val request = FindAutocompletePredictionsRequest.builder()
+                        .setQuery(s.toString())
+                        .build()
+
+                    placesClient.findAutocompletePredictions(request).addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            val predictions = task.result?.autocompletePredictions ?: emptyList()
+                            adapter.clear()
+                            adapter.addAll(predictions.map { it.getFullText(null).toString() })
+                            adapter.notifyDataSetChanged()
+                        }
+                    }
+                }
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun afterTextChanged(s: Editable?) {}
+        })
+    }
+
 }
+

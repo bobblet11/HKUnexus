@@ -2,7 +2,7 @@ package com.example.hkunexus.ui.homePages.create
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
-import com.example.hkunexus.data.SupabaseSingleton.insertOrUpdateEvent
+import com.example.hkunexus.data.SupabaseSingleton.insertOrUpdateEvents2
 import com.example.hkunexus.data.model.dto.ClubDto
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -20,6 +20,7 @@ class CreateEventViewModel: ViewModel() {
         val eventTitle: String = "",
         val eventDesc: String = "",
         val eventLocation: String = "",
+        val eventPlace: String = "",
     )
 
     private val _uiState = MutableStateFlow(UiState())
@@ -134,6 +135,10 @@ class CreateEventViewModel: ViewModel() {
     private fun isValidTitle(): Boolean {
         return _uiState.value.eventTitle.trim().isNotEmpty()
     }
+
+    private fun isValidPlace(): Boolean {
+        return _uiState.value.eventPlace != ""
+    }
     
     fun setTitle(title: String) {
         _uiState.update {
@@ -159,13 +164,28 @@ class CreateEventViewModel: ViewModel() {
         }
     }
 
+    fun setCoordinates(place: String){
+        _uiState.update {
+            it.copy(
+                eventPlace = place
+            )
+        }
+    }
+
     fun canPost(): Boolean {
         return _uiState.value.selectedClub != null
                 && isValidDate()
                 && isValidTitle()
+                && isValidPlace()
     }
 
     fun post(): Boolean {
+        val tempBool = canPost()
+        val tempBool2 = isValidPlace()
+        val tempVal =
+        Log.d("PlacesAPI", "$tempBool")
+        Log.d("PlacesAPI", "$tempBool2")
+
         if (canPost()) {
             val idArg = UUID.randomUUID().toString()
             val clubIdArg = _uiState.value.selectedClub!!.clubId!!
@@ -174,9 +194,11 @@ class CreateEventViewModel: ViewModel() {
             val timeStartArg = _uiState.value.startDate
             val durationArg = (_uiState.value.endDate.timeInMillis - _uiState.value.startDate.timeInMillis) / 1000
             val locationArg = _uiState.value.eventLocation
-            val result = insertOrUpdateEvent(
-                idArg, clubIdArg, titleArg, bodyArg, timeStartArg, durationArg, locationArg
+            val coordinatesArg = _uiState.value.eventPlace
+            val result = insertOrUpdateEvents2(
+                idArg, clubIdArg, titleArg, bodyArg, timeStartArg, durationArg, locationArg ,coordinatesArg
             )
+            Log.d("POST durationArg", durationArg.toString())
             Log.d("POST", result.toString())
             return true
         }
@@ -192,6 +214,7 @@ class CreateEventViewModel: ViewModel() {
                 eventTitle = "",
                 eventDesc = "",
                 eventLocation = "",
+                eventPlace = ""
             )
         }
     }

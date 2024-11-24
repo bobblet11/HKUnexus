@@ -147,6 +147,14 @@
                     app:layout_constraintLeft_toRightOf="@id/location_text"
                     app:layout_constraintRight_toRightOf="parent"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <AutoCompleteTextView
+                android:id="@+id/places_autocomplete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Search for coordinates"
+                android:layout_marginTop="10dp"
+                android:minHeight="60dp" />
             <androidx.cardview.widget.CardView
                 android:id="@+id/club_card"
                 android:layout_width="match_parent"

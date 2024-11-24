@@ -1215,6 +1215,46 @@ object SupabaseSingleton {
         }
     }
 
+
+    fun insertOrUpdateEvents2(
+        idArg: String,
+        clubIdArg: String,
+        titleArg: String,
+        bodyArg: String,
+        timeStartArg: Calendar,
+        durationArg: Long,
+        locationArg: String,
+        coordinatesArg: String,
+    ): EventDto? {
+        val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm")
+        val timeStartStr = formatter.format(timeStartArg.time)
+        val currentDateTime = OffsetDateTime.now(ZoneOffset.UTC)
+        return runBlocking {
+            val funcName = "insert_or_update_event2"
+            val funcParam = buildJsonObject {
+                put("body_arg", bodyArg)
+                put("club_id_arg", clubIdArg)
+                put("created_at_arg", currentDateTime.toString())
+                put("id_arg", idArg)
+                put("time_start_arg", timeStartStr)
+                put("title_arg", titleArg)
+                put("duration_arg", durationArg)
+                put("location_arg", locationArg)
+                put("coordinates_arg", coordinatesArg)
+            }
+            try {
+                val result = client!!.postgrest.rpc(funcName, funcParam)
+                Log.d("SupabaseSingleton", "$funcName rpc, $result")
+                val output = result.decodeSingle<EventDto>()
+                Log.d("SupabaseSingleton", "$funcName rpc output, $output")
+                return@runBlocking output
+            } catch (e: Exception) {
+                Log.d("SupabaseSingleton", "Failure, $e")
+                return@runBlocking null
+            }
+        }
+    }
+
     fun removePost(
         idArg: String,
     ): PostDto? {
