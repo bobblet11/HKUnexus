@@ -49,10 +49,12 @@ class EventListAdapter(private val dataSet: ArrayList<EventDto>, private val con
         val event = dataSet[position]
         val timeStart = event.timeStart // e.g., '2024-12-25 14:00:00+00'
         val zonedDateTime = ZonedDateTime.parse(timeStart)
-        val clientZoneId = ZoneId.systemDefault()
+        /*
+        val clientZoneId = ZoneId.of("Asia/Hong_Kong") //ZoneId.systemDefault() should be used but Android Studio is not showing the right date
         val localDateTime = zonedDateTime.withZoneSameInstant(clientZoneId)
-        val localDate = localDateTime.toLocalDate().toString()
-        val localTime = localDateTime.toLocalTime().toString()
+        */
+        val localDate = zonedDateTime.toLocalDate().toString()
+        val localTime = zonedDateTime.toLocalTime().toString()
         val eventLocation = event.location
         val eventCoordinates = event.coordinates
 
@@ -66,7 +68,7 @@ class EventListAdapter(private val dataSet: ArrayList<EventDto>, private val con
             val zoom = 11
             val size = "1080x1080"
             val mapType = "roadmap"
-            val marker1 = "color:red|label:1|$eventCoordinates"
+            val marker1 = "color:red|$eventCoordinates"
             val apiKey = BuildConfig.API_KEY // Replace with your actual API key
             val url = "https://maps.googleapis.com/maps/api/staticmap?center=$eventCoordinates&zoom=$zoom&size=$size&maptype=$mapType&markers=$marker1&key=$apiKey"
 
