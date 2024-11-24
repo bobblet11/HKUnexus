@@ -57,7 +57,7 @@ class PostViewModel : ViewModel() {
 
 
 
-    fun fetchPosts() {
+    fun fetchPost() {
         viewModelScope.launch {
             val post: PostDto? = SupabaseSingleton.getPostByIdAsync(uiStatePosts.value.postId!!)
             Log.d("homeViewModel", post.toString())
@@ -65,7 +65,6 @@ class PostViewModel : ViewModel() {
             val canDelete = SupabaseSingleton.getPostByIdAsync(uiStatePosts.value.postId!!)!!.userId == UserSingleton.userID
             updateCanDelete(canDelete)
         }
-
     }
 
     public fun setPostID(id:String?) {

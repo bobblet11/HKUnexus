@@ -49,15 +49,15 @@
                 app:destination="@id/navigation_group_landing" />
         </fragment>
 
-        <fragment
-            android:id="@+id/navigation_post_page"
-            android:label="post page"
-            android:name="com.example.hkunexus.ui.homePages.post.PostPageFragment"
-            tools:layout="@layout/fragment_post_page" >
-            <action
-                android:id="@+id/action_navigation_post_page_to_navigation_group_landing"
-                app:destination="@id/navigation_group_landing" />
-        </fragment>
+    <fragment
+        android:id="@+id/navigation_post_page"
+        android:name="com.example.hkunexus.ui.homePages.post.PostPageFragment"
+        android:label="Post Page"
+        tools:layout="@layout/fragment_post_page">
+        <action
+            android:id="@+id/action_navigation_post_page_to_navigation_group_landing"
+            app:destination="@id/navigation_group_landing" />
+    </fragment>
 
         <fragment
             android:id="@+id/navigation_create"

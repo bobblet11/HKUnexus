@@ -46,20 +46,15 @@
             android:textSize="24sp"
             tools:ignore="HardcodedText" />
 
-        <Button
+        <android.widget.ImageView
             android:id="@+id/deletePost"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:width="48dp"
-            android:height="48dp"
-            android:background="@drawable/round_button"
+            android:layout_height="wrap_content"
+            android:background="@android:drawable/ic_menu_close_clear_cancel"
             android:backgroundTint="#E63333"
             android:minWidth="48dp"
             android:minHeight="48dp"
-            android:padding="0dp"
-            android:text="X"
-            android:visibility="gone" />
+            android:padding="0dp" />
 
     </LinearLayout>
 
