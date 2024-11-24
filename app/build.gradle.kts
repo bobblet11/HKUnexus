@@ -14,7 +14,6 @@ plugins {
     alias(libs.plugins.kotlin.android)
     id("org.jetbrains.kotlin.plugin.serialization") version "2.0.0"
     alias(libs.plugins.google.android.libraries.mapsplatform.secrets.gradle.plugin)
-
 }
 
 android {
@@ -86,10 +85,13 @@ dependencies {
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     implementation(libs.play.services.maps) // Check for the latest version
     implementation(libs.glide)
+    implementation(libs.play.services.location)
+    implementation(libs.places)
     annotationProcessor(libs.compiler) // For Java
     implementation(libs.osmdroid.android) // Check for the latest version
     implementation("androidx.activity:activity:1.7.0")
     implementation("com.github.MikeOrtiz:TouchImageView:3.6")
+    //implementation("com.google.android.libraries.places:places:latest_version")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
