@@ -72,5 +72,5 @@
     <fragment
         android:id="@+id/navigation_my_events"
         android:name="MyEventsSlide"
-        android:label="MyEventsSlide" />
+        android:label="My Events" />
 </navigation>
