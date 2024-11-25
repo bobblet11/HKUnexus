@@ -37,6 +37,14 @@
         android:textStyle="bold" />
 
     <TextView
+        android:id="@+id/nameAside"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="(First Last)"
+        android:textColor="@color/white"
+        android:textSize="20sp"/>
+
+    <TextView
         android:id="@+id/emailAside"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

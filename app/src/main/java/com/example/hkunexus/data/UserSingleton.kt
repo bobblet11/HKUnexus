@@ -3,16 +3,20 @@ package com.example.hkunexus.data
 import com.example.hkunexus.data.model.dto.UserProfileDto
 
 
-object UserSingleton{
-    public var userID = ""
-    public var email=""
-    public var display_name=""
-    public var userPfp=""
+object UserSingleton {
+    var userID = ""
+    var email = ""
+    var display_name = ""
+    var first_name = ""
+    var last_name = ""
+    var userPfp = ""
 
-    public fun clear(){
+    fun clear(){
         userID = ""
         email=""
         display_name=""
+        first_name=""
+        last_name=""
         userPfp=""
     }
 

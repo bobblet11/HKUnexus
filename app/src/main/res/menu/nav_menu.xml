@@ -7,13 +7,13 @@
     <group
         android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_logout"
-            android:icon="@drawable/sign_out"
-            android:title="Logout"/>
-        <item
             android:id="@+id/nav_edit_profile"
             android:icon="@drawable/nav_setting"
             android:title="Edit Profile" />
+        <item
+            android:id="@+id/nav_logout"
+            android:icon="@drawable/sign_out"
+            android:title="Logout"/>
     </group>
 
 </menu>

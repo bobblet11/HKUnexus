@@ -11,6 +11,7 @@ import com.example.hkunexus.data.model.dto.EventDto
 import com.example.hkunexus.data.model.dto.EventToPost
 import com.example.hkunexus.data.model.dto.PostDto
 import com.example.hkunexus.data.model.dto.Tag
+import com.example.hkunexus.data.model.dto.UserProfileDto
 import com.example.hkunexus.data.model.dto.UserToClubDto
 import com.example.hkunexus.data.model.dto.UserToEventDto
 import com.example.hkunexus.data.model.dto.fromPostToEvent
@@ -103,14 +104,8 @@ object SupabaseSingleton {
             accessToken = session!!.accessToken
 
             Log.d("SupabaseSingleton", "Sign-in successful: $result")
-            UserSingleton.userID = currentUser!!.id!!
-            UserSingleton.email = currentUser!!.email!!
-            UserSingleton.display_name = getDisplayName(currentUser!!.id)
-//                UserSingleton.userProfile = getUserProfile(userID = currentUser!!.id)
 
-
-
-
+            populateUserSingleton()
 
             return true
 
@@ -1679,5 +1674,88 @@ object SupabaseSingleton {
         return getUserToEventByIds(true, currentUser!!.id, true, eventIdArg)
     }
 
+    fun getUserProfile(
+        userIdArg: String
+    ): UserProfileDto? {
+        return runBlocking {
+
+            val funcName = "get_user_profile"
+            val funcParam = buildJsonObject {
+                put("user_uuid", userIdArg)
+            }
+
+            Log.d("SupabaseSingleton", funcParam.toString())
+
+            try {
+                val result = client!!.postgrest.rpc(funcName, funcParam)
+                Log.d("SupabaseSingleton", "$funcName rpc, $result")
+                val output = result.decodeSingle<UserProfileDto>()
+                Log.d("SupabaseSingleton", "$output")
+                Log.d("SupabaseSingleton", "Fetched user profile")
+
+                return@runBlocking output
+            } catch (e: Exception) {
+                Log.d("SupabaseSingleton", "Failure, $e")
+                return@runBlocking null
+            }
+
+        }
+    }
+
+    fun updateUserProfile(
+        userIdArg: String,
+        firstNameArg: String,
+        lastNameArg: String,
+        displayNameArg: String,
+        profilePictureArg: String
+    ): UserProfileDto? {
+        return runBlocking {
+
+            val funcName = "update_user_profile"
+            val funcParam = buildJsonObject {
+                put("user_uuid", userIdArg)
+                put("first_name_arg", firstNameArg)
+                put("last_name_arg", lastNameArg)
+                put("display_name_arg", displayNameArg)
+                put("profile_picture_arg", profilePictureArg)
+            }
+
+            Log.d("SupabaseSingleton", funcParam.toString())
+
+            try {
+                val result = client!!.postgrest.rpc(funcName, funcParam)
+                Log.d("SupabaseSingleton", "$funcName rpc, $result")
+                val output = result.decodeSingle<UserProfileDto>()
+
+
+                Log.d("SupabaseSingleton", "$output")
+
+                Log.d("SupabaseSingleton", "Updated user profile")
+
+                val profile = getUserProfile(userIdArg)
+
+                populateUserSingleton()
+
+//                return@runBlocking null
+                return@runBlocking output
+            } catch (e: Exception) {
+                Log.d("SupabaseSingleton", "Failure, $e")
+                return@runBlocking null
+            }
+
+        }
+
+    }
+
+    private fun populateUserSingleton() {
+        val profile = getUserProfile(currentUser!!.id)
+
+        UserSingleton.userID = profile!!.id
+        UserSingleton.email = profile.email
+        UserSingleton.first_name = profile.firstName
+        UserSingleton.last_name = profile.lastName
+        UserSingleton.display_name = profile.displayName
+        UserSingleton.userPfp = profile.profilePicture
+    }
 
 }
