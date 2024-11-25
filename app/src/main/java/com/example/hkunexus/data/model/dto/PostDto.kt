@@ -48,6 +48,9 @@ data class PostDto(
     @SerialName("event_created_at")
     val eventCreatedAt: String? = null,
 
+    @SerialName("event_coordinates")
+    val eventCoordinate: String? = null,
+
     var clubName: String = "" ,
     var displayName: String = "",
     var clubPfp: String = "",

@@ -2,7 +2,9 @@ package com.example.hkunexus.ui.homePages.post
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
+import com.ortiz.touchview.TouchImageView
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -21,7 +23,9 @@ import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.target.Target
+import com.bumptech.glide.request.transition.Transition
 import com.example.hkunexus.R
 import com.example.hkunexus.data.EventInterface
 import com.example.hkunexus.data.SupabaseSingleton
@@ -32,6 +36,7 @@ import com.example.hkunexus.databinding.FragmentPostPageBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import com.example.hkunexus.BuildConfig
 
 class PostPageFragment : Fragment() {
 
@@ -67,6 +72,8 @@ class PostPageFragment : Fragment() {
         val eventLocation: TextView = binding.root.findViewById<TextView>(R.id.eventName6)
         val clubPfp: ImageView = binding.root.findViewById(R.id.groupProfileImage)
 
+        var eventMap: TouchImageView = binding.root.findViewById<TouchImageView>(R.id.map_view)
+
         var eventButtonUpdater: (() -> Unit)? = null
         val deletePost = binding.root.findViewById<ImageView>(R.id.deletePost)
         deletePost.setOnClickListener {
@@ -98,6 +105,7 @@ class PostPageFragment : Fragment() {
 
         CoroutineScope(Dispatchers.Main).launch {
             viewModel.uiStatePosts.collect { state ->
+                var eventCoordinates: String? = state.post?.eventCoordinate
 //                viewModel.fetchPostImage(requireContext(), postImage)
 //                viewModel.fetchGroupPfp(requireContext(), groupPfp)
                 if (viewModel.uiStatePosts.value.post != null) {
@@ -108,6 +116,32 @@ class PostPageFragment : Fragment() {
                     )
                 }
 
+                if (eventCoordinates != null){
+                    val zoom = 11
+                    val size = "1080x1080"
+                    val mapType = "roadmap"
+                    val marker1 = "color:red|$eventCoordinates"
+                    val apiKey = BuildConfig.API_KEY // Replace with your actual API key
+                    val url = "https://maps.googleapis.com/maps/api/staticmap?center=$eventCoordinates&zoom=$zoom&size=$size&maptype=$mapType&markers=$marker1&key=$apiKey"
+
+                    Log.d("Actual EventListAdapter", "Loading map from URL: $url")
+
+                    // Load and cache the bitmap using Glide
+                    Glide.with(eventMap.context)
+                        .asBitmap()
+                        .load(url)
+                        .error(R.drawable.placeholder_view_vector) // Placeholder in case of error
+                        .into(object : SimpleTarget<Bitmap>() {
+                            override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                                eventMap.setImageBitmap(resource)
+                            }
+
+                            override fun onLoadFailed(errorDrawable: Drawable?) {
+                                super.onLoadFailed(errorDrawable)
+                                eventMap.setImageDrawable(errorDrawable)
+                            }
+                        })
+                }
 
 
                 deletePost.visibility = if (state.canDelete) View.VISIBLE else View.GONE
