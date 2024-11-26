@@ -3,6 +3,7 @@ package com.example.hkunexus.ui.login
 import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import com.example.hkunexus.data.RegexRule
 import com.example.hkunexus.data.SupabaseSingleton
 import com.example.hkunexus.data.model.dto.ClubDto
 import com.example.hkunexus.data.model.dto.EventDto
@@ -48,7 +49,7 @@ class RegisterActivityViewModel() : ViewModel() {
         }
     }
 
-    public fun attemptRegister(firstNameInput: String, lastNameInput: String, emailInput: String, passwordInput: String, verifiedPasswordInput: String, usernameInput : String): Boolean{
+    fun attemptRegister(firstNameInput: String, lastNameInput: String, emailInput: String, passwordInput: String, verifiedPasswordInput: String, usernameInput : String): Boolean{
         if (!validateRegistration(firstNameInput, lastNameInput, emailInput, passwordInput, verifiedPasswordInput, usernameInput)){
             Log.d("RegisterActivityViewModel", "registration validation failed $firstNameInput, $lastNameInput, $emailInput, $passwordInput, $verifiedPasswordInput, $usernameInput")
             return false
@@ -113,40 +114,16 @@ class RegisterActivityViewModel() : ViewModel() {
     }
 
     private fun validateRegistration(firstNameInput: String, lastNameInput: String, emailInput: String, passwordInput: String, verifiedPasswordInput: String, usernameInput : String): Boolean {
-        val passwordREGEX = Pattern.compile(
-            "^" +
-                    "(?=.*[0-9])" +         //at least 1 digit
-                    "(?=.*[a-z])" +         //at least 1 lower case letter
-                    "(?=.*[A-Z])" +         //at least 1 upper case letter
-                    "(?=.*[a-zA-Z])" +      //any letter
-                    "(?=.*[^A-Za-z0-9])" +    //at least 1 special character
-                    "(?=\\S+$)" +           //no white spaces
-                    ".{8,}" +               //at least 8 characters
-                    "$"
-        )
-
-        val isPasswordValid = passwordREGEX.matcher(passwordInput).matches()
+        val isPasswordValid = RegexRule.passwordRegex.matcher(passwordInput).matches()
         val isPasswordVerified = passwordInput == verifiedPasswordInput
 
-        val emailREGEX = Pattern.compile(
-            "^" +                // Start of the string
-                    "(?!.*\\s)" +       // No whitespace
-                    "(?!.*@)" +         // No @ character
-                    "[\\S]+" +          // One or more non-whitespace characters
-                    "$"                 // End of the string
-        )
-        val isEmailValid = emailREGEX.matcher(emailInput).matches()
+        val isEmailValid = RegexRule.emailRegex.matcher(emailInput).matches()
 
-        val usernameREGEX = Pattern.compile(
-            "^" +                // Start of the string
-                    "(?!.*\\s)" +       // No whitespace
-                    "(?!.*@)" +         // No @ character
-                    "[\\S]+" +          // One or more non-whitespace characters
-                    "$"                 // End of the string
-        )
-        val isUsernameValid = usernameREGEX.matcher(usernameInput).matches()
-        val isFirstNameValid = usernameREGEX.matcher(firstNameInput).matches()
-        val isLastNameValid = usernameREGEX.matcher(lastNameInput).matches()
+        val usernameRegex = RegexRule.usernameRegex
+
+        val isUsernameValid = usernameRegex.matcher(usernameInput).matches()
+        val isFirstNameValid = usernameRegex.matcher(firstNameInput).matches()
+        val isLastNameValid = usernameRegex.matcher(lastNameInput).matches()
 
         Log.d("RegisterActivityViewModel", "$isFirstNameValid, $isLastNameValid, $isEmailValid, $isPasswordValid, $isPasswordVerified, $isUsernameValid")
         setValidationResult(isFirstNameValid, isLastNameValid, isEmailValid, isPasswordValid, isPasswordVerified, isUsernameValid)

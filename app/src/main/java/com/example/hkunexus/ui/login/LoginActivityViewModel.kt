@@ -3,6 +3,7 @@ package com.example.hkunexus.ui.login
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.hkunexus.data.RegexRule
 import com.example.hkunexus.data.SupabaseSingleton
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -42,34 +43,12 @@ class LoginActivityViewModel() : ViewModel() {
         }
     }
 
-    private fun validateLogin(emailInput: String, passwordInput: String): Boolean {
-
-        val passwordREGEX = Pattern.compile(
-            "^" +
-                    "(?=.*[0-9])" +         //at least 1 digit
-                    "(?=.*[a-z])" +         //at least 1 lower case letter
-                    "(?=.*[A-Z])" +         //at least 1 upper case letter
-                    "(?=.*[a-zA-Z])" +      //any letter
-                    "(?=.*[^A-Za-z0-9])" +  //at least 1 special character
-                    "(?=\\S+$)" +           //no white spaces
-                    ".{8,}" +               //at least 8 characters
-                    "$"
-        )
-
-        val isPasswordValid = passwordREGEX.matcher(passwordInput).matches() || true;
-
-        val emailREGEX = Pattern.compile(
-            "^" +                // Start of the string
-                    "(?!.*\\s)" +       // No whitespace
-                    "(?!.*@)" +         // No @ character
-                    "[\\S]+" +          // One or more non-whitespace characters
-                    "$"                 // End of the string
-        )
-
-        val isEmailValid = emailREGEX.matcher(emailInput).matches()
-
-        setValidationResult(isEmailValid, isPasswordValid)
-        return (isEmailValid && isPasswordValid)
-    }
+//    private fun validateLogin(emailInput: String, passwordInput: String): Boolean {
+//        val isPasswordValid = RegexRule.passwordRegex.matcher(passwordInput).matches()
+//        val isEmailValid = RegexRule.emailRegex.matcher(emailInput).matches()
+//
+//        setValidationResult(isEmailValid, isPasswordValid)
+//        return (isEmailValid && isPasswordValid)
+//    }
 
 }

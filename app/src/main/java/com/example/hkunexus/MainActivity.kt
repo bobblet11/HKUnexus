@@ -11,6 +11,7 @@ import android.widget.TextView
 import android.window.OnBackInvokedDispatcher
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.addCallback
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -37,6 +38,8 @@ import com.example.hkunexus.databinding.ActivityMainBinding
 import com.example.hkunexus.ui.login.LoginActivity
 import com.example.hkunexus.data.SupabaseSingleton
 import com.example.hkunexus.data.UserSingleton
+import com.example.hkunexus.data.model.dto.ClubDto
+import com.example.hkunexus.ui.homePages.editUserProfile.EditUserProfileActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 
@@ -49,6 +52,19 @@ class MainActivity : AppCompatActivity()  {
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
 
+    private val profileEditLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == RESULT_OK) {
+            val edited = result.data?.getBooleanExtra("result", false)
+
+            if (edited == true) {
+                populateNavigationViewUserInfo()
+            }
+        }
+    }
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -60,7 +76,6 @@ class MainActivity : AppCompatActivity()  {
         setSupportActionBar(toolbar)
 
         drawerLayout = binding.drawerLayout
-        val navigationView: NavigationView = binding.asideNavView
 
 
 //        val toggle = ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.nav_open, R.string.nav_close)
@@ -91,11 +106,81 @@ class MainActivity : AppCompatActivity()  {
             }
         }
 
+        populateNavigationViewUserInfo()
+
+        val navigationView: NavigationView = binding.asideNavView
+
+        navigationView.getMenu().findItem(R.id.nav_logout).setOnMenuItemClickListener({ menuItem ->
+            Log.d("MainActivity", "Logout clicked")
+            SupabaseSingleton.logout()
+            val intent = Intent(this, LoginActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+            finish()
+            true
+        })
+
+        navigationView.menu.findItem(R.id.nav_edit_profile).setOnMenuItemClickListener({ menuItem ->
+            Log.d("MainActivity", "Edit user profile clicked")
+
+            val intent = Intent(this, EditUserProfileActivity::class.java)
+
+            profileEditLauncher.launch(intent)
+
+            true
+        })
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            Log.d("Navigation", "Navigated to ${destination.label}")
+            logBackStack()
+        }
+
+        setupActionBarWithNavController(navController, appBarConfiguration)
+        val bottomNavView: BottomNavigationView = binding.bottomNavView
+        bottomNavView.setupWithNavController(navController)
+        navigationView.setupWithNavController(navController)
+
+//        val usernameAside = binding.root.findViewById<TextView>(R.id.usernameAside)
+//        val emailAside = binding.root.findViewById<TextView>(R.id.emailAside)
+//        usernameAside.text = UserSingleton.display_name
+//        emailAside.text = UserSingleton.email
+
+    }
+
+    override fun onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START)
+        } else {
+            super.onBackPressed()
+        }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        return navController.navigateUp(appBarConfiguration)
+    }
+
+    private fun logBackStack() {
+        val backStackEntryCount = supportFragmentManager.backStackEntryCount
+        Log.d("MainActivity", "Back Stack Entry Count: $backStackEntryCount")
+
+        for (i in 0 until backStackEntryCount) {
+            val backStackEntry = supportFragmentManager.getBackStackEntryAt(i)
+            Log.d("MainActivity", "Back Stack Entry $i: ${backStackEntry.name}")
+        }
+    }
+
+    private fun populateNavigationViewUserInfo() {
+        val navigationView: NavigationView = binding.asideNavView
+
         val header = navigationView.getHeaderView(0)
         val usernameAside = header.findViewById<TextView>(R.id.usernameAside)
+        val nameAside = header.findViewById<TextView>(R.id.nameAside)
         val emailAside = header.findViewById<TextView>(R.id.emailAside)
+
         usernameAside.text = UserSingleton.display_name
+        nameAside.text = "(${UserSingleton.first_name} ${UserSingleton.last_name})"
         emailAside.text = UserSingleton.email
+
         val pfp = header.findViewById<ImageView>(R.id.pfp)
 
         UserSingleton.userPfp = SupabaseSingleton.getUserPfp(UserSingleton.userID)
@@ -135,71 +220,6 @@ class MainActivity : AppCompatActivity()  {
                 }
             })
             .into(pfp) // Set the ImageView
-
-
-
-
-
-
-
-
-
-        navigationView.getMenu().findItem(R.id.nav_logout).setOnMenuItemClickListener({ menuItem ->
-            Log.d("MainActivity", "Logout clicked")
-            SupabaseSingleton.logout()
-            val intent = Intent(this, LoginActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(intent)
-            finish()
-            true
-        })
-
-        navigationView.getMenu().findItem(R.id.nav_edit_profile).setOnMenuItemClickListener({ menuItem ->
-            getEditProfileDialog(this).show();
-            true
-        })
-
-        navController.addOnDestinationChangedListener { _, destination, _ ->
-            Log.d("Navigation", "Navigated to ${destination.label}")
-            logBackStack()
-        }
-
-        setupActionBarWithNavController(navController, appBarConfiguration)
-        val bottomNavView: BottomNavigationView = binding.bottomNavView
-        bottomNavView.setupWithNavController(navController)
-        navigationView.setupWithNavController(navController)
-
-//        val usernameAside = binding.root.findViewById<TextView>(R.id.usernameAside)
-//        val emailAside = binding.root.findViewById<TextView>(R.id.emailAside)
-//        usernameAside.text = UserSingleton.display_name
-//        emailAside.text = UserSingleton.email
-
     }
-
-    override fun onBackPressed() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START)
-        } else {
-            super.onBackPressed()
-        }
-    }
-
-
-
-    override fun onSupportNavigateUp(): Boolean {
-        return navController.navigateUp(appBarConfiguration)
-    }
-
-    private fun logBackStack() {
-        val backStackEntryCount = supportFragmentManager.backStackEntryCount
-        Log.d("MainActivity", "Back Stack Entry Count: $backStackEntryCount")
-
-        for (i in 0 until backStackEntryCount) {
-            val backStackEntry = supportFragmentManager.getBackStackEntryAt(i)
-            Log.d("MainActivity", "Back Stack Entry $i: ${backStackEntry.name}")
-        }
-    }
-
-
 
 }
