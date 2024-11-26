@@ -12,7 +12,12 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
+import com.example.hkunexus.data.SupabaseSingleton
 import com.example.hkunexus.databinding.FragmentCreateGroupBinding
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 
 class CreateGroupFragment : Fragment() {
@@ -78,6 +83,7 @@ class CreateGroupFragment : Fragment() {
 
                 Toast.makeText(context, "Club created!", Toast.LENGTH_SHORT).show()
             }
+
         }
 
         binding.uploadBannerImage.setOnClickListener {

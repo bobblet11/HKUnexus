@@ -11,6 +11,7 @@ import com.example.hkunexus.data.model.dto.EventDto
 import com.example.hkunexus.data.model.dto.EventToPost
 import com.example.hkunexus.data.model.dto.PostDto
 import com.example.hkunexus.data.model.dto.Tag
+import com.example.hkunexus.data.model.dto.UserProfileWithRoleDto
 import com.example.hkunexus.data.model.dto.UserToClubDto
 import com.example.hkunexus.data.model.dto.UserToEventDto
 import com.example.hkunexus.data.model.dto.fromPostToEvent
@@ -231,6 +232,64 @@ object SupabaseSingleton {
             } catch (e: Exception) {
                 Log.d("SupabaseSingleton", "Failure, $e")
                 ""
+            }
+        }
+    }
+
+    suspend fun getMembersAsync(clubID: String): ArrayList<UserProfileWithRoleDto> {
+
+        val funcName = "get_members_of_club"
+        val funcParam = buildJsonObject {
+            put("club_uuid", clubID)
+        }
+        return withContext(Dispatchers.IO) {
+            try {
+                val result = client!!.postgrest.rpc(funcName, funcParam)
+                Log.d("SupabaseSingleton", "$funcName rpc, $result")
+                val output = result.decodeList<UserProfileWithRoleDto>().toCollection(ArrayList())
+                Log.d("SupabaseSingleton", "$funcName rpc output, $output")
+                output
+            } catch (e: Exception) {
+                Log.d("SupabaseSingleton", "Failure, $e")
+                arrayListOf()
+            }
+        }
+    }
+
+    suspend fun setRoleByIdAsync(userID: String, clubID: String, role: String) {
+        val funcName = "set_role"
+        val funcParam = buildJsonObject {
+            put("user_uuid", userID)
+            put("club_uuid", clubID)
+            put("setrole", role)
+        }
+        withContext(Dispatchers.IO) {
+            try {
+                val result = client!!.postgrest.rpc(funcName, funcParam)
+                Log.d("SupabaseSingleton", "$funcName rpc, $result")
+            } catch (e: Exception) {
+                Log.d("SupabaseSingleton", "Failure, $e")
+            }
+        }
+    }
+
+    suspend fun getRoleByIdAsync(userID: String, clubID: String): String {
+
+        val funcName = "get_role_of_user"
+        val funcParam = buildJsonObject {
+            put("user_uuid", userID)
+            put("club_uuid", clubID)
+        }
+        return withContext(Dispatchers.IO) {
+            try {
+                val result = client!!.postgrest.rpc(funcName, funcParam)
+                Log.d("SupabaseSingleton", "$funcName rpc, $result")
+                val output = result.data.toString()
+                Log.d("SupabaseSingleton", "$funcName rpc output, $output")
+                output
+            } catch (e: Exception) {
+                Log.d("SupabaseSingleton", "Failure, $e")
+                "Member"
             }
         }
     }
@@ -1038,6 +1097,24 @@ object SupabaseSingleton {
         }
     }
 
+    suspend fun getAllJoinedClubsAsyncAdmin(): List<ClubDto> {
+        return withContext(Dispatchers.IO) {
+            val userId = currentUser?.id ?: throw Error()
+            val funcName = "get_all_joined_clubs_admin"
+            try {
+                val result = client!!.postgrest.rpc(funcName, buildJsonObject {
+                        put("user_uuid", Json.encodeToJsonElement(userId))
+                })
+                Log.d("SupabaseSingleton", "$funcName rpc, $result")
+                val output = result.decodeList<ClubDto>()
+                Log.d("SupabaseSingleton", "$funcName rpc output, $output")
+                output
+            } catch (e: Exception) {
+                Log.d("SupabaseSingleton", "Failure, $e")
+                emptyList()
+            }
+        }
+    }
 
     fun getAllJoinedClubs(): List<ClubDto> {
         return runBlocking {

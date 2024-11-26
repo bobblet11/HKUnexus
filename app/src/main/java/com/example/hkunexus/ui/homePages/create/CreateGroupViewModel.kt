@@ -4,11 +4,14 @@ import android.content.Context
 import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
 import com.example.hkunexus.data.SupabaseSingleton
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import java.io.File
 import java.util.UUID
 
@@ -74,7 +77,17 @@ class CreateGroupViewModel: ViewModel() {
                     )
                     Log.d("POST", result.toString())
                     mediaArg = (BUCKET_URL_PREFIX + result) ?: "";
-                    SupabaseSingleton.insertOrUpdateClub(UUID.randomUUID().toString(), uiState.value.clubName, uiState.value.clubDesc, mediaArg)
+                    val uuid = UUID.randomUUID().toString()
+                    SupabaseSingleton.insertOrUpdateClub(uuid, uiState.value.clubName, uiState.value.clubDesc, mediaArg)
+
+                    try{
+                        val result = SupabaseSingleton.insertOrUpdateCurrentUserToClub(uuid, "Admin")
+                        Log.d("clubLandingViewModel", "Club joining success, $result")
+
+                    }catch(e : Exception){
+                        Log.e("clubLandingViewModel", "Club joining failed , $e")
+                    }
+
                 } catch (ex : Exception){
                     Log.e("POST", ex.stackTraceToString())
 

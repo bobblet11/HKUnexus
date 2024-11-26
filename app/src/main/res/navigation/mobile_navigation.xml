@@ -37,6 +37,9 @@
             <action
                 android:id="@+id/action_navigation_group_landing_to_navigation_post_page"
                 app:destination="@id/navigation_post_page" />
+            <action
+                android:id="@+id/action_navigation_group_landing_to_userListFragment"
+                app:destination="@id/userListFragment" />
         </fragment>
 
     <fragment
@@ -73,4 +76,23 @@
         android:id="@+id/navigation_my_events"
         android:name="MyEventsSlide"
         android:label="My Events" />
+    <fragment
+        android:id="@+id/userListFragment"
+        android:name="com.example.hkunexus.ui.homePages.clubLanding.UserListFragment"
+        android:label="Members" >
+        <action
+            android:id="@+id/action_userListFragment_to_navigation_group_landing"
+            app:destination="@id/navigation_group_landing" />
+        <action
+            android:id="@+id/action_userListFragment_to_setRoleFragment"
+            app:destination="@id/setRoleFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/setRoleFragment"
+        android:name="com.example.hkunexus.ui.homePages.clubLanding.setRoleFragment"
+        android:label="setRoleFragment" >
+        <action
+            android:id="@+id/action_setRoleFragment_to_userListFragment"
+            app:destination="@id/userListFragment" />
+    </fragment>
 </navigation>

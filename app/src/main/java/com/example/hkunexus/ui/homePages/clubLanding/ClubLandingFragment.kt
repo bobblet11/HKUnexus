@@ -47,6 +47,15 @@ class ClubLandingFragment : Fragment() {
         val numberOfMembers = binding.clubMemberCount
         val image = binding.clubBanner
 
+        val usersButton = binding.usersButton
+
+        usersButton.setOnClickListener{
+            val b = Bundle()
+            b.putString("clubID", arguments?.getString("clubID"))
+
+            findNavController().navigate(R.id.action_navigation_group_landing_to_userListFragment, b)
+        }
+
         val postListAdapter = PostInClubListAdapter(arrayListOf(), requireContext())
         //set the clubID and fetch required data using clubID
 

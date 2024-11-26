@@ -7,6 +7,17 @@
     android:layout_height="match_parent"
     tools:context=".ui.homePages.clubLanding.ClubLandingFragment">
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/usersButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|top"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:clickable="true"
+        android:src="@drawable/ic_my_groups_black_24dp"
+        app:backgroundTint="#FFFFFF" />
+
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
