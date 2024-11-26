@@ -37,6 +37,8 @@ class HomeViewModel : ViewModel() {
 
     fun fetchPosts() {
         viewModelScope.launch {
+            updateHomePosts(arrayOf())
+
             val tempList: Array<PostDto> = SupabaseSingleton.getPostsFromHomeAsync().toTypedArray()
 
             for (P in tempList){

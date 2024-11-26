@@ -40,17 +40,13 @@ class HomeFragment : Fragment() {
             b.putString("postID", postId)
 
             findNavController().navigate(R.id.action_navigation_home_to_navigation_post_page, b)
-
-
         })
 
         homePostsRecycler.adapter = postListAdapter
         CoroutineScope(Dispatchers.Main).launch {
             viewModel.uiStatePosts.collect { state ->
                 postListAdapter.updateDataSet(state.posts.toCollection(ArrayList()))
-
             }
-
         }
 
         val swipeRefreshLayout = binding.refreshLayout
@@ -68,7 +64,13 @@ class HomeFragment : Fragment() {
             swipeRefreshLayout.isRefreshing = false
         }
 
-
+        requireActivity().supportFragmentManager.setFragmentResultListener("updateHomePageDueToProfile", this) {
+                requestKey, bundle ->
+            val result = bundle.getBoolean("result")
+            if (result) {
+                viewModel.fetchPosts()
+            }
+        }
 
         return binding.root
     }

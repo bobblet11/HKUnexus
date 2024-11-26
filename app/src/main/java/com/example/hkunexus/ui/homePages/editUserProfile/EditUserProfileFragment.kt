@@ -17,6 +17,8 @@ import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.setFragmentResult
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -114,15 +116,16 @@ class EditUserProfileFragment : Fragment() {
             if (success) {
                 Toast.makeText(context, "Profile Updated", Toast.LENGTH_SHORT).show()
 
-                val intent = Intent()
-                intent.putExtra("result", true)
-                activity?.setResult(RESULT_OK, intent)
-                activity?.finish()
+                val bundle = Bundle()
+                bundle.putBoolean("result", true)
+                requireActivity().supportFragmentManager.setFragmentResult("updatedProfile", bundle)
+
+                findNavController().popBackStack()
             }
         }
 
         binding.cancelEditButton.setOnClickListener {
-            activity?.finish()
+            findNavController().popBackStack()
         }
 
         return binding.root

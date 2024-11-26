@@ -5,6 +5,10 @@
         android:id="@+id/mobile_navigation"
         app:startDestination="@+id/navigation_home">
 
+        <action android:id="@+id/action_edit_user_profile"
+            app:popUpTo="@id/editUserProfileFragment"
+            app:popUpToInclusive="true" />
+
         <fragment
             android:id="@+id/navigation_home"
             android:name="com.example.hkunexus.ui.homePages.home.HomeFragment"
@@ -95,4 +99,9 @@
             android:id="@+id/action_setRoleFragment_to_userListFragment"
             app:destination="@id/userListFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/editUserProfileFragment"
+        android:name="com.example.hkunexus.ui.homePages.editUserProfile.EditUserProfileFragment"
+        android:label="Edit User Profile"
+        tools:layout="@layout/fragment_edit_user_profile" />
 </navigation>

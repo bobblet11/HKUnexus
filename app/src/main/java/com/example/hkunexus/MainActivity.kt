@@ -23,6 +23,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.onNavDestinationSelected
@@ -39,7 +40,6 @@ import com.example.hkunexus.ui.login.LoginActivity
 import com.example.hkunexus.data.SupabaseSingleton
 import com.example.hkunexus.data.UserSingleton
 import com.example.hkunexus.data.model.dto.ClubDto
-import com.example.hkunexus.ui.homePages.editUserProfile.EditUserProfileActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 
@@ -63,8 +63,6 @@ class MainActivity : AppCompatActivity()  {
             }
         }
     }
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -121,14 +119,21 @@ class MainActivity : AppCompatActivity()  {
         })
 
         navigationView.menu.findItem(R.id.nav_edit_profile).setOnMenuItemClickListener({ menuItem ->
+
             Log.d("MainActivity", "Edit user profile clicked")
-
-            val intent = Intent(this, EditUserProfileActivity::class.java)
-
-            profileEditLauncher.launch(intent)
-
+            navController.navigate(R.id.editUserProfileFragment)
+            drawerLayout.closeDrawer(GravityCompat.START)
             true
         })
+
+        supportFragmentManager.setFragmentResultListener("updatedProfile", this) {
+                requestKey, bundle ->
+            val result = bundle.getBoolean("result")
+            if (result) {
+                populateNavigationViewUserInfo()
+                supportFragmentManager.setFragmentResult("updateHomePageDueToProfile", bundle)
+            }
+        }
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             Log.d("Navigation", "Navigated to ${destination.label}")
