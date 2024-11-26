@@ -90,7 +90,7 @@
     <fragment
         android:id="@+id/setRoleFragment"
         android:name="com.example.hkunexus.ui.homePages.clubLanding.setRoleFragment"
-        android:label="setRoleFragment" >
+        android:label="Edit Member" >
         <action
             android:id="@+id/action_setRoleFragment_to_userListFragment"
             app:destination="@id/userListFragment" />
