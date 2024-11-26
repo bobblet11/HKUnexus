@@ -24,42 +24,4 @@ data class UserProfileDto(
     @SerialName("profile_picture")
     val profilePicture : String,
 
-    @SerialName("banner_picture")
-    val bannerPicture : String,
-
-    @SerialName("gender")
-    val gender : String,
-
-    @SerialName("birthday")
-    val birthday : String,
-
-    @SerialName("origin")
-    val origin : String,
-
-    @SerialName("cohort_year")
-    val cohortYear : Int,
-
-    @SerialName("graduation_year")
-    val graduationYear : Int,
-
-    @SerialName("curriculum")
-    val curriculum : Int,
-
-    @SerialName("major_minor")
-    val majorMinor : String,
-
-    @SerialName("bio")
-    val bio : String,
-
-    @SerialName("joined_at")
-    val joinedAt : String,
-
-    @SerialName("created_at")
-    val createdAt : String,
-
-    @SerialName("updated_at")
-    val updatedAt : String,
-
-
-
     )
