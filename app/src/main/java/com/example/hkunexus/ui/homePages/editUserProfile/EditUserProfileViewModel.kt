@@ -22,7 +22,7 @@ class EditUserProfileViewModel : ViewModel() {
         var hasProfileImageChanged: Boolean = false
     )
 
-    var imageFile: File? = File.createTempFile("lol","jpg");
+    var imageFile: File? = File.createTempFile("lol","jpg")
     val BUCKET_URL_PREFIX = "https://ctiaasznssbnyizmglhv.supabase.co/storage/v1/object/public/"
 
     private val _uiState = MutableStateFlow(UiState("", "", ""))

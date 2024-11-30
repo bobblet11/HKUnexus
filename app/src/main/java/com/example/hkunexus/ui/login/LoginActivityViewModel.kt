@@ -20,7 +20,7 @@ data class LoginUiState(
 )
 
 
-class LoginActivityViewModel() : ViewModel() {
+class LoginActivityViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(LoginUiState())
     val uiState: StateFlow<LoginUiState> = _uiState.asStateFlow()
 

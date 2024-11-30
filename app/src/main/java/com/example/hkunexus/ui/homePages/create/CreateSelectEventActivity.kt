@@ -13,7 +13,7 @@ class CreateSelectEventActivity : AppCompatActivity() {
         setContentView(R.layout.activity_create_select_event)
 
         var selectedClub: String? = ""
-        selectedClub = intent?.extras?.getString("selectedClub");
+        selectedClub = intent?.extras?.getString("selectedClub")
 
         Log.d("create select event activity",selectedClub.toString())
 

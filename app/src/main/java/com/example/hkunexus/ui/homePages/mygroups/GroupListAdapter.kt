@@ -51,7 +51,7 @@ class GroupListAdapter(private val dataSet: ArrayList<ClubDto>, private val cont
         val club = dataSet[position]
         viewHolder.clubName.text = club.clubName
         viewHolder.clubDescription.text = club.clubDesc
-        setAnimation(viewHolder.itemView, position);
+        setAnimation(viewHolder.itemView, position)
         if (club.clubImage == null){
 
             Log.d("Glide", "Image URL is null")

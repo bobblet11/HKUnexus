@@ -67,7 +67,7 @@ class ExploreListAdapter(private val dataSet: ArrayList<ClubDto>, private val co
                                 override fun onLoadFailed(
                                     e: GlideException?,
                                     model: Any?,
-                                    target: com.bumptech.glide.request.target.Target<Drawable>?,
+                                    target: Target<Drawable>?,
                                     isFirstResource: Boolean
                                 ): Boolean {
                                     // Hide the image container on error
@@ -100,7 +100,7 @@ class ExploreListAdapter(private val dataSet: ArrayList<ClubDto>, private val co
         viewHolder.cardView.setOnClickListener {
             goToLandingPage(club.clubId.toString())
         }
-        setAnimation(viewHolder.itemView, position);
+        setAnimation(viewHolder.itemView, position)
     }
     override fun getItemCount() = dataSet.size
 

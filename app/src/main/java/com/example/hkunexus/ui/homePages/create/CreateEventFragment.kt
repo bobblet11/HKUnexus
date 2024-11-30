@@ -311,7 +311,7 @@ class CreateEventFragment : Fragment() {
                 viewModel.setCoordinates(place)
             } else{
                 viewModel.setCoordinates("")
-            };
+            }
         }
 
         // Set a text change listener to fetch suggestions

@@ -3,7 +3,6 @@ package com.example.hkunexus.ui.homePages.myevents
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.hkunexus.data.SupabaseSingleton
-import com.example.hkunexus.data.SupabaseSingleton.getAllJoinedClubs
 import com.example.hkunexus.data.model.dto.ClubDto
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

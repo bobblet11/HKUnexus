@@ -1,4 +1,4 @@
-package com.example.hkunexus.data.model;
+package com.example.hkunexus.data.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

@@ -108,7 +108,7 @@ class MainActivity : AppCompatActivity()  {
 
         val navigationView: NavigationView = binding.asideNavView
 
-        navigationView.getMenu().findItem(R.id.nav_logout).setOnMenuItemClickListener({ menuItem ->
+        navigationView.menu.findItem(R.id.nav_logout).setOnMenuItemClickListener({ menuItem ->
             Log.d("MainActivity", "Logout clicked")
             SupabaseSingleton.logout()
             val intent = Intent(this, LoginActivity::class.java)

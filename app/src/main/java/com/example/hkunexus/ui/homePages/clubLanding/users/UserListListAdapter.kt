@@ -123,7 +123,7 @@ class UserListListAdapter(private val dataSet: ArrayList<UserProfileWithRoleDto>
         //call when the data changes.
         this.dataSet.clear()
         this.dataSet.addAll(newData)
-        notifyDataSetChanged();
+        notifyDataSetChanged()
     }
 
     fun setClubId(clubId:String){

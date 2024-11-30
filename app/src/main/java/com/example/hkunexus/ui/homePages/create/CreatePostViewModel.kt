@@ -40,7 +40,7 @@ class CreatePostViewModel: ViewModel() {
 
     private val _uiState = MutableStateFlow(MyGroupsUiState())
     val uiState: StateFlow<MyGroupsUiState> = _uiState.asStateFlow()
-    var imageFile: File? = File.createTempFile("lol","jpg");
+    var imageFile: File? = File.createTempFile("lol","jpg")
 
     fun setSelectedClub(club: ClubDto?) {
 
@@ -161,7 +161,7 @@ class CreatePostViewModel: ViewModel() {
                         filepathArg = "images/attachment_$postIdArg.jpg"
                     )
                     Log.d("POST", result.toString())
-                    mediaArg = (BUCKET_URL_PREFIX + result) ?: "";
+                    mediaArg = (BUCKET_URL_PREFIX + result)
 
                 } catch (ex : Exception){
                     Log.e("POST", ex.stackTraceToString())

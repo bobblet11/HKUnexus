@@ -95,7 +95,7 @@ class RegisterActivity : AppCompatActivity() {
                 val goToOTP = Intent(this, RegisterOtpActivity::class.java)
                 val bundle = Bundle()
                 bundle.putString("email", "$emailInput@connect.hku.hk")
-                goToOTP.putExtras(bundle);
+                goToOTP.putExtras(bundle)
                 startActivity(goToOTP)
             }
         }

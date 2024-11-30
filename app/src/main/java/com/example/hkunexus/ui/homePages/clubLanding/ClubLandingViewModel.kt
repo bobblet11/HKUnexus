@@ -51,7 +51,7 @@ class ClubLandingViewModel : ViewModel() {
 
     private var clubID:String = ""
 
-    private val MAX_NUM_CHAR_IN_EVENT_CARD_DESCRIPTION = 80;
+    private val MAX_NUM_CHAR_IN_EVENT_CARD_DESCRIPTION = 80
 
     fun setClubID(newClubID: String?, context: Context?){
         if (newClubID == null){
@@ -167,7 +167,7 @@ class ClubLandingViewModel : ViewModel() {
                         override fun onLoadFailed(
                             e: GlideException?,
                             model: Any?,
-                            target: com.bumptech.glide.request.target.Target<Drawable>?,
+                            target: Target<Drawable>?,
                             isFirstResource: Boolean
                         ): Boolean {
                             // Hide the image container on error

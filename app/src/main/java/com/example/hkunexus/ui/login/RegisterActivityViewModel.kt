@@ -30,8 +30,8 @@ data class RegisterUiState(
 
 
 
-class RegisterActivityViewModel() : ViewModel() {
-    var imageFile: File? = File.createTempFile("lol","jpg");
+class RegisterActivityViewModel : ViewModel() {
+    var imageFile: File? = File.createTempFile("lol","jpg")
     val BUCKET_URL_PREFIX = "https://ctiaasznssbnyizmglhv.supabase.co/storage/v1/object/public/"
 
     private val _uiState = MutableStateFlow(RegisterUiState())
@@ -83,7 +83,7 @@ class RegisterActivityViewModel() : ViewModel() {
                     register = true
                 )
                 Log.d("POST", result.toString())
-                mediaArg = (BUCKET_URL_PREFIX + result) ?: "";
+                mediaArg = (BUCKET_URL_PREFIX + result)
 
             } catch (ex : Exception){
                 Log.e("POST", ex.stackTraceToString())

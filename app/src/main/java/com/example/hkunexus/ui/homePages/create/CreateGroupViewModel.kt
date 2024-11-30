@@ -16,7 +16,7 @@ import java.io.File
 import java.util.UUID
 
 class CreateGroupViewModel: ViewModel() {
-    var imageFile: File? = File.createTempFile("lol","jpg");
+    var imageFile: File? = File.createTempFile("lol","jpg")
     val BUCKET_URL_PREFIX = "https://ctiaasznssbnyizmglhv.supabase.co/storage/v1/object/public/"
 
     data class MyGroupsUiState(
@@ -76,7 +76,7 @@ class CreateGroupViewModel: ViewModel() {
                         register = true
                     )
                     Log.d("POST", result.toString())
-                    mediaArg = (BUCKET_URL_PREFIX + result) ?: "";
+                    mediaArg = (BUCKET_URL_PREFIX + result)
                     val uuid = UUID.randomUUID().toString()
                     SupabaseSingleton.insertOrUpdateClub(uuid, uiState.value.clubName, uiState.value.clubDesc, mediaArg)
 

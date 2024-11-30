@@ -85,7 +85,7 @@ class PostInClubListAdapter(private val dataSet: ArrayList<PostDto>, private val
                     goToPostPage(dataSet[position].id)
                 }
 
-                setAnimation(viewHolder.itemView, position);
+                setAnimation(viewHolder.itemView, position)
 
                 if (dataSet[position].media.isEmpty()){
                     viewHolder.postImageContainer.visibility = View.GONE
@@ -190,7 +190,7 @@ class PostInClubListAdapter(private val dataSet: ArrayList<PostDto>, private val
                 viewHolder.cardView.setOnClickListener {
                     goToPostPage(dataSet[position].id)
                 }
-                setAnimation(viewHolder.itemView, position);
+                setAnimation(viewHolder.itemView, position)
 
 
                 if (dataSet[position].media.isEmpty()){
@@ -295,7 +295,7 @@ class PostInClubListAdapter(private val dataSet: ArrayList<PostDto>, private val
                 viewHolder.cardView.setOnClickListener {
                     goToPostPage(dataSet[position].id)
                 }
-                setAnimation(viewHolder.itemView, position);
+                setAnimation(viewHolder.itemView, position)
 
 
                 if (dataSet[position].media.isEmpty()){
@@ -415,7 +415,7 @@ class PostInClubListAdapter(private val dataSet: ArrayList<PostDto>, private val
         //call when the data changes.
         this.dataSet.clear()
         this.dataSet.addAll(newData)
-        notifyDataSetChanged();
+        notifyDataSetChanged()
     }
 
 }

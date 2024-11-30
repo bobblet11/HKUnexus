@@ -26,17 +26,13 @@ class MyEventsSlide : Fragment() {
     private val binding get() = _binding!!
     private val myEventsListViewModel: MyEventsViewModel by viewModels()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentMyEventsSlideBinding.inflate(inflater, container, false)
-        val viewPager = binding.myEventsViewPager as ViewPager2
+        val viewPager = binding.myEventsViewPager
         val tabLayout = binding.myEventsTabLayout
 
 

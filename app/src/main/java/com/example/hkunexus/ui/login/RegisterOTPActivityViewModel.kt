@@ -15,7 +15,7 @@ data class RegisterOTPUiState(
 )
 
 
-class RegisterOTPActivityViewModel() : ViewModel() {
+class RegisterOTPActivityViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(RegisterOTPUiState())
     val uiState: StateFlow<RegisterOTPUiState> = _uiState.asStateFlow()
 

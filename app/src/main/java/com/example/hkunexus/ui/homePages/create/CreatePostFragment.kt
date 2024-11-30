@@ -131,9 +131,9 @@ class CreatePostFragment : Fragment() {
         val eventSelectButton = binding.selectEventButton
         val postButton = binding.createPostButton
 
-        eventSwitch.setClickable(false)
-        eventSwitch.setAlpha(0.5f)
-        eventSelectButton.setEnabled(false)
+        eventSwitch.isClickable = false
+        eventSwitch.alpha = 0.5f
+        eventSelectButton.isEnabled = false
 
         eventSelectButton.setOnClickListener {
             val intent = Intent(activity, CreateSelectEventActivity::class.java)
@@ -222,10 +222,10 @@ class CreatePostFragment : Fragment() {
         val postButton = binding.createPostButton
 
         eventSwitch.isChecked = state.isEventPost
-        eventSwitch.setClickable(state.isClubSelected)
-        eventSwitch.setAlpha(if (state.isClubSelected) 1.0f else 0.5f)
-        eventSelectButton.setEnabled(state.isClubSelected && state.isEventPost)
-        postButton.setEnabled(state.isPostValid && state.isClubSelected && (if (state.isEventPost) state.isEventSelected else true))
+        eventSwitch.isClickable = state.isClubSelected
+        eventSwitch.alpha = if (state.isClubSelected) 1.0f else 0.5f
+        eventSelectButton.isEnabled = state.isClubSelected && state.isEventPost
+        postButton.isEnabled = state.isPostValid && state.isClubSelected && (if (state.isEventPost) state.isEventSelected else true)
     }
 
     private fun updateAllFromViewModel() {

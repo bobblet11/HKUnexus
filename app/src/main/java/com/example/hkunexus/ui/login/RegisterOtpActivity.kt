@@ -22,7 +22,7 @@ class RegisterOtpActivity : AppCompatActivity() {
         val submitOTP = findViewById<Button>(R.id.submitOTP)
         val resendOTP = findViewById<Button>(R.id.resendOTP)
         val OTPcode = findViewById<EditText>(R.id.OtpCodeInput)
-        val bundle:Bundle? = getIntent().getExtras();
+        val bundle:Bundle? = intent.extras
         var email : String? = null
         if (bundle != null) {
             email = bundle.getString("email")
