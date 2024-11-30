@@ -24,7 +24,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-public final class PostInClubListAdapter(private val dataSet: ArrayList<PostDto>, private val context: Context) :
+class PostInClubListAdapter(private val dataSet: ArrayList<PostDto>, private val context: Context) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var goToPostPage: (String) -> Unit = { postID: String -> }
     private var lastPosition = -1
@@ -88,9 +88,9 @@ public final class PostInClubListAdapter(private val dataSet: ArrayList<PostDto>
                 setAnimation(viewHolder.itemView, position);
 
                 if (dataSet[position].media.isEmpty()){
+                    viewHolder.postImageContainer.visibility = View.GONE
                     Log.d("Glide", "Image URL is null")
-                } else
-                {
+                } else {
                     viewHolder.postImageContainer.visibility = View.VISIBLE
 
                     CoroutineScope(Dispatchers.Main).launch {
@@ -136,8 +136,7 @@ public final class PostInClubListAdapter(private val dataSet: ArrayList<PostDto>
 
                 if (dataSet[position].userPfp == null || dataSet[position].userPfp!!.isEmpty()){
                     Log.d("Glide", "Image URL is null")
-                } else
-                {
+                } else {
                     viewHolder.userPfp.visibility = View.VISIBLE
 
                     CoroutineScope(Dispatchers.Main).launch {
@@ -195,9 +194,9 @@ public final class PostInClubListAdapter(private val dataSet: ArrayList<PostDto>
 
 
                 if (dataSet[position].media.isEmpty()){
+                    viewHolder.postImageContainer.visibility = View.GONE
                     Log.d("Glide", "Image URL is null")
-                } else
-                {
+                } else {
                     viewHolder.postImageContainer.visibility = View.VISIBLE
 
                     CoroutineScope(Dispatchers.Main).launch {
@@ -243,8 +242,7 @@ public final class PostInClubListAdapter(private val dataSet: ArrayList<PostDto>
 
                 if (dataSet[position].userPfp == null || dataSet[position].userPfp!!.isEmpty()){
                     Log.d("Glide", "Image URL is null")
-                } else
-                {
+                } else {
                     viewHolder.userPfp.visibility = View.VISIBLE
 
                     CoroutineScope(Dispatchers.Main).launch {
@@ -301,9 +299,9 @@ public final class PostInClubListAdapter(private val dataSet: ArrayList<PostDto>
 
 
                 if (dataSet[position].media.isEmpty()){
+                    viewHolder.postImageContainer.visibility = View.GONE
                     Log.d("Glide", "Image URL is null")
-                } else
-                {
+                } else {
                     viewHolder.postImageContainer.visibility = View.VISIBLE
 
                     CoroutineScope(Dispatchers.Main).launch {
@@ -349,8 +347,7 @@ public final class PostInClubListAdapter(private val dataSet: ArrayList<PostDto>
 
                 if (dataSet[position].userPfp == null || dataSet[position].userPfp!!.isEmpty()){
                     Log.d("Glide", "Image URL is null")
-                } else
-                {
+                } else {
                     viewHolder.userPfp.visibility = View.VISIBLE
 
                     CoroutineScope(Dispatchers.Main).launch {
@@ -414,7 +411,7 @@ public final class PostInClubListAdapter(private val dataSet: ArrayList<PostDto>
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    public fun updateDataSet(newData:  ArrayList<PostDto>){
+    fun updateDataSet(newData:  ArrayList<PostDto>){
         //call when the data changes.
         this.dataSet.clear()
         this.dataSet.addAll(newData)
