@@ -73,6 +73,7 @@ class PostInHomeListAdapter(private val dataSet: ArrayList<PostDto>, private val
             lastPosition = position
         }
     }
+
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
         when (holder.itemViewType) {
@@ -215,6 +216,7 @@ class PostInHomeListAdapter(private val dataSet: ArrayList<PostDto>, private val
 
                 if (dataSet[position].media.isEmpty()){
                     Log.d("Glide", "Image URL is null")
+                    viewHolder.postImageContainer.visibility = View.GONE
                 } else
                 {
                     viewHolder.postImageContainer.visibility = View.VISIBLE
