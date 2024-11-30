@@ -57,7 +57,7 @@ class UserListViewModel: ViewModel() {
         }
     }
 
-    public fun updateClubID(clubId: String?){
+    fun updateClubID(clubId: String?){
         _uiState.update {
             it.copy(
                 clubID = clubId

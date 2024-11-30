@@ -23,7 +23,7 @@ class MyGroupsViewModel: ViewModel() {
         fetchMyGroups()
     }
 
-    public fun fetchMyGroups() {
+    fun fetchMyGroups() {
         viewModelScope.launch {
             val tempList = SupabaseSingleton.getAllJoinedClubsAsync()
 

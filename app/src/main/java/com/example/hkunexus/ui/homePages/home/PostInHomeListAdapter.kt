@@ -104,9 +104,9 @@ class PostInHomeListAdapter(private val dataSet: ArrayList<PostDto>, private val
                 setAnimation(viewHolder.itemView, position);
 
                 if (dataSet[position].media.isEmpty()){
+                    viewHolder.postImageContainer.visibility = View.GONE
                     Log.d("Glide", "Image URL is null")
-                } else
-                {
+                } else {
                     viewHolder.postImageContainer.visibility = View.VISIBLE
 
                     CoroutineScope(Dispatchers.Main).launch {
@@ -152,8 +152,7 @@ class PostInHomeListAdapter(private val dataSet: ArrayList<PostDto>, private val
 
                 if (dataSet[position].userPfp == null || dataSet[position].userPfp!!.isEmpty()){
                     Log.d("Glide", "Image URL is null")
-                } else
-                {
+                } else {
                     viewHolder.clubPfp.visibility = View.VISIBLE
 
                     CoroutineScope(Dispatchers.Main).launch {
@@ -215,10 +214,9 @@ class PostInHomeListAdapter(private val dataSet: ArrayList<PostDto>, private val
                 setAnimation(viewHolder.itemView, position);
 
                 if (dataSet[position].media.isEmpty()){
-                    Log.d("Glide", "Image URL is null")
                     viewHolder.postImageContainer.visibility = View.GONE
-                } else
-                {
+                    Log.d("Glide", "Image URL is null")
+                } else {
                     viewHolder.postImageContainer.visibility = View.VISIBLE
 
                     CoroutineScope(Dispatchers.Main).launch {
@@ -265,8 +263,7 @@ class PostInHomeListAdapter(private val dataSet: ArrayList<PostDto>, private val
 
                 if (dataSet[position].userPfp == null || dataSet[position].userPfp!!.isEmpty()){
                     Log.d("Glide", "Image URL is null")
-                } else
-                {
+                } else {
                     viewHolder.clubPfp.visibility = View.VISIBLE
 
                     CoroutineScope(Dispatchers.Main).launch {
@@ -325,6 +322,7 @@ class PostInHomeListAdapter(private val dataSet: ArrayList<PostDto>, private val
                 setAnimation(viewHolder.itemView, position);
 
                 if (dataSet[position].media.isEmpty()){
+                    viewHolder.postImageContainer.visibility = View.GONE
                     Log.d("Glide", "Image URL is null")
                 } else {
                     viewHolder.postImageContainer.visibility = View.VISIBLE
@@ -374,8 +372,7 @@ class PostInHomeListAdapter(private val dataSet: ArrayList<PostDto>, private val
 
                 if (dataSet[position].userPfp == null || dataSet[position].userPfp!!.isEmpty()){
                     Log.d("Glide", "Image URL is null")
-                } else
-                {
+                } else {
                     viewHolder.clubPfp.visibility = View.VISIBLE
 
                     CoroutineScope(Dispatchers.Main).launch {

@@ -17,16 +17,12 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.example.hkunexus.R
-import com.example.hkunexus.data.SupabaseSingleton
-import com.example.hkunexus.data.model.dto.PostDto
-import com.example.hkunexus.data.EventInterface
-import com.example.hkunexus.data.model.dto.UserProfileDto
 import com.example.hkunexus.data.model.dto.UserProfileWithRoleDto
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-public final class UserListListAdapter(private val dataSet: ArrayList<UserProfileWithRoleDto>, private val context: Context) :
+class UserListListAdapter(private val dataSet: ArrayList<UserProfileWithRoleDto>, private val context: Context) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var goToRolePage: (String, String, String, String) -> Unit = { userId: String, role: String, display_name: String, clubId:String -> }
     private var lastPosition = -1
@@ -123,7 +119,7 @@ public final class UserListListAdapter(private val dataSet: ArrayList<UserProfil
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    public fun updateDataSet(newData:  ArrayList<UserProfileWithRoleDto>){
+    fun updateDataSet(newData:  ArrayList<UserProfileWithRoleDto>){
         //call when the data changes.
         this.dataSet.clear()
         this.dataSet.addAll(newData)

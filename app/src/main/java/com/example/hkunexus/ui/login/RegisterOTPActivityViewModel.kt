@@ -19,7 +19,7 @@ class RegisterOTPActivityViewModel() : ViewModel() {
     private val _uiState = MutableStateFlow(RegisterOTPUiState())
     val uiState: StateFlow<RegisterOTPUiState> = _uiState.asStateFlow()
 
-    public fun attemptOTPAuthentication(otpInput: String, email:String): Boolean{
+    fun attemptOTPAuthentication(otpInput: String, email:String): Boolean{
 
         if(!validateOTP(otpInput)){
             Log.d("Supabase Singleton","failed to validate OTP")

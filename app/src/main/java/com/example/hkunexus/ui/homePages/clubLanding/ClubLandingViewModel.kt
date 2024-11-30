@@ -53,7 +53,7 @@ class ClubLandingViewModel : ViewModel() {
 
     private val MAX_NUM_CHAR_IN_EVENT_CARD_DESCRIPTION = 80;
 
-    public fun setClubID(newClubID: String?, context: Context?){
+    fun setClubID(newClubID: String?, context: Context?){
         if (newClubID == null){
             Toast.makeText(
                 context,
@@ -71,7 +71,7 @@ class ClubLandingViewModel : ViewModel() {
         fetchPosts()
     }
 
-    public fun joinClub(){
+    fun joinClub(){
 
         viewModelScope.launch {
 
@@ -95,7 +95,7 @@ class ClubLandingViewModel : ViewModel() {
 
     }
 
-    public fun leaveClub(){
+    fun leaveClub(){
 
         viewModelScope.launch {
             try{
@@ -196,7 +196,7 @@ class ClubLandingViewModel : ViewModel() {
         }
     }
 
-    public fun fetchPosts() {
+    fun fetchPosts() {
         viewModelScope.launch {
             val tempList: Array<PostDto> = SupabaseSingleton.getPostsFromClubAsync(clubID).toTypedArray()
             updateClubPosts(tempList)
