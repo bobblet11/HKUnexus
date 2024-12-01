@@ -25,9 +25,6 @@ data class ExploreUiState(
 
 class ExploreViewModel : ViewModel() {
 
-    private val MAX_NUM_CHAR_IN_CLUB_TITLE: Int = 30
-    private val MAX_NUM_CHAR_IN_CLUB_DESCRIPTION: Int =80
-
     private val _uiState = MutableStateFlow(ExploreUiState())
     val uiState: StateFlow<ExploreUiState> = _uiState.asStateFlow()
 
@@ -72,7 +69,7 @@ class ExploreViewModel : ViewModel() {
             tempList = if (id == null) {
                 SupabaseSingleton.searchClubsByLikeNameAsync(query)?.toTypedArray()
             } else {
-                SupabaseSingleton.searchClubsAsync(arrayOf(id), "")?.toTypedArray()
+                SupabaseSingleton.searchClubsAsync(arrayOf(id), query)?.toTypedArray()
             }
 
             updateClubList(tempList!!)

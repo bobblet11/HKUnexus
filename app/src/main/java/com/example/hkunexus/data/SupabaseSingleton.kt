@@ -690,6 +690,28 @@ object SupabaseSingleton {
 
     }
 
+    suspend fun searchMyClubsByLikeNameAsync(query: String): List<ClubDto>? {
+        return withContext(Dispatchers.IO) {
+            val userId = currentUser!!.id
+            val funcName = "search_my_clubs_by_like_name"
+            val funcParam = buildJsonObject {
+                put("query", query)
+                put("user_uuid", Json.encodeToJsonElement(userId))
+            }
+            try {
+                val result = client!!.postgrest.rpc(funcName, funcParam)
+                Log.d("SupabaseSingleton", "$funcName rpc, $result")
+                val output = result.decodeList<ClubDto>()
+                Log.d("SupabaseSingleton", "$funcName rpc output, $output")
+                output
+            } catch (e: Exception) {
+                Log.d("SupabaseSingleton", "Failure, $e")
+                null
+            }
+        }
+
+    }
+
     fun searchClubsByTags(tagIDs: Array<String>): List<ClubDto>? {
         return runBlocking {
             val funcName = "search_clubs_by_tags"
@@ -749,6 +771,29 @@ object SupabaseSingleton {
             }
         }
     }
+
+    suspend fun searchMyClubsAsync(tagIDs: Array<String>, query: String): List<ClubDto>? {
+        return withContext(Dispatchers.IO)  {
+            val userId = currentUser!!.id
+            val funcName = "search_my_clubs"
+            val funcParam = buildJsonObject {
+                put("tag_ids", Json.encodeToJsonElement(tagIDs))
+                put("query", query)
+                put("user_uuid", Json.encodeToJsonElement(userId))
+            }
+            try {
+                val result = client!!.postgrest.rpc(funcName, funcParam)
+                Log.d("SupabaseSingleton", "$funcName rpc, $result")
+                val output = result.decodeList<ClubDto>()
+                Log.d("SupabaseSingleton", "$funcName rpc output, $output")
+                output
+            } catch (e: Exception) {
+                Log.d("SupabaseSingleton", "Failure, $e")
+                null
+            }
+        }
+    }
+
 
     fun getRandomClubs(): List<ClubDto>? {
         return runBlocking {
