@@ -39,7 +39,7 @@ class UserListListAdapter(private val dataSet: ArrayList<UserProfileWithRoleDto>
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
         val viewHolder: UserViewHolder = holder as UserViewHolder
-        viewHolder.username.text = """${dataSet[position].displayName}  (${dataSet[position].role} )"""
+        viewHolder.username.text = """${dataSet[position].displayName}  (${dataSet[position].role})"""
 
         viewHolder.background.setOnClickListener {
             if (isAdmin){
