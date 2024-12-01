@@ -28,13 +28,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:layoutDirection="rtl"></SearchView>
+                    android:layoutDirection="rtl">
 
-                <Spinner
-                    android:id="@+id/club_tags_selector"
-                    android:layout_width="wrap_content"
-                    android:layout_height="50sp"
-                    android:layout_weight="0" />
+                </SearchView>
 
             </LinearLayout>
 
@@ -57,6 +53,7 @@
                     tools:listitem="@layout/explore_clubs_card">
 
                 </androidx.recyclerview.widget.RecyclerView>
+
             </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
         </LinearLayout>
 
