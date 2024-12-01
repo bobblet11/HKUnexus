@@ -70,15 +70,9 @@ class ExploreFragment : Fragment()  {
         // Refresh function for the layout
         swipeRefreshLayout.setOnRefreshListener{
 
-            // Your code goes here
-            // In this code, we are just changing the text in the
-            // textbox
-
             viewModel.fetchClubs()
             viewModel.fetchTags()
 
-            // This line is important as it explicitly refreshes only once
-            // If "true" it implicitly refreshes forever
             swipeRefreshLayout.isRefreshing = false
         }
 
