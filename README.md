@@ -1,4 +1,6 @@
 # HKUnexus
+![alt text](https://github.com/bobblet11/HKUnexus/blob/master/logo.jpg?raw=true)
+
 Discover Your Community with Our New App!
 
 At HKU, students often seek vibrant communities to share their interests and explore new activities through hobby clubs, such as sports and arts. While joining an official HKU society is a great option, many niche interests remain uncovered. This leads students to create their own groups by promoting on various social platforms. However, this approach can be frustrating—spamming feeds and hoping for attention rarely results in success.
