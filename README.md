@@ -2,6 +2,9 @@
 <p align="center">
   ![alt text](https://github.com/bobblet11/HKUnexus/blob/master/logo.jpg?raw=true)
 </p>
+<div style="text-align: center;">
+  <img src="https://github.com/bobblet11/HKUnexus/blob/master/logo.jpg?raw=true" alt="Description of image"/>
+</div>
 
 Discover Your Community with Our New App!
 
