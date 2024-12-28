@@ -1,5 +1,7 @@
 # HKUnexus
-![alt text](https://github.com/bobblet11/HKUnexus/blob/master/logo.jpg?raw=true)
+<p align="center">
+  ![alt text](https://github.com/bobblet11/HKUnexus/blob/master/logo.jpg?raw=true)
+</p>
 
 Discover Your Community with Our New App!
 
