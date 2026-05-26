@@ -1,8 +1,9 @@
-[![Made with Java](https://img.shields.io/badge/Made%20with-Java-red.svg)](https://www.java.com/)
+[![Made with Kotlin](https://img.shields.io/badge/Made%20with-Kotlin-purple.svg)](https://kotlinlang.org/)
 [![Framework: Android](https://img.shields.io/badge/Framework-Android-green.svg)]()
 [![Platform: Mobile](https://img.shields.io/badge/Platform-Mobile-lightgrey.svg)]()
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Type: Prototype](https://img.shields.io/badge/Type-Prototype-blue.svg)]()
+
 
 # HKUnexus
 <p align="center">
