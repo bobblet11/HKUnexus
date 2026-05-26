@@ -1,63 +1,107 @@
+[![Made with Java](https://img.shields.io/badge/Made%20with-Java-red.svg)](https://www.java.com/)
+[![Framework: Android](https://img.shields.io/badge/Framework-Android-green.svg)]()
+[![Platform: Mobile](https://img.shields.io/badge/Platform-Mobile-lightgrey.svg)]()
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Type: Prototype](https://img.shields.io/badge/Type-Prototype-blue.svg)]()
+
 # HKUnexus
-<img style="width:100%" src="https://github.com/bobblet11/HKUnexus/blob/master/logo.jpg?raw=true" alt="Description of image"/>
+<p align="center">
+  <img src="https://raw.githubusercontent.com/bobblet11/HKUnexus/master/playthrough.gif" alt="Playthrough" width="800">
+</p>
 
-## Discover Your Community with Our New App!
 
-At HKU, students are eager to find vibrant communities to share their interests and explore new activities through hobby clubs, such as sports and arts. While joining an official HKU society is a great option, many niche interests often remain uncovered. This leads students to create their own groups, relying on various social platforms for promotion. Unfortunately, this approach can be frustrating—spamming feeds and hoping for attention rarely leads to success.
+📱 **Discover Your Community with HKUnexus**  
+HKUnexus is a prototype mobile app designed for HKU students to connect, collaborate, and thrive in their communities. It provides a centralized hub for organizing clubs, hobby groups, and activities—making it easier than ever to find peers who share your passions.
 
-### Introducing HKUnexus
+---
 
-Our innovative app is designed specifically for HKU students! HKUnexus serves as a centralized social hub, making it easier than ever to organize clubs and activities that resonate with your passions. Here’s why HKUnexus stands out:
+## ✨ Features
 
-- **Effortless Club Management**: Say goodbye to the chaos of managing group activities. HKUnexus streamlines communication, event planning, and member coordination, allowing you to focus on what truly matters—your interests.
+- **Effortless Club Management** — streamlined communication, event planning, and member coordination  
+- **Connect with Peers** — discover fellow students with shared interests  
+- **Expand Horizons** — join study groups, hobby clubs, or niche communities  
+- **User-Friendly Design** — intuitive interface for quick navigation  
+- **Grow Passion Projects** — gather like-minded individuals for unique hobbies  
 
-- **Connect with Like-Minded Peers**: Discover fellow students who share your passions. HKUnexus helps you find and join clubs that align with your interests, fostering connections and collaboration in a supportive environment.
+---
 
-- **Expand Your Horizons**: Whether you’re looking to join a study group, a hobby club, or a community focused on a specific major, HKUnexus enables the formation of diverse groups that cater to all interests.
+## 📸 Screenshots & Posters
 
-- **User-Friendly Design**: With an intuitive interface, HKUnexus ensures that finding and joining clubs is as simple as a few taps. No more endless scrolling or searching—everything you need is right at your fingertips.
+<p align="center">
+  <img src="https://github.com/bobblet11/HKUnexus/blob/master/logo.jpg?raw=true" alt="HKUnexus Logo" width="500">
+</p>
 
-- **Grow Your Passion Projects**: For those with unique interests, HKUnexus provides the perfect platform to gather like-minded individuals, ensuring that no hobby goes unshared and no interest goes unnoticed.
+<p align="center">
+  <img src="https://raw.githubusercontent.com/bobblet11/HKUnexus/master/POSTER.jpg" alt="Poster" width="500">
+</p>
 
-### Join Us!
+---
 
-Transform the way HKU students connect, collaborate, and thrive in their communities. With HKUnexus, the possibilities are limitless.
+## 📄 Reports & Documentation
 
-### Getting Started
+- [Project Report (PDF)](https://github.com/bobblet11/HKUnexus/blob/master/final_report.pdf)  
+- [Poster (PDF)](https://github.com/bobblet11/HKUnexus/blob/master/POSTER.pdf)  
+
+---
+
+## ⚙️ Dependencies
+
+- Android Studio (latest version recommended)  
+- Gradle (auto-synced via Android Studio)  
+- Java JDK 8+  
+- Android SDK  
+
+---
+
+## 🚀 Installation Guide
 
 1. **Clone the Repository**:
     ```bash
     git clone https://github.com/bobblet11/HKUnexus.git
     ```
 
-2. **Open the Project in Android Studio**:
-    - Launch Android Studio.
-    - Select **Open an existing Android Studio project**.
-    - Navigate to the cloned `HKUnexus` directory and open it.
+2. **Open in Android Studio**:
+    - Launch Android Studio  
+    - Select *Open an existing Android Studio project*  
+    - Navigate to the cloned `HKUnexus` directory  
 
 3. **Sync Gradle**:
-    - Once the project is opened, Android Studio will prompt you to sync Gradle.
-    - Click on **Sync Now** to ensure all dependencies are properly configured.
+    - Android Studio will prompt you to sync Gradle  
+    - Click *Sync Now*  
 
 4. **Run the App**:
-    - Connect your Android device or start an emulator.
-    - Click on the **Run** button (green triangle) in the toolbar or press `Shift + F10`.
+    - Connect your Android device or start an emulator  
+    - Click the *Run* button (green triangle) or press `Shift + F10`  
 
 5. **Sign Up**:
-    - Create an account within the app and take the first step toward discovering new activities and building lasting friendships!
-    - You will require a valid HKU email account ending in @connect.hku.hk.
-    - However for our demo, you may use this account:
-      - Username: u3596276+8@connect.hku.hk
-      - Password: @A98004002a
+    - Use your HKU email (`@connect.hku.hk`)  
+    - Demo account available:  
+      - Username: `u3596276+8@connect.hku.hk`  
+      - Password: `@A98004002a`  
 
-### Contributing
+---
 
-We welcome contributions! If you have ideas for features or improvements, please submit a pull request or open an issue.
+## 📂 Project Structure
 
-### License
+- `app/` — main Android project files  
+- `report.pdf` — project report  
+- `poster.pdf` — project poster  
+- `logo.jpg` — project logo  
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+---
 
-###
+## 🤝 Contributing
 
-Please note this is a prototype and may not represent the final product.
+We welcome contributions!  
+- Submit a **pull request** for new features  
+- Open an **issue** for bug reports or suggestions  
+
+---
+
+## 📜 License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+---
+
+> ⚠️ **Note**: This is a prototype and may not represent the final product.
